@@ -1,0 +1,14 @@
+% !TEX root = thesis-thomas-tiotto.tex
+
+\section{Response}
+\textbf{outline the methodology used - 
+outline the order of information in the thesis - a roadmap - Maximum 2500 words.}
+
+The work carried out in this thesis concentrates on explainability in the medical domain and presents both a practical part, with the implementation of a Bayesian network-based system focused on \textit{knowledge-extraction}, as defined at the end of the previous section, and a theoretical one, regarding the definition and validation of desiderata for an artificially intelligent system using the aforementioned system.
+
+The implemented system aims at supporting medical decision making through the instauration of a dialogue with the user/domain expert.  To this end, the information implicit in the data is used as basis for a constructive dialogue with the user; this starts with the expert informing the system of which knowledge is certain i.e. a variable's value that has been observed in a specific patient, and continues via a process where the next most probable \textit{(variable, state)} pair is proposed, with the expert having the choice of accepting it or refusing it, if she believes that the variable under examination doesn't adequately explain the accumulated evidence.  Each accepted variable is added to the evidence set, as the system gives priority to the domain expert's judgement.
+The result of the dialogue is an \textit{explanation tree} whose nodes represent \textit{(variable, state)} pairs and are organised into branches, depending on the flow of the dialogue; more specifically, there will always be a \textit{main branch} corresponding to the choices of the user and none or more \textit{alternative branches} whose role is to inform the expert of the possible alternative outcomes to his decisions.
+
+This software system was developed and tested tested in collaboration with \textit{Istituto Cantonale di Patologia}, a medical institute in Locarno, Ticino, Switzerland that specialises in the analysis of tissue samples received from hospitals, clinics and private doctors.  Its main activity is to characterise the samples by using \textit{histo-cytopathologic techniques}, with particular focus on the diagnosis of cancer and tumoural diseases in general.
+
+The theoretical part of this thesis aims to understand how an  

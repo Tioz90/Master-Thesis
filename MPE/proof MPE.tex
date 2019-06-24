@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\usepackage[]{algorithm2e}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{remark}{Remark}
+
+\title{MPE proof}
+
+\begin{document}
+
+\maketitle
+
+\begin{theorem}
+Given the definition of Most Probable Explanation (MPE):
+\begin{equation}
+	MPE(e) = \argmax_{q} \mathbb{P}(Q=q | E=e)
+\end{equation}
+	the following algorithm constructs the branch corresponding to the MPE in a Bayesian Network composed of the set of nodes $V=\{ Y_1 \ldots Y_N\}$:
+	\begin{algorithm}
+		\SetAlgoLined
+		\KwResult{Sequence of nodes corresponding to MPE}
+		$E := Y_1$\;
+		branch = $\emptyset$\;
+		\While{$E \neq V$}{
+			append $\argmax_{Y_k} \mathbb{P}(Y_k | E)$ to branch\;
+			$E = E \cup \argmax_{Y_k} \mathbb{P}(Y_k | E)$\;		
+		}
+	\end{algorithm}
+\end{theorem}
+
+\begin{proof}
+	By backwards analysis, we can reconstruct the steps followed by the algorithm.
+
+In the last step we are calculating the probability:
+\begin{equation}
+	\max_{y_N} \mathbb{P}(Y_N | Y_{N-1} \ldots Y_1)
+\end{equation}
+To arrive in that state, in the previous step we calculated:
+\begin{equation}
+	\max_{y_{N-1}} \mathbb{P}(Y_{N-1} | Y_{N-2} \ldots Y_1)
+\end{equation}
+and so on to arrive to the initial step:
+\begin{equation}
+	\max_{y_2} \mathbb{P}(Y_2 | Y_1)
+\end{equation}
+
+The total probability of the branch is:
+\begin{equation}
+	\begin{split}
+	\MoveEqLeft
+	\max_{y_N} \mathbb{P}(Y_N | Y_{N-1} \ldots Y_1) \\
+	&\times \max_{y_{N-1}} \mathbb{P}(Y_{N-1} | Y_{N-2} \ldots Y_1) \\
+	& \times \ldots \\
+	& \times \max_{y_2} \mathbb{P}(Y_2 | Y_1) \\
+	\MoveEqLeft
+	= \max_{y_N} \frac{\mathbb{P}(Y_N, Y_{N-1}, \ldots, Y_1)}{\mathbb{P}(Y_{N-1}, \ldots, Y_1)} \\
+	& \times \max_{y_{N-1}} \frac{\mathbb{P}(Y_{N-1}, \ldots, Y_1)}{\mathbb{P}(Y_{N-2}, \ldots, Y_1)} \\
+	& \times \ldots \\
+	& \times \max_{y_2} \frac{\mathbb{P}(Y_{2}, Y_1)}{\mathbb{P}(Y_1)} \\
+\end{split}
+\end{equation}
+And by a simple cyclic reordering of the denominators where each factor $i$ receives the denominator of term $i+1$:
+\begin{equation}
+	\begin{split}
+	\MoveEqLeft
+	= \max_{y_N} \frac{\mathbb{P}(Y_N, Y_{N-1}, \ldots, Y_1)}{\mathbb{P}(Y_1)} \\
+	& \times \max_{y_{N-1}} \frac{\mathbb{P}(Y_{N-1}, \ldots, Y_1)}{\mathbb{P}(Y_{N-1}, \ldots, Y_1)} \\
+	& \times \ldots \\
+	& \times  \max_{y_2} \frac{\mathbb{P}(Y_{2}, Y_1)}{\mathbb{P}(Y_2, Y_1)} \\
+	\MoveEqLeft
+	= \max_{y_N} \frac{\mathbb{P}(Y_N, Y_{N-1}, \ldots, Y_1)}{\mathbb{P}(Y_1)} \\
+	& \times 1 \\
+	& \times \ldots \\
+	& \times 1 \\
+	\MoveEqLeft
+	= \max_{y_N}  \frac{\mathbb{P}(Y_N, Y_{N-1}, \ldots, Y_1)}{\mathbb{P}(Y_1)} \\
+	\MoveEqLeft
+	= \max_{y_N}  \mathbb{P}(Y_N, \ldots,Y_{N-1} | Y_1) \\
+\end{split}
+\end{equation}
+which is exactly the probability of the MPE we were looking for.
+
+\end{proof}
+
+
+
+
+
+\end{document}
