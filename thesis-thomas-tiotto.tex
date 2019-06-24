@@ -8,6 +8,12 @@
 \usepackage{listings}
 \newcommand{\Eta}{H}
 
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X} 
+\usepackage{booktabs}
+\renewcommand\tabularxcolumn[1]{m{#1}}
+
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{definition}[theorem]{Definition} 
 \newtheorem{corollary}[theorem]{Corollary} 

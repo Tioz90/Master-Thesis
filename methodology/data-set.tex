@@ -26,16 +26,20 @@ That is to say, they have validated the capacity of the developed software to su
 
 \subsection{Provided data set}
 The data set I was provided with consists of the histological records of 3218 breast cancer patients.
-The data set had been pre-processed by collaborators of the ICT with some of the variables being compiled by hand. 
+The data set had been pre-processed by collaborators of the ICT with some of the values being compiled by hand. 
 In Tab. \ref{tab:datasetvariables} is a description of the measured variables, together with their clinical meaning.
+The value distribution of the data set is shown in Tab. \ref{tab:datasetdistribution}.
+
+The indications from Dr. Martin on how to further preprocess the data are shown in Tab. \ref{tab:datasetpreprocess}.
+Note that some variable names were simplified.
+
 
 \begin{table*}[htbp]
 \caption{Data set variables}
-\begin{center}
-\begin{tabular}{l l}
-\hline \\
+\begin{tabularx}{\textwidth}{@{} l Y @{}}
+\toprule 
 \textbf{Variable} & Meaning \\
-\hline \\
+\midrule 
 \textbf{Codice globale} & Unique patient identifier \\
 \textbf{mut17q21} & \\
 \textbf{loss 17} & \\
@@ -52,42 +56,70 @@ In Tab. \ref{tab:datasetvariables} is a description of the measured variables, t
 \textbf{c erbB 2  cod percento 1.1.2003} & \\
 \textbf{Ki67 cod percento} & \\
 \textbf{FISHRatio} & \\
-\end{tabular}
+\bottomrule
+\end{tabularx}
 \label{tab:datasetvariables}
-\end{center}
 \end{table*}
 
-The indications from Dr. Martin on how to further preprocess the data are shown in Tab. \ref{tab:datasetpreprocess}.
-Note that some variable names were simplified.
+\begin{table*}[htbp]
+\caption{Data set distribution}
+\begin{tabularx}{\textwidth}{@{} l X c @{}}
+\toprule 
+\textbf{Variable} & Unique values & Distribution \\
+\midrule 
+\textbf{mut17q21} & 2 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/mut17q21}  \\
+\textbf{loss 17} & 3 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/loss_17}\\
+\textbf{eta arrotondata} & 74 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/eta_arrotondata}\\
+\textbf{ateralit\`a} & 3 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/lateralita} \\
+\textbf{situ} & 5 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/situ} \\
+\textbf{morfologia} & 5 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/morfologia} \\
+\textbf{pT} & 23 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/pt} \\
+\textbf{pN} & 6 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/pn} \\
+\textbf{M} & 3 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/m} \\
+\textbf{differenziazione} & 5 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/differenziazione}  \\
+\textbf{recettori estrogeni} & 40 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/recettori_estrogeni} \\
+\textbf{recettori progestinici} & 40 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/recettori_progestinici}\\
+\textbf{c erbB 2} & 4 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/c_erb_2}\\
+\textbf{Ki67} & 52 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/ki67}\\
+\textbf{FISH} & 5 & \includegraphics[width=0.2\textwidth, height=10mm]{methodology/images/fish}\\
+\bottomrule
+\end{tabularx}
+\label{tab:datasetdistribution}
+\end{table*}
 
 \begin{table*}[htbp]
-\caption{Data set variables}
-\begin{center}
-\begin{tabular}{l l}
-\hline \\
+\caption{Data set preprocessing}
+\begin{tabularx}{\textwidth}{@{} l Y @{}}
+\toprule 
 \textbf{Variable} & Action \\
-\hline \\
-\textbf{Codice globale} & Leave untouched \\
+\midrule 
+\textbf{Codice globale} & Remove variable \\
 \textbf{mut17q21} & Remove blanks \\
 \textbf{loss 17} & Remove blanks \\
 \textbf{eta arrotondata} & Bin into \enquote{$< 40$}, \enquote{$40-50$}, \enquote{$\geq 50$}\\
 \textbf{lateralita} & Remove blanks and \enquote{sconosciuta} \\
-\textbf{situ} & Remove blanks \\
-\textbf{morfologia} & Remove blanks and \enquote{unuseful} if performance on classification is subpar \\
+\textbf{situ} & Remove blanks \\ \addlinespace
+\textbf{morfologia} & Remove blanks and \enquote{unuseful} if performance on classification is subpar \\ \addlinespace
 \textbf{pT} & Remove blanks and \enquote{unuseful}  \\
 \textbf{pN} & Remove blanks and bin into \enquote{0} and \enquote{$\neq0$}\\
-\textbf{M} & Remove blanks \\
-\textbf{differenziazione} & Remove blanks and \enquote{Sconosciuto o non applicabile} \\
-\textbf{recettori estrogeni} & Remove blanks and bin into \enquote{negativo} if $\leq 10$, \enquote{debolmente positivo} if $\leq 50$, \enquote{fortemente positivo} if $> 50$ \\
-\textbf{recettori progestinici} & Remove blanks and bin into \enquote{negativo} if $\leq 10$, \enquote{debolmente positivo} if $\leq 50$, \enquote{fortemente positivo} if $> 50$ \\
-\textbf{c erbB 2} & Remove blanks \\
-\textbf{ki67} & Remove blanks and bin into \enquote{<14}, \enquote{14-20}, \enquote{20-30}, \enquote{>30} \\
+\textbf{M} & Remove blanks \\ 
+\textbf{differenziazione} & Remove blanks and \enquote{Sconosciuto o non applicabile} \\ \addlinespace
+\textbf{recettori estrogeni} & Remove blanks and bin into \enquote{negativo} if $\leq 10$,
+		\enquote{debolmente positivo} if $\leq 50$, 
+		\enquote{fortemente positivo} if $> 50$ \\ \addlinespace
+\textbf{recettori progestinici} & Remove blanks and bin into \enquote{negativo} if $\leq 10$, 
+		\enquote{debolmente positivo} if $\leq 50$, 
+		\enquote{fortemente positivo} if $> 50$ \\ \addlinespace
+\textbf{c erbB 2} & Remove blanks \\ 
+\textbf{ki67} & Remove blanks and bin into \enquote{<14}, 
+		\enquote{14-20}, \enquote{20-30}, \enquote{>30} \\ 
 \textbf{FISH} & Remove blanks \\
-\end{tabular}
+\bottomrule
+\end{tabularx}
 \label{tab:datasetpreprocess}
-\end{center}
 \end{table*}
 
-what vittoria told me to do to clean, describe the data set
+
+
 
 
