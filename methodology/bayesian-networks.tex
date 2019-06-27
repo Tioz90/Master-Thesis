@@ -113,7 +113,7 @@ I will also define polytrees and trees because these are a fundamental concept f
 	A \textit{tree} is a particular case of polytree where each node has at most one parent.	
 \end{definition}
 
-\subsection{Bayesian Networks}
+\subsection{Bayesian Networks} \label{subsec:bayesiannetworks}
 \begin{definition}
 	A Bayesian Network (BN) is a probabilistic graphical model represented by a DAG where each vertex corresponds to a random variable $X_i$ and the edges model the dependencies among these.
 \end{definition}
@@ -170,10 +170,35 @@ If $Z \neq \emptyset$ the cases are reversed so colliders are open and the other
 	\end{itemize}
 \end{definition}
 
-The independencies between variables are encoded in the structure of the DAG so every distribution whose BN has the same connections between nodes also has the same independencies, regardless of the values of the variables. 
+The independencies between variables are encoded in the structure of the DAG so every distribution whose BN has the same connections between nodes also has the same independencies, regardless of the values of the variables.
 
+\subsection{Bayesian Networks structure learning} \label{subsec:bnstructurelearning}
+In many probabilistic models initialisation is fast but then fitting the data is slow (ex. k-means).
+For Bayesian Networks the converse is true: fitting is fast as only sums of the counts in the data are needed but identifying the correct graph structure can take super-exponential time.
+Learning the Bayesian Network structure from data is commonly known as the Bayesian Network Structure Learning (BNSL) problem.
+The methods to solve this problem can be roughly categorised into one of three types.
 
-\subsection{Bayesian Networks updating}
+\subsubsection{Search and Score}
+This is the most na{\"i}ve method as it does a brute force search over all the possibile graph structure space - i.e. all DAGs with the same number of variables as the input data - and scores all these depending on some cost function.
+This process is super-exponential but though the use of dynamic programming and heuristic search algorithms it can become sub-exponential.
+Nonetheless, solving the exact BNSL is only feasible up to $~ 30$ variables.
+
+\subsubsection{Constraint learning}
+Methods of this type calculate some measure of correlation to identify the presence and direction of edges between nodes.
+A typical test is to iterate over all triplets while testing for conditional independencies.
+Thanks to the d-separation properties outlined in Sub-Section. \ref{subsec:bayesiannetworks}, this test is able to identify the correct edges.
+The algorithm is quadratic in time in the number of vertices.
+
+\subsubsection{Approximations}
+Several heuristical approaches have been developed to be able to find good network structures in an efficient manner.
+Examples of these are:
+\begin{itemize}
+  \item Chow-Liu, that builds a tree approximation of the probability distribution
+  \item Greedy hill-climbing, that adds/removes/flips an edge at a time
+  \item optimal reinsertion, that iteratively calculates the optimal $Markov blanket$ (the subset of all nodes that are sufficient to determine the value of another subset) of an ever-smaller subset of nodes
+\end{itemize}
+
+\subsection{Bayesian Networks updating} \label{subsec:bnupdating}
 All the types of inference presented are instances of \textit{diagnostic reasoning}, also known as \textit{abductive reasoning}.  
 This type of explanation can either be modelled as a conditional probability or a MAP query and is of fundamental importance in many important problems of machine learning including medical diagnosis, that is of particular interest to us.
 
