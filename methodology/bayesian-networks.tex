@@ -1,10 +1,11 @@
 % !TEX root = thesis-thomas-tiotto.tex
-
+\todo{introduzione con outline del capitolo}
+\todo{riassunto della fine del capitolo}
 \section{Mathematical background}
 Bayesian Networks (BN) are a class of Probabilistic Graphical Models that are used to represent systems under conditions of uncertainty.
 To give a formal definition we will first need a few basic concepts from probability and graph theory.
 
-\subsection{Probability theory}
+\subsection{Probability theory} \todo{per un bayesiano una distribuzione deve essere una descrizione dei beliefs degli stati possibili}
 \subsubsection{Probability distributions}
 \begin{definition}
 	A \textit{probability distribution} is a function $\mathbb{P}: \mathcal{S} \rightarrow \mathbb{R}$ with $\mathcal{S}$ a set of \textit{events} of interest.  
@@ -143,7 +144,7 @@ A good example of how BNs are well compatible with our notion of causality may b
 \textit{First}, genetic and epigenetic factors such as the environment stochastically contributed to having the predisposition and \textit{then} the development of the symptoms was stochastically determined by the degree of predisposition.
 Adding an extra time dimension certainly helps us in dealing with this class of models.
 
-\subsubsection{d-separation}
+\subsubsection{d-separation} \todo{d-separation e' un concetto di graph theory, spostarlo sopra e riprendere qui}
 The way that Bayesian Networks can be used to reduce the storage requirements for uncertain information is by taking advantage of the conditional independencies embedded in the underlying distribution being modelled.
 The power of BNs comes from the additional information encoded in their structure and this was first explicitly described in its entirety by \cite{Pearl1988} who defined the concept of dependence separation, commonly known as \textit{d-separation}.
 
@@ -172,7 +173,9 @@ If $Z \neq \emptyset$ the cases are reversed so colliders are open and the other
 
 The independencies between variables are encoded in the structure of the DAG so every distribution whose BN has the same connections between nodes also has the same independencies, regardless of the values of the variables.
 
-\subsection{Bayesian Networks structure learning} \label{subsec:bnstructurelearning}
+\todo{usare la rete medica come esempio di d-separation}
+
+\subsection{Bayesian Networks structure learning} \label{subsec:bnstructurelearning} \todo{essere coerente nelle capitalizzazioni}
 In many probabilistic models initialisation is fast but then fitting the data is slow (ex. k-means).
 For Bayesian Networks the converse is true: fitting is fast as only sums of the counts in the data are needed but identifying the correct graph structure can take super-exponential time.
 Learning the Bayesian Network structure from data is commonly known as the Bayesian Network Structure Learning (BNSL) problem.
@@ -263,7 +266,7 @@ All algorithms for the computation of MAP obviously apply to MPE too, but there 
 \todo{quali?}
 
 
-\subsection{Information theory}
+\subsection{Information theory} \todo{spostare ad inizio capitolo}
 The birth of the field of \textit{information theory} is usually traced back to the seminal paper \enquote{A Mathematical Theory of Communication} (\cite{Shannon1949}) where Claude Shannon set the mathematical basis for the quantification of the amount of \textit{information} transmissible over a noisy channel. 
 In his words \enquote{The fundamental problem of communication is that of reproducing at one point, either exactly or approximately, a message selected at another point.}
 The concepts of field are broad enough to have influenced practically every other scientific discipline and deep enough to have enabled the \enquote{digital age}, for example by enabling the creation of ever more complicated coding schemes for the compression, reconstruction and obfuscation of digital data.
