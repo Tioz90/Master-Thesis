@@ -113,7 +113,7 @@ $I_{XY}$, intuitively, measures the amount of information that $X$ and $Y$ share
 If $X$ and $Y$ are independent then they share no mutual information and knowing one of the two gives no information about the other.
 if $X$ and $Y$ are perfectly correlated ($\rho_{XY}= \pm 1$) then they both convey the same amount of information and $I_{XY}$ is equal to the entropy $\Eta(X) = \Eta(Y)$.
 
-\subsection{Information Theory}
+\subsection{Information Theory} \label{subsec:information-theory}
 The birth of the field of \textit{information theory} is usually traced back to the seminal paper \enquote{A Mathematical Theory of Communication} (\cite{Shannon1949}) where Claude Shannon set the mathematical basis for the quantification of the amount of \textit{information} transmissible over a noisy channel. 
 In his words \enquote{The fundamental problem of communication is that of reproducing at one point, either exactly or approximately, a message selected at another point.}
 The concepts of field are broad enough to have influenced practically every other scientific discipline and deep enough to have enabled the \enquote{digital age}, for example by enabling the creation of ever more complicated coding schemes for the compression, reconstruction and obfuscation of digital data.
@@ -154,14 +154,14 @@ This ratio expresses the amount of entropy found in the distribution compared to
 \mathrm{H}\left(\underbrace{\frac{1}{n}, \ldots, \frac{1}{n}}_{n}\right) = - \sum_{i=1}^n \frac{1}{n} \log _{b} \left( \frac{1}{n} \right) = -n \cdot \frac{1}{n} \log _{b} \left( \frac{1}{n} \right) = - \log _{b} \left( \frac{1}{n} \right) = \log _{b}(n) 
 \end{equation}   
 
-\subsection{Graph Theory}
+\subsection{Graph Theory} \label{subsec:graph-theory}
 Many problems in Machine Learning (ML) don't involve classification or prediction of single data points in isolation, but of set of entities that may present a more, or less, complex relation with each other. 
 Most real-world phenomena fit into the latter framework.
 Graphs are one of the most powerful tools for the modelling of this class of problems, as their structure naturally captures the wide variety of relations that may exist between entities.
 These range from the atomical structure of a molecule to a social network of friends.  
 In both these examples graphs help in reasoning, visualising and making inferences and predictions.
 
-\subsubsection{Graphs}
+\subsubsection{Graphs} 
 \begin{definition}
 	A graph is a tuple 
 	\begin{equation}
@@ -352,6 +352,7 @@ Such a model may possess a linear number of parameters but the underlying distri
 Explicitly calculating the MAP defeats the very purpose of the BN, that is computational efficiency.
 For this reason, there exist a host of approaches to optimising MAP: elimination algorithms, gradient methods, simulated annealing and other stochastic local searches, belief propagation and integer linear programming.
 
+\textbf{A very important thing to note is that the greedy assignment where each variable picks its most likely value can be very different from the most likely joint assignment of all variables.}
 
 \subsubsection{Most Probable Explanation Query}
 A special case of MAP is the \textit{Most probable explanation (MPE)} that, 
@@ -365,3 +366,5 @@ A special case of MAP is the \textit{Most probable explanation (MPE)} that,
 
 This is an easier problem than MAP, as can be seen by comparing Eq. \ref{eq:map} with Eq. \ref{eq:mpe}; MAP presents both a summation and a maximisation and as such is part conditional probability query, part MPE query.
 All algorithms for the computation of MAP obviously apply to MPE too, but there exist efficient approximate algorithms for MPE that do not generalise to MAP such as Loopy Belief Propagation [\cite{Pearl1988}] and Stochastic Local Search [\cite{Kask1999}].
+
+

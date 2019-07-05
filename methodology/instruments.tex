@@ -87,7 +87,7 @@ All the parents of $Y$ are marked to be visited in the \enquote{up} direction (i
 If $Y$ is being visited in the \enquote{down} direction its children are again added to be visited in the \enquote{down} direction, because $Y$ is traversable.
 Additionally, if $Y$ happened to be in the set $A$, found in the first step, then $Y$'s parents are marked to be visited in the \enquote{up} direction then the collider is active and $Y$ can be traversed (a collider is open iff. the central node or any of its descendants are observed).
 
-The full procedure can be found in \cite{koller2007dseparation}; my implementation shown in \ref{alg:d-separation} follows this pseudocode very closely but the procedure \texttt{d-separated}, instead of finding all nodes $R$ that are d-connected to the input $X$, tests if a given target $Y$ is d-separated from $X$ or not.
+The full procedure can be found in \cite{koller2007dseparation}; my implementation shown in Alg. \ref{alg:d-separation} follows this pseudocode very closely but the procedure \texttt{d-separated}, instead of finding all nodes $R$ that are d-connected to the input $X$, tests if a given target $Y$ is d-separated from $X$ or not.
 This gives some extra flexibility in how the function can be used.
 To find the set $S$ of all nodes d-separated from $X$ I simply iterate the \texttt{d-separated} test over all nodes $V$ in the graph representing the BN.
 
@@ -95,8 +95,8 @@ To find the set $S$ of all nodes d-separated from $X$ I simply iterate the \text
 	\caption{d-separation algorithm}
 	\label{alg:d-separation}
 	\begin{algorithmic}
-		\STATE $separated\_list = \emptyset$
 		\STATE {\bf input:} source $X$, evidence $E$, nodes $V$
+		\STATE $separated\_list = \emptyset$
 		\FOR{target $Y \in V$} 
 		\STATE append $d-separated(X, Y, E)$ to $separated\_list$ \COMMENT{will return true or false}
 		\ENDFOR
