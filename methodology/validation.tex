@@ -1,0 +1,45 @@
+\section{Validation}
+\todo[inline]{discutere con Vittoria come validare al meglio}
+Having direct access to expert pathologists has not only helped in guiding research into the theoretical explainability properties of the system but also enabled their validation.
+There are two main validation streams to be addressed: from the clinical point of view and from the explainability one, with the results of the latter depending on those of the former.
+ 
+\subsection{Clinical validation} 
+A validation of the methods carried out in this thesis in their adherence to established clinical literature, is of paramount importance.
+A failure on the Bayesian Network's part in capturing the true relationships between the variables would hamper it in being able to give any meaningful representation of them.
+For the expert to even start to trust the system or to be able to make sense of its outputs, it is vital that there be as little cognitive dissonance between the experts' basic beliefs and expectations and those that he sees represented in the system.
+
+For this reason, the initial validation phase with the Istituto Cantonale di Patologia concentrated on the clinical validation aspect.
+The methodology chosen to clinically validate the system was for a representative of the ICT to formulate a series of natural language queries; each one of these was annotated with the specific queried variable in the network and its value together with the known values of other variables.
+The ICT's delegate included the expected reply to the queries together with its probability, based on the latest medical literature and their personal expertise.
+So, each query asked for the probability truth value of the following:
+\begin{align}
+	(var_1 = a \wedge \ldots \wedge var_n = z ) \Rightarrow var_k = k \quad var_1 \ldots var_n \in V, var_k \in V \smallsetminus \{ var_1 \ldots var_n \}
+\end{align}
+This would translate into natural language into:
+\enquote{If $var_1$ is $a$ and $\ldots$ and $var_n$ is $z$, how probable is it that $var_k$ $k$?}.
+The complete series of eight questions, together with the expected values, is shown in Tab. \ref{tab:clinicalvalidationquestions}.
+It is quite evident that all these validation questions are instances of the Bayesian Network Updating problem, in particular they are Conditional Probability Queries (as defined in \ref{subsec:bnupdating}).
+
+\todo{inserire tabella qui o in Results}
+
+\subsection{Explainability validation} \label{subsec:explainability-validation}
+Having validated the system in terms of its adherence to clinical literature, it could then also meaningfully be validated from an explainability point of view.
+The main question to be addressed is its capacity to relate to the expert user.
+Is the system able to engender the user's trust?
+In doing so, is she able to extract more knowledge from existing data when using the system than not?
+Especially in cases where there may be a dearth of data, can the expert maximise the benefit from the available information?
+Does the user subjectively feel that the system may positively impact her work?
+These are all hard questions to answer, as there is a very high degree of subjectivity involved.
+Thus to attempt to answer them, the chosen methods were borrowed from the social sciences.
+
+In an earlier stage, the experts were introduced to the system in prototype form and instructed on the possible use cases it offered.
+Then, they were asked to keep track of times they felt they could have used the system, had it been available, during their day-to-day work and to report back to me with the query they would have submitted to the system.
+If the query were in the realm of possibilities offered by my program, I would submit the outputs back to the users together with the following questionnaire:
+\todo[inline]{definire questionario da mandare con le domande}
+This process would both give feedback on the performance of the system and also inform its design.
+
+In a later phase, having finalised the system's design, I provided it to the experts at the ICT for their use in their daily work.
+After \textbf{xx time} I followed up with them with an interview based on the following format:
+\todo[inline]{definire formato e metriche intervista}
+This enabled me to quantify the performance of the system, as perceived by its users in a real setting, over an extended period of time.
+

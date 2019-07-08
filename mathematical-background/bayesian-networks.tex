@@ -1,0 +1,122 @@
+\section{Bayesian Networks} \label{sec:bayesiannetworks}
+\begin{definition}
+	A Bayesian Network (BN) is a probabilistic graphical model represented by a DAG where each vertex corresponds to a random variable $X_i$ and the edges model the dependencies among these.
+\end{definition}
+Such a model is basically a way of compactly representing an explicit joint distribution $\mathbb{P}(X_1 \cap \ldots \cap X_n) = \mathbb{P}(X_1) \ldots \mathbb{P}(X_n)$, that is factorised into $\mathbb{P}(X_n \mid X_1 \cap \ldots \cap X_{n-1}) \ldots \mathbb{P}(X_2 \mid X_1 ) \mathbb{P}(X_1) $.
+The way this compactness is achieved is in exploiting the independencies that exist among the random variables:
+\begin{equation} \label{eq:bnindependencies}
+	\forall X_i:  ( X_i \perp \neg Desc(X_i) \mid Pa(X_i))
+\end{equation}
+with $Pa(X_i)$ the set of nodes that are parents of $X_i$ and $Desc(X_i)$ the nodes that are not \textit{descendents} of $X_i$.
+That is to say, every random variable $X_i$, given its parent nodes, is independent of all other nodes in the Bayesian Network that are not descended from it.
+Also, a BN gives the flexibility to drop the many weak dependencies that are bound to exist between variables thus leading to an even simpler model.
+A full probability table for a joint distribution of random variables obscures the independencies and requires an exponential number of entries for the representation.
+A Bayesian Network on the other hand can represent the same distribution using only a linear number of parameters.
+The way that Bayesian Networks can be used to reduce the storage requirements for uncertain information is by taking advantage of the conditional independencies embedded in the underlying distribution being modelled.
+The power of BNs comes from the additional information encoded in their structure and this was first explicitly described in its entirety by \cite{Pearl1988} who defined the concept of dependence separation (see Subsec. \ref{subsec:d-separation}) and applied it to Bayesian Networks.
+
+One nice characteristic of BNs is that they very naturally model the type of mixed causal and stochastic processes that we find in all of Nature.
+Imagine we want to represent the process modelled by joint distribution $\mathbb{P}(B,A) = \mathbb{P}(B) \mathbb{P}(A)$; using the chain rule for conditional probabilities (Eq. \ref{eq:chainrule}) we can write this as $\mathbb{P}(B \mid A) \mathbb{P}(A)$.
+A BN modelling this process would be composed of two nodes $A$ and $B$ with an edge from the former to the latter $A \rightarrow B$, $A$ is called the ``parent'' of $B$.  Each of these two nodes would have its own probability table, with $\mathbb{P}(A)$ representing the \textit{prior} distribution over $A$ and $\mathbb{P}(B \mid A)$ the \textit{conditional probability distribution} of $B$ given $A$.
+
+We can now see why these types of models are named \textit{Bayesian} Networks: the inference process is based in a given prior distribution/belief and evolves through a parent $\rightarrow$ child relationship to constantly yield an updated \textit{posterior} belief.
+The BN DAG encodes a generative sampling where each variable's value is determined stochastically by Nature, based on the value of its parents.
+This process is also highly compatible with our view of causality and this is one of the reason that makes BNs highly interpretable.
+The prior $\mathbb{P}(A)$ can be seen as the result of some stochastic process caused by a series of latent (unmodelled) variables while the posterior $\mathbb{P}(B \mid A)$ is stochastically, causally determined by $A$. 
+As I have mentioned in the previous paragraphs, there are probably no truly ``prior'' distributions in the Universe, at the modelling scale we are usually interested in.
+Only on arriving on the quantum particle level may we find ``pure'' stochastic, uncaused processes due to quantum collapse.
+
+A good example of how BNs are well compatible with our notion of causality may be to imagine $A$ as the random variable modelling the predisposition to having a certain disease and $B$ to actually developing the symptoms for it.
+\textit{First}, genetic and epigenetic factors such as the environment stochastically contributed to having the predisposition and \textit{then} the development of the symptoms was stochastically determined by the degree of predisposition.
+Adding an extra time dimension certainly helps us in dealing with this class of models.
+
+\subsection{Bayesian Networks Structure Learning} \label{subsec:bnstructurelearning} 
+In many probabilistic models initialisation is fast but then fitting the data is slow (ex. k-means).
+For Bayesian Networks the converse is true: fitting is fast as only sums of the counts in the data are needed but identifying the correct graph structure can take super-exponential time.
+Learning the Bayesian Network structure from data is commonly known as the Bayesian Network Structure Learning (BNSL) problem.
+The methods to solve this problem can be roughly categorised into one of three types.
+
+\subsubsection{Search and Score}
+This is the most na{\"i}ve method as it does a brute force search over all the possibile graph structure space - i.e. all DAGs with the same number of variables as the input data - and scores all these depending on some cost function.
+This process is super-exponential but though the use of dynamic programming and heuristic search algorithms it can become sub-exponential.
+Nonetheless, solving the exact BNSL is only feasible up to $~ 30$ variables.
+
+\subsubsection{Constraint Learning}
+Methods of this type calculate some measure of correlation to identify the presence and direction of edges between nodes.
+A typical test is to iterate over all triplets while testing for conditional independencies.
+Thanks to the d-separation properties outlined in Sub-Section. \ref{subsec:bayesiannetworks}, this test is able to identify the correct edges.
+The algorithm is quadratic in time in the number of vertices.
+
+\subsubsection{Approximations}
+Several heuristical approaches have been developed to be able to find good network structures in an efficient manner.
+Examples of these are:
+\begin{itemize}
+  \item Chow-Liu, that builds a tree approximation of the probability distribution
+  \item Greedy Hill-Climbing, that adds/removes/flips an edge at a time
+  \item Optimal Reinsertion, that iteratively calculates the optimal $Markov blanket$ (the subset of all nodes that are sufficient to determine the value of another subset) of an ever-smaller subset of nodes
+\end{itemize}
+
+\subsection{Bayesian Networks Updating} \label{subsec:bnupdating}
+All the types of inference presented are instances of \textit{diagnostic reasoning}, also known as \textit{abductive reasoning}.  
+This type of explanation can either be modelled as a conditional probability or a MAP query and is of fundamental importance in many important problems of machine learning including medical diagnosis, that is of particular interest to us.
+
+\subsubsection{Conditional Probability Query}
+The \textit{updating} problem is the process of updating the probabilities of nodes in the BN based on the observation of the values of other vertices.
+This process of conditioning on observed information is also called \textit{data propagation}.
+
+The following algorithm was described by \cite{Normand1992} and applies to our case where the random variables follow a multinomial distribution.
+What we want, is to calculate the conditioned probability $\mathbb{P}(B \mid D)$ i.e. the updated probability of node $B$ based on observed evidence $E$.
+\begin{definition}
+	The conditional probability query for variable $B$ given evidence $E$ is:
+\begin{equation} \label{eq:bnupdating}
+	\mathbb{P}(B \mid E) = \alpha \pi(B) \lambda(B)
+\end{equation}
+with $\pi(B) \lambda(B)$ analogous to the \textit{prior} and \textit{likelihood} of $B$, respectively.
+\end{definition}
+The likelihood of $B$ depends only on the weighted likelihoods of its children $C_1, \ldots ,C_k$:\begin{align}
+	\lambda(B) = \prod_l \lambda_{C_l}(B) \\
+	\lambda_{C_{l}}(B)=\sum_{C_{l}} \lambda\left(C_{l}\right) P\left(C_{l} \mid B\right)
+\end{align}
+and its prior similarly depends only on the information received from its parents $A$:
+\begin{align}
+	\pi(B)=\sum_{A} P(B \mid A) \pi_{B}(A) \\
+	\pi_{B}(A)=\alpha \pi(A) \prod_{S_{B}} \lambda_{S_{B}}(A)
+\end{align}
+The information is propagated down if any variable observed is above $B$ while up if any variable observed lives in the tree rooted in $B$.
+Initially all leaf nodes' likelihoods are set at $1$ and the priors of root nodes are assumed to be observable.
+
+\subsubsection{Maximum a Posteriori Query}
+Another common type of question we might ask a BN is the following: ``given evidence $E$ which is the most likely assignment of a subset of variables $Y$?''.
+This is know as \textit{Maximum a posteriori (MAP)} inference and is a much harder problem that a conditional probability query.
+We are trying to solve the an optimisation problem.
+\begin{definition}
+As defined by \cite{koller2007introduction}.
+Given evidence/observed variables $E=e$, $E \subseteq \mathcal{X}$ and sets $Y \subseteq \mathcal{X} - E$ and $Z = \mathcal{X} - E - Y$, with $\mathcal{X}$ the set of all variables in the BN, the MAP query for $Y$ is the assignment of values $Y=y$ that has maximum probability:
+	\begin{equation} \label{eq:map}
+	\text{MAP}( Y=y \mid E=e ) = \underset{y}{\text{argmax }}  \sum_z \mathbb{P}(Y=y, Z=z \mid E=e)
+\end{equation}
+\end{definition}
+
+The MAP problem is hard to solve efficiently; that is it is part of the \textit{NP-hard} complexity class, as proved by \cite{Shimony1994}.
+Calculating it in a brute-force way would mean elencating all the possible variable-value tuples and computing their joint probabilities; as these are exponential in the number of variables, the problem is evidently untractable.
+Moreover, this is true even in a Bayesian Network.  
+Such a model may possess a linear number of parameters but the underlying distribution is still exponential.
+Explicitly calculating the MAP defeats the very purpose of the BN, that is computational efficiency.
+For this reason, there exist a host of approaches to optimising MAP: elimination algorithms, gradient methods, simulated annealing and other stochastic local searches, belief propagation and integer linear programming.
+
+\textbf{A very important thing to note is that the greedy assignment where each variable picks its most likely value can be very different from the most likely joint assignment of all variables.}
+
+\subsubsection{Most Probable Explanation Query}
+A special case of MAP is the \textit{Most probable explanation (MPE)} that, 
+\begin{definition}
+	As defined by \cite{koller2007introduction}.
+ Given evidence/observed variables $E=e$, $E \subseteq \mathcal{X}$ and $W = \mathcal{X} - E$, the MPE query for $W$ is the assignment of values $W=w$ that has maximum probability:
+	\begin{equation} \label{eq:mpe}
+	\text{MPE}( W=w \mid E=e ) = \underset{w}{\text{argmax }} \mathbb{P}(W=w \mid E=e)
+\end{equation}
+\end{definition}
+
+This is an easier problem than MAP, as can be seen by comparing Eq. \ref{eq:map} with Eq. \ref{eq:mpe}; MAP presents both a summation and a maximisation and as such is part conditional probability query, part MPE query.
+All algorithms for the computation of MAP obviously apply to MPE too, but there exist efficient approximate algorithms for MPE that do not generalise to MAP such as Loopy Belief Propagation [\cite{Pearl1988}] and Stochastic Local Search [\cite{Kask1999}].
+
+

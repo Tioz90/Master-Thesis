@@ -1,0 +1,107 @@
+\section{Probability Theory}
+
+\subsection{Probability distributions} \label{subsec:probability-distributions}
+\begin{definition}
+	A \textit{probability distribution} is a function $\mathbb{P}: \mathcal{S} \rightarrow \mathbb{R}$ with $\mathcal{S}$ a set of \textit{events} of interest.  
+To be a valid probability distribution $\mathbb{P}$ must satisfy:
+\begin{itemize}
+	\item $\mathbb{P}(\sigma) \geq 0 \quad \forall \sigma \in \mathcal{S}$
+	\item $\sum_{\sigma} = 1 \quad \forall \sigma \in \mathcal{S}$
+	\item $\alpha, \beta \in \mathcal{S} \wedge \alpha \cap \beta=\emptyset 	\Rightarrow \mathbb{P}(\alpha \cup \beta)=\mathbb{P}(\alpha)+\mathbb{P}(\beta)$
+\end{itemize}
+\end{definition}
+Each event $\sigma \in \mathcal{S}$ must have a probability $\mathbb{P}(\sigma) \in [0,1]$ and the sum of all these must equal $1$. 
+An event with $P(\sigma) = 0$ is deemed \textit{impossible} while one with $\mathbb{P}(\sigma) = 1$ is \textit{certain}.
+
+There is some discord regarding how to actually \textit{interpret} the probability of an event.
+What I believe to be the initially commonly held view is the \textit{frequentist} one, that views the probability of an event as the ratio of times it would occur over a great number of trials.  
+So, for example, saying that obtaining a heads has probability $0.5$ when tossing a coin would mean that over repeated throws we would observe heads half the time.
+
+Another, commonly held view is the \textit{Bayesian} (from the 18th century mathematician Thomas Bayes) one in which probabilities are viewed as the \textit{subjective} degree of belief attributable regarding the manifestation of an event.
+In this interpretation, stating that a coin has $0.5$ probability of landing on heads simply means that the person making the claim personally believes that the chances of seeing heads of tails are the same.
+This is obviously a ``softer'' definition compared to the frequentist one but it is nonetheless useful in that it lets one characterise certain events that haven't come about yet or are liable to happen only once or a few times.
+
+Philosophically, Bayesian inference assigns a probability to a hypothesis (a \textit{prior}) while the frequentist method tests a raw hypothesis empirically before assigning it any probability.
+As Bayesian inference naturally embraces and deals with uncertainty, it is an enormously useful tool to model and reason about the real, stochastic world we live in.
+
+\subsection{Random Variables} \label{subsec:random-variables}
+\begin{definition}
+	A random variable is a function that associates every outcome in $\mathcal{S}$ with a value.
+\end{definition}
+\textit{Random variables} are a way of bringing to the fore the attributes of interest of events while dealing with them in a clean, mathematical way.
+The values that a random variable can take are a function of the events in sample space $\mathcal{S}$, each of these is assigned a value by the random variable function.
+I will only be dealing with \textit{categorical random variables} i.e. those who's codomain is a discrete set of values.
+Every random variable has a probability distribution induced by the cardinality of the subsets of its values; in the case of categorical-valued one, such a distribution is \textit{multinomial}.
+
+If we were to take a Bayesian point of view, we would consider a random variable as simply representing the subjective degree of belief we would have over a set of outcomes we believed possible.
+
+\subsection{Conditional Probabilities} \label{subsec:conditional-probabilities}
+After having defined the basic notion of probability, we can construe one the basic building blocks of Bayesian Networks: the concept of \textit{conditional probability} 
+\begin{definition}
+	The conditional probability, ``the probability of event $\beta$ given event $\alpha$'' is:
+\begin{equation} \label{eq:conditionalprobability}
+\mathbb{P}(\beta \mid \alpha) = \frac{\mathbb{P}(\beta \cap \alpha)}{\mathbb{P}(\alpha)}
+\end{equation}
+\end{definition}
+That is, the relative proportion of event $\beta$ compared to event $\alpha$; this intuitively represents the probability of $\beta$ \textit{knowing} that $\alpha$ has already occurred.
+
+Equation \ref{eq:conditionalprobability} can be easily manipulated to obtain another basic element of Bayesian Networks: what is called the \textit{chain rule of conditional probabilities}:
+\begin{equation} \label{eq:chainrule}
+	\mathbb{P}(\beta \cap \alpha) = \mathbb{P}(\beta \mid \alpha) \mathbb{P}(\alpha)
+\end{equation}
+This can be generalised to any number of events:
+\begin{equation} \label{eq:chainrule}
+	\mathbb{P}(\alpha_1 \cap \ldots \cap \alpha_n) = \mathbb{P}(\alpha_n \mid \alpha_1 \cap \ldots \cap \alpha_{n-1}) \ldots \mathbb{P}(\alpha_1 \mid \alpha_2 ) \mathbb{P}(\alpha_1) 
+\end{equation}
+Intuitively, it means that we can decompose joint probabilities as products of conditional probabilities.  
+As we'll see, this is how the values in a Bayesian Network are calculated.
+
+\subsection{Independence} \label{subsec:independence}
+Now, we have just seen in Equation \ref{eq:conditionalprobability} that, in general, $\mathbb{P}(\beta | \alpha) \neq \mathbb{P}(\alpha)$ because $\mathbb{P}(\beta \cap \alpha) \neq \mathbb{P}(\beta) \mathbb{P}(\alpha)$
+\begin{definition}
+Two events $\alpha$ and $\beta$ are \textit{unconditionally independent} $A \perp B$ - or simply \textit{independent} - when:
+\begin{equation}
+	\mathbb{P}(\beta \mid \alpha) = \mathbb{P}(\beta) \Leftrightarrow \beta \perp \alpha
+\end{equation}
+\end{definition}
+This means that knowing that $\alpha$ took place doesn't change our beliefs around $\beta$ happening. 
+In the real world it is hard, or actually impossible if we consider existence at a fine-enough level to involve Chaos Theory, to find two such perfectly non-interacting events.
+Thus, a more useful concept is that of \textit{conditional independence} where two previously dependent event become independent when also conditioned on a third one.
+\begin{definition}
+Two events $\alpha$ and $\beta$ are \textit{conditionally independent} $(\beta \perp \alpha \mid \gamma)$ when:
+	\begin{equation}
+	\mathbb{P}(\beta \mid \alpha \cap \gamma ) = \mathbb{P}(\beta \mid \gamma) \Leftrightarrow (\beta \perp \alpha \mid \gamma)
+\end{equation}
+\end{definition}
+
+\subsection{Correlation} \label{subsec:correlation}
+Correlation, as defined by \cite{Stolp2006}, is a measure of the degree to which two random variables are linearly dependent.
+The most used measure of such a dependence is the \textit{Pearson Correlation Coefficient} or \textit{bivariate correlation}.
+\begin{definition}
+	The correlation coefficient $\rho$ of random variables $X$ and $Y$ is given by:
+	\begin{align} \label{eq:correlation}
+		\rho_{XY} &= \frac{Cov(X,Y)}{\sigma_X \sigma_Y} \\
+		&= \frac{\mathbb{E}[ (X - \mu_X) (Y - \mu_Y) ]}{\sigma_X \sigma_Y} \\
+		&= \frac{\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} (x - \mu_X) (y - \mu_Y) p_{XY}(x,y)}{ \sqrt{\sum_{x \in \mathcal{X}}  (x - \mu_X)^2 p_X(x)} \sqrt{\sum_{y \in \mathcal{Y}} (x - \mu_Y)^2 p_Y(y)} } 
+	\end{align}
+	with $p_{XY}$ the joint probability mass function of $X$ and $Y$ and $p_{X}$ and $p_{Y}$ the marginal distributions of $X$ and $Y$, respectively.
+\end{definition}
+That is, the bivariate correlation coefficient for random variables $X$ and $Y$ is given by the \textit{covariance} of $X$ and $Y$ divided by the product of their standard deviations.
+
+The covariance is the \textit{first centred moment} of the \textit{joint distribution} of $X$ and $Y$ while the \textit{standard deviation} is the square root of the \textit{second centred moment} of the marginals.
+
+$\rho_{XY}$ is normalised so its values vary in the interval $[-1,1]$; the correlation coefficient represents the degree of linear association between the two variables with $\rho_{XY}=-1$ being called \textit{perfect anticorrelation} and $\rho_{XY}=+1$ \textit{perfect correlation}.
+The two correspond to the cases where the linear equation perfectly describes the relationship between $X$ and $Y$; the sign indicates the slope of the regression line describing the relationship i.e. if an increase in one of the two variables corresponds to an increase in the other in the pair, or viceversa.
+The closer $\rho_{XY}$ tends to $0$, the feebler the relationship between $X$ and $Y$ with the case $\rho_{XY}=0$ indicating that the two variables are \textit{independent}.
+
+\subsection{Mutual Information} \label{subsec:mutualinformation}
+Another way of characterising the interrelatedness of two variables is through the concept of \textit{mutual information}, as defined in \cite{Cover2006}, that is closely linked to entropy, see Eq. \ref{eq:entropy}.
+\begin{definition}
+	The mutual information of two random variables $X$ and $Y$ is given by:
+	\begin{equation}
+		I_{XY} = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p_{XY}(x,y) \log \left( \frac{p_{XY}(x, y)}{p_{X}(x) p_{Y}(y)} \right)
+	\end{equation}
+\end{definition}
+$I_{XY}$, intuitively, measures the amount of information that $X$ and $Y$ share that can also be seen as the degree to which one variable is informative of the other.
+If $X$ and $Y$ are independent then they share no mutual information and knowing one of the two gives no information about the other.
+if $X$ and $Y$ are perfectly correlated ($\rho_{XY}= \pm 1$) then they both convey the same amount of information and $I_{XY}$ is equal to the entropy $\Eta(X) = \Eta(Y)$.
