@@ -90,68 +90,68 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 \begin{algorithm}[htp!]
 	\caption{Exhaustive pseudo-MPE algorithm}
 	\label{alg:pseudo-mpe-exhaustive}
-	\begin{algorithmic}
-		\STATE $evidence = $ user selected $(state,value)$ tuples
-		\STATE $MPE\_tree = $ MPE Tree rooted in $evidence$
-		\WHILE{True} 
-			\STATE $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
-			\IF{$mpe\_states$ is not empty}
-				\STATE $next\_state$ = head of $mpe\_states$ 
-				\STATE propose $next\_state$ to user \COMMENT{the least entropic state}
-				\IF{the user refuses $next\_state$}
-					\FOR{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
-						\STATE propose $alternative\_state$ to user \COMMENT{the next least entropic states}
-						\IF{the user accepts $alternative\_state$}
-							\STATE call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
-							\STATE add $alternative\_state$ to $MPE\_tree$
-							\STATE $evidence = evidence \cup alternative\_state$
-						\ELSE
-							\STATE continue
-						\ENDIF
-					\ENDFOR
-				\ELSE
-					\STATE add $next\_state$ to $MPE\_tree$
-					\STATE $evidence = evidence \cup next\_state$
-				\ENDIF
-			\ELSE 
-				\STATE return
-			\ENDIF
-		\ENDWHILE
+	\begin{algorithmic}[1]
+		\State $evidence = $ user selected $(state,value)$ tuples
+		\State $MPE\_tree = $ MPE Tree rooted in $evidence$
+		\While{True} 
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
+			\If{$mpe\_states$ is not empty}
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State propose $next\_state$ to user \Comment{the least entropic state}
+				\If{the user refuses $next\_state$}
+					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
+						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
+						\If{the user accepts $alternative\_state$}
+							\State call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
+							\State add $alternative\_state$ to $MPE\_tree$
+							\State $evidence = evidence \cup alternative\_state$
+						\Else
+							\State continue
+						\EndIf
+					\EndFor
+				\Else
+					\State add $next\_state$ to $MPE\_tree$
+					\State $evidence = evidence \cup next\_state$
+				\EndIf
+			\Else 
+				\State return
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm} 
 
 \begin{algorithm}[htp!]
 	\caption{Independencies pseudo-MPE algorithm}
 	\label{alg:pseudo-mpe-independencies}
-	\begin{algorithmic}
-		\STATE $evidence = $ user selected $(state,value)$ tuples
-		\STATE $MPE\_tree = $ MPE Tree rooted in $evidence$
-		\WHILE{True} 
-			\STATE $separated = $ \texttt{evidence\_d\_separation($evidence$)} \COMMENT{based on evidence of previous step}
-			\STATE $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
-			\STATE $mpe\_states = mpe\_states \smallsetminus separated$ 
-			\IF{$mpe\_states$ is not empty}
-				\STATE $next\_state$ = head of $mpe\_states$ 
-				\STATE propose $next\_state$ to user \COMMENT{the least entropic state}
-				\IF{the user refuses $next\_state$}
-					\FOR{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
-						\STATE propose $alternative\_state$ to user \COMMENT{the next least entropic states}
-						\IF{the user accepts $alternative\_state$}
-							\STATE call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
-							\STATE add $alternative\_state$ to $MPE\_tree$
-							\STATE $evidence = evidence \cup alternative\_state$
-						\ELSE
-							\STATE continue \COMMENT{go to next proposal}
-						\ENDIF
-					\ENDFOR
-				\ELSE
-					\STATE add $next\_state$ to $MPE\_tree$
-					\STATE $evidence = evidence \cup next\_state$
-				\ENDIF
-			\ELSE 
-				\STATE return 
-			\ENDIF
-		\ENDWHILE
+	\begin{algorithmic}[1]
+		\State $evidence = $ user selected $(state,value)$ tuples
+		\State $MPE\_tree = $ MPE Tree rooted in $evidence$
+		\While{True} 
+			\State $separated = $ \texttt{evidence\_d\_separation($evidence$)} \Comment{based on evidence of previous step}
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
+			\State $mpe\_states = mpe\_states \smallsetminus separated$ 
+			\If{$mpe\_states$ is not empty}
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State propose $next\_state$ to user \Comment{the least entropic state}
+				\If{the user refuses $next\_state$}
+					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
+						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
+						\If{the user accepts $alternative\_state$}
+							\State call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
+							\State add $alternative\_state$ to $MPE\_tree$
+							\State $evidence = evidence \cup alternative\_state$
+						\Else
+							\State continue \Comment{go to next proposal}
+						\EndIf
+					\EndFor
+				\Else
+					\State add $next\_state$ to $MPE\_tree$
+					\State $evidence = evidence \cup next\_state$
+				\EndIf
+			\Else 
+				\State return 
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm} 
 
@@ -173,13 +173,13 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 \begin{algorithm}[htp!]
 	\caption{Thresholded pseudo-MPE algorithm}
 	\label{alg:pseudo-mpe-thresholded}
-	\begin{algorithmic}
-		\STATE $separated\_list = \emptyset$
-		\STATE {\bf input:} source $X$, evidence $E$, nodes $V$
-		\FOR{target $Y \in V$} 
-		\STATE append $d-separated(X, Y, E)$ to $separated\_list$ \COMMENT{will return true or false}
-		\ENDFOR
-		\STATE {\bf output:} $separated\_list$
+	\begin{algorithmic}[1]
+		\State $separated\_list = \emptyset$
+		\State {\bf input:} source $X$, evidence $E$, nodes $V$
+		\For{target $Y \in V$} 
+		\State append $d-separated(X, Y, E)$ to $separated\_list$ \Comment{will return true or false}
+		\EndFor
+		\State {\bf output:} $separated\_list$
 	\end{algorithmic}
 \end{algorithm} 
 
@@ -211,44 +211,44 @@ Note that $alternative\_evidence$ is local to this algorithm and is separate fro
 \begin{algorithm}[htp!]
 	\caption{Exhaustive alternative explanation branch algorithm}
 	\label{alg:alternative-branch-echaustive}
-	\begin{algorithmic}
-		\STATE $alternative\_evidence = evidence$ 
-		\STATE $alt\_node = $ last node in the main MPE Tree
-		\STATE $branch\_id = branch\_id + 1$
-		\WHILE{True} 
-			\STATE $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
-			\IF{$mpe\_states$ is empty}
-				\STATE return
-			\ELSE
-				\STATE $next\_state$ = head of $mpe\_states$ 
-				\STATE create $next\_state$ node, tag it with $branch\_id$ and make it son of $alt\_node$
-				\STATE update $alt\_node$ node to be $next\_state$ node
-				\STATE $alternative\_evidence = alternative\_evidence \cup next\_state$
-			\ENDIF
-		\ENDWHILE
+	\begin{algorithmic}[1]
+		\State $alternative\_evidence = evidence$ 
+		\State $alt\_node = $ last node in the main MPE Tree
+		\State $branch\_id = branch\_id + 1$
+		\While{True} 
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
+			\If{$mpe\_states$ is empty}
+				\State return
+			\Else
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State create $next\_state$ node, tag it with $branch\_id$ and make it son of $alt\_node$
+				\State update $alt\_node$ node to be $next\_state$ node
+				\State $alternative\_evidence = alternative\_evidence \cup next\_state$
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}[htp!]
 	\caption{Independencies alternative explanation branch algorithm}
 	\label{alg:alternative-branch-independencies}
-	\begin{algorithmic}
-		\STATE $alternative\_evidence = evidence$ 
-		\STATE $alt\_node = $ last node in the main MPE Tree
-		\STATE $branch\_id = branch\_id + 1$
-		\WHILE{True} 
-			\STATE $separated = $ \texttt{evidence\_d\_separation($alternative\_evidence$)}
-			\STATE $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
-			\STATE $mpe\_states = mpe\_states \smallsetminus separated$ 
-			\IF{$mpe\_states$ is empty}
-				\STATE return
-			\ELSE
-				\STATE $next\_state$ = head of $mpe\_states$ 
-				\STATE create $next\_state$ node, tag it with $branch\_id$ and make it son of $alt\_node$
-				\STATE update $alt\_node$ node to be $next\_state$ node
-				\STATE $alternative\_evidence = alternative\_evidence \cup next\_state$
-			\ENDIF
-		\ENDWHILE
+	\begin{algorithmic}[1]
+		\State $alternative\_evidence = evidence$ 
+		\State $alt\_node = $ last node in the main MPE Tree
+		\State $branch\_id = branch\_id + 1$
+		\While{True} 
+			\State $separated = $ \texttt{evidence\_d\_separation($alternative\_evidence$)}
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
+			\State $mpe\_states = mpe\_states \smallsetminus separated$ 
+			\If{$mpe\_states$ is empty}
+				\State return
+			\Else
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State create $next\_state$ node, tag it with $branch\_id$ and make it son of $alt\_node$
+				\State update $alt\_node$ node to be $next\_state$ node
+				\State $alternative\_evidence = alternative\_evidence \cup next\_state$
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm} 
 
@@ -256,35 +256,35 @@ Note that $alternative\_evidence$ is local to this algorithm and is separate fro
 \begin{algorithm}[htp!]
 	\caption{Independencies alternative explanation branch algorithm}
 	\label{alg:alternative-branch-thresholded}
-	\begin{algorithmic}
-		\STATE $evidence = $ user selected $(state,value)$ tuples
-		\STATE $MPE\_tree = $ root MPE Tree in $evidence$
-		\WHILE{True} 
-			\STATE $separated = $ \texttt{evidence\_d\_separation()} \COMMENT{based on evidence of previous step}
-			\STATE $mpe\_states$ = \texttt{next\_most\_probable\_states()}
-			\STATE $mpe\_states = mpe\_states \smallsetminus separated$ 
-			\IF{$mpe\_states$ is not empty}
-				\STATE $next\_state$ = head of $mpe\_states$ 
-				\STATE propose $next\_state$ to user \COMMENT{the least entropic state}
-				\IF{the user refuses $next\_state$}
-					\FOR{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
-						\STATE propose $alternative\_state$ to user \COMMENT{the next least entropic states}
-						\IF{the user accepts $alternative\_state$}
-							\STATE call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
-							\STATE add $alternative\_state$ to $MPE\_tree$
-							\STATE $evidence = evidence \cup alternative\_state$
-						\ELSE
-							\STATE continue \COMMENT{go to next proposal}
-						\ENDIF
-					\ENDFOR
-				\ELSE
-					\STATE add $next\_state$ to $MPE\_tree$
-					\STATE $evidence = evidence \cup next\_state$
-				\ENDIF
-			\ELSE 
-				\STATE return 
-			\ENDIF
-		\ENDWHILE
+	\begin{algorithmic}[1]
+		\State $evidence = $ user selected $(state,value)$ tuples
+		\State $MPE\_tree = $ root MPE Tree in $evidence$
+		\While{True} 
+			\State $separated = $ \texttt{evidence\_d\_separation()} \Comment{based on evidence of previous step}
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states()}
+			\State $mpe\_states = mpe\_states \smallsetminus separated$ 
+			\If{$mpe\_states$ is not empty}
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State propose $next\_state$ to user \Comment{the least entropic state}
+				\If{the user refuses $next\_state$}
+					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
+						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
+						\If{the user accepts $alternative\_state$}
+							\State call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
+							\State add $alternative\_state$ to $MPE\_tree$
+							\State $evidence = evidence \cup alternative\_state$
+						\Else
+							\State continue \Comment{go to next proposal}
+						\EndIf
+					\EndFor
+				\Else
+					\State add $next\_state$ to $MPE\_tree$
+					\State $evidence = evidence \cup next\_state$
+				\EndIf
+			\Else 
+				\State return 
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm} 
 
@@ -304,28 +304,28 @@ The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an ex
 \begin{algorithm}[htp!]
 	\caption{Pseudo-MPE from random evidence algorithm}
 	\label{alg:pseudo-mpe-random-evidence}
-	\begin{algorithmic}
-		\STATE $evidence = \emptyset$
-		\STATE generate random number $k \in [ 1, |V| ]$
-		\STATE $S = $ choose $k$ variables from $V$
-		\FOR{$s \in S$}
-			\STATE choose random $v$ in the possible values of $e$ 
-			\STATE $evidence = evidence \cup (s,v)$
-		\ENDFOR
-		\STATE $MPE\_tree = $ MPE Tree rooted in $evidence$
-		\STATE $last\_node = evidence$
-		\STATE $alternative\_evidence = evidence$ 
-		\WHILE{True} 
-			\STATE $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
-			\IF{$mpe\_states$ is empty}
-				\STATE return
-			\ELSE
-				\STATE $next\_state$ = head of $mpe\_states$ 
-				\STATE create $next\_state$ node and make it son of $last\_node$
-				\STATE update $alt\_node$ node to be $next\_state$ node
-				\STATE $alternative\_evidence = alternative\_evidence \cup next\_state$
-			\ENDIF
-		\ENDWHILE
+	\begin{algorithmic}[1]
+		\State $evidence = \emptyset$
+		\State generate random number $k \in [ 1, |V| ]$
+		\State $S = $ choose $k$ variables from $V$
+		\For{$s \in S$}
+			\State choose random $v$ in the possible values of $e$ 
+			\State $evidence = evidence \cup (s,v)$
+		\EndFor
+		\State $MPE\_tree = $ MPE Tree rooted in $evidence$
+		\State $last\_node = evidence$
+		\State $alternative\_evidence = evidence$ 
+		\While{True} 
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
+			\If{$mpe\_states$ is empty}
+				\State return
+			\Else
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State create $next\_state$ node and make it son of $last\_node$
+				\State update $alt\_node$ node to be $next\_state$ node
+				\State $alternative\_evidence = alternative\_evidence \cup next\_state$
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm}
 

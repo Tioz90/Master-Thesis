@@ -101,13 +101,11 @@ To find the set $S$ of all nodes d-separated from $X$ I simply iterate the \text
 \begin{algorithm}[htp!]
 	\caption{d-separation algorithm}
 	\label{alg:d-separation}
-	\begin{algorithmic}
-		\STATE {\bf input:} source $X$, evidence $E$, nodes $V$
-		\STATE $separated\_list = \emptyset$
-		\FOR{target $Y \in V$} 
-		\STATE append $d-separated(X, Y, E)$ to $separated\_list$ \COMMENT{will return true or false}
-		\ENDFOR
-		\STATE {\bf output:} $separated\_list$
+	\begin{algorithmic}[1]
+		\State $separated\_list = \emptyset$
+		\For{target $Y \in V$} 
+			\State append $d-separated(X, Y, E)$ to $separated\_list$ \Comment{will return true or false}
+		\EndFor
 	\end{algorithmic}
 \end{algorithm}
 
