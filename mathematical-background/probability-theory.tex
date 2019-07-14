@@ -93,15 +93,3 @@ The covariance is the \textit{first centred moment} of the \textit{joint distrib
 $\rho_{XY}$ is normalised so its values vary in the interval $[-1,1]$; the correlation coefficient represents the degree of linear association between the two variables with $\rho_{XY}=-1$ being called \textit{perfect anticorrelation} and $\rho_{XY}=+1$ \textit{perfect correlation}.
 The two correspond to the cases where the linear equation perfectly describes the relationship between $X$ and $Y$; the sign indicates the slope of the regression line describing the relationship i.e. if an increase in one of the two variables corresponds to an increase in the other in the pair, or viceversa.
 The closer $\rho_{XY}$ tends to $0$, the feebler the relationship between $X$ and $Y$ with the case $\rho_{XY}=0$ indicating that the two variables are \textit{independent}.
-
-\subsection{Mutual Information} \label{subsec:mutualinformation}
-Another way of characterising the interrelatedness of two variables is through the concept of \textit{mutual information}, as defined in \cite{Cover2006}, that is closely linked to entropy, see Eq. \ref{eq:entropy}.
-\begin{definition}
-	The mutual information of two random variables $X$ and $Y$ is given by:
-	\begin{equation}
-		I_{XY} = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p_{XY}(x,y) \log \left( \frac{p_{XY}(x, y)}{p_{X}(x) p_{Y}(y)} \right)
-	\end{equation}
-\end{definition}
-$I_{XY}$, intuitively, measures the amount of information that $X$ and $Y$ share that can also be seen as the degree to which one variable is informative of the other.
-If $X$ and $Y$ are independent then they share no mutual information and knowing one of the two gives no information about the other.
-if $X$ and $Y$ are perfectly correlated ($\rho_{XY}= \pm 1$) then they both convey the same amount of information and $I_{XY}$ is equal to the entropy $\Eta(X) = \Eta(Y)$.

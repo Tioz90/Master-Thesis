@@ -5,6 +5,8 @@
 \usepackage{tikz}
 \usetikzlibrary{graphs}
 
+\usepackage{natbib}
+
 \usepackage{listings}
 \newcommand{\Eta}{H}
 
@@ -107,6 +109,8 @@ Read a  few  references  /  paragraphs  and  only  then  write  it  down
 
 \section{Importance of Explainability}
 
+\section{Explainability in Bayesian Networks}
+
 \section{Notable Works}
 
 \input{literature-review/explaining-mpe}
@@ -131,7 +135,23 @@ To give a formal definition we will first need a few basic concepts from probabi
 %%%%
 
 \chapter{Methodology}\label{chap:methodology}
-Presentazione
+ The inspiration for the work carried out in this thesis was the paper \enquote{Explaining the Most Probable Explanation} by \cite{Butz2018}, that has been presented in detail in Sec. \ref{sec:explaining-mpe}.
+ This paper proposed a system that would build a Bayesian Network modelling a medical data set and, through the interaction with a medical expert, distill an explanation tree.
+ This tree, deemed to represent the solution to the MPE query, could then be used to generate a natural language explanation that the authors claim would lead to the extraction of extra knowledge from the original data set.  
+
+ The driving hypothesis of the paper was that Bayesian Networks and the solution to the MPE problem would be a powerful tool in helping medical experts gain insights into data.
+ Unfortunately, the paper did not provide any indication that a such a system had ever been built and any validation of the method was left for future work.
+ As of the finalisation of this thesis (\today), there has been no work done in substantiating the conclusions by \cite{Butz2018}. \todo{controllare altri autori}
+ As discussed in Chap. \ref{chap:introduction} and Chap. \ref{chap:literaturereview} there is an ever greater need for Machine Learning models and systems to be explainable, especially in mission-critical domains as is healthcare.
+ Current machine learning systems are for the most part opaque and there is confusion regarding even what would constitute a good explanation of their working.
+ 
+ For these reason, I believe that building a proof-of-concept system whose logic was inspired by the method presented in the aforementioned paper and validating it with real medical experts would be an important step forwards in the direction of answering the following questions:
+ Can the method of the paper be corroborated?
+ Are Bayesian Networks a good ML model to bootstrap an explanation from?
+ How good an explanation does the proposed method give, as validated by a domain expert?
+ What improvements are there to be made?
+ \todo{migliorare dopo aver fatto literature review perche avro piu idee}
+
 
 \input{methodology/data-set}
 \input{methodology/instruments}
@@ -145,6 +165,7 @@ Presentazione
 %%%%
 
 \chapter{Results}\label{chap:results}
+\todo{complessita algoritmi}
 
 %%%%
 %%%% CONCLUSIONS
@@ -152,7 +173,6 @@ Presentazione
 
 \chapter{Conclusions}\label{chap:conclusions}
 
-\section{Critique of MPE paper}
 
 \section{Future developments}\label{sec:future-developments}
 

@@ -1,26 +1,10 @@
 \section{Novel contributions}\label{sec:novel-contributions}
  \todo{tengo qui o sposto nel cap 4?}
- \subsection{Motivation} 
- The inspiration for the work carried out in this thesis was the paper \enquote{Explaining the Most Probable Explanation} by \cite{Butz2018}, that has been presented in detail in Sec. \ref{sec:explaining-mpe}.
- This paper proposed a system that would build a Bayesian Network modelling a medical data set and, through the interaction with a medical expert, distill an explanation tree.
- This tree, deemed to represent the solution to the MPE query, could then be used to generate a natural language explanation that the authors claim would lead to the extraction of extra knowledge from the original data set.  
-
- The driving hypothesis of the paper was that Bayesian Networks and the solution to the MPE problem would be a powerful tool in helping medical experts gain insights into data.
- Unfortunately, the paper did not provide any indication that a such a system had ever been built and any validation of the method was left for future work.
- As of the finalisation of this thesis (\today), there has been no work done in substantiating the conclusions by \cite{Butz2018}. \todo{controllare altri autori}
- As discussed in Chap. \ref{chap:introduction} and Chap. \ref{chap:literaturereview} there is an ever greater need for Machine Learning models and systems to be explainable, especially in mission-critical domains as is healthcare.
- Current machine learning systems are for the most part opaque and there is confusion regarding even what would constitute a good explanation of their working.
- 
- For these reason, I believe that building a proof-of-concept system whose logic was inspired by the method presented in the aforementioned paper and validating it with real medical experts would be an important step forwards in the direction of answering the following questions:
- Can the method of the paper be corroborated?
- Are Bayesian Networks a good ML model to bootstrap an explanation from?
- How good an explanation does the proposed method give, as validated by a domain expert?
- What improvements are there to be made?
- \todo{migliorare dopo aver fatto literature review perche avro piu idee}
 
 \subsection{Theory} \label{subsec:theory}
 \todo{la discussione con l'esperto ci da' belief revision dei dati}
 \todo{counterfactual explanations}
+\todo{magari togliere theory e mettere tutto assieme}
 
 \subsubsection{Selection based on entropy}
 \todo{utilizzo entropia}
@@ -50,9 +34,9 @@ In the actual implemented system the two parts are intertwined, given their clos
 The \texttt{dialogue} procedure starts by asking the user to select a subset of variables and their relative values to add as initial evidence.
 This initial evidence is used to radicate the MPE Branch.
 It should be noted than in the description given by \cite{Butz2018}, the Argumentative Probability Tree is a real tree as each node is guaranteed to have at most one parent.
-My application, on the other hand, constructs an \textit{Argumentative Probability Polytree} (see Subsec. \ref{subsec:graph-theory}) because, as will better be described in Chap. \ref{chap:results}, it was seen early on that the users much preferred to be able to start from a set of initial evidences and not be limited to a single one.
+My application, on the other hand, constructs an \textit{Argumentative Probability Polytree} (see Subsec. \ref{subsec:polytrees}) because, as will better be described in Chap. \ref{chap:results}, it was seen early on that the users much preferred to be able to start from a set of initial evidences and not be limited to a single one.
 The algorithm then proceeds to call the \texttt{next\_most\_probable\_states} subroutine that is tasked with returning an ordered list of $(state,value)$ pairs.
-It does this by calculating the posterior distribution given evidence of all the states not already in the evidence, then calculating the efficiency (see \ref{subsec:information-theory}) and the maximally probable symbol of each state's distribution and finally returning the $(state,value)$ tuples ordered according to their normalised entropy (most efficient/least entropic at the head).
+It does this by calculating the posterior distribution given evidence of all the states not already in the evidence, then calculating the efficiency (see \ref{subsec:normalised-entropy}) and the maximally probable symbol of each state's distribution and finally returning the $(state,value)$ tuples ordered according to their normalised entropy (most efficient/least entropic at the head).
 The $(state,value)$ pair at the head of the list is proposed to the user who has the faculty to accept the system's evaluation or refuse it.
 If the user accepts, the state is added to the evidence set and to the MPE Branch under construction.
 Thus, the evidence set's cardinality increases by one each time a user accepts a proposal.
@@ -73,15 +57,16 @@ This was done for research purposes, in order to understand which of the three, 
   	\texttt{next\_most\_probable\_states} is then executed but the variables that the previous function found to be separated from the evidence, are removed from the returned list.
   	This way, variables that can have no effect given the current evidence are not proposed.
   	As the d-separation operation is not monotonic, adding new nodes to the evidence set can both increment or diminish the number of nodes that will be proposed at each step.
-  	The user is shown an updated view of the independencies of the graph at each step; an example of such an output is shown in Fig. \ref{fig:pseudo-mpe-independencies}
+  	The user is shown an updated view of the independencies of the graph at each step; an example of such an output is shown in Fig. \ref{fig:pseudo-mpe-independencies_1} and \ref{fig:pseudo-mpe-independencies_2}.
   	The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-independencies}.
   \item thresholded: The final variant of the algorithm prunes the set of variables using a different strategy from the previously presented one.
-  	In this case, the $(state,value)$ pairs in the list returned by \texttt{next\_most\_probable\_states} are dropped or automatically accepted based on their normalised entropy score.
-  	Pairs whose entropy is above a user-defined threshold are removed and not proposed to the user while, conversely, tuples with a low enough score are automatically accepted and added to the MPE Graph and the evidence set.
-  	This thresholding strategy based on the efficiency of the variables is paired with one where the threshold considers the number of times that the expert has refused a given state. Tuples can be proposed multiple times, with an ever lower probability, if the user has refused them previously; in this scheme a $(state,value)$ pair can only be proposed a maximum number of times.
+  	In this case, the $(state,value)$ pairs in the list returned by \texttt{next\_most\_probable\_states} are dropped automatically based on their probability.
+  	Pairs whose probability is below a user-defined threshold or are \enquote{worse than random} (for ex. a $(state,value)$ tuple will be discarded if $state$ is binary and the probability of $value$ is lower than $0.5$) are removed and not proposed to the user. 
+  	This thresholding strategy based on the probability of the tuples is paired with one where there is a user-defined threshold on the number of times that the expert can refuse a particular $(state,value)$. 
+  	In the general dialogue, tuples can be proposed multiple times, with an ever lower probability, if the user has previously refused them; in the thresholded scheme a $(state,value)$ pair can only be proposed a maximum number of times before being permanently discarded.
 \end{itemize}
 
-The underlying Bayesian Network that represents the data set is learned and queried through the  \texttt{pomegranate} (see Subsec. \ref{subsec:libraries}) API but the great majority of all the code is completely custom-written.
+The underlying Bayesian Network that represents the data set is learned and queried through the  \texttt{pomegranate} (see Subsec. \ref{subsec:libraries}), API but the great majority of all the code is completely custom-written.
 This was necessary because \texttt{pomegranate}, while having a powerful backend, was found to be severely lacking in the breadth and flexibility of its API.
 Many basic operations, such as the calculation of a joint distribution, were not available so the only way was to implement lower-level workarounds while still using \texttt{pomegranate} for the most basic operations, as the calculation of a posterior distribution.
 In particular, \texttt{dialogue} is implemented with the only direct calls to the API being when learning the network and when calling \texttt{predict\_proba}, that queries the \texttt{BayesianNetwork} object to calculate the posterior distribution of the states given the current evidence.
@@ -92,7 +77,7 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 	\label{alg:pseudo-mpe-exhaustive}
 	\begin{algorithmic}[1]
 		\State $evidence = $ user selected $(state,value)$ tuples
-		\State $MPE\_tree = $ MPE Tree rooted in $evidence$
+		\State $MPE\_polytree = $ MPE Polytree rooted in $evidence$
 		\While{True} 
 			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
 			\If{$mpe\_states$ is not empty}
@@ -102,15 +87,15 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
 						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
 						\If{the user accepts $alternative\_state$}
-							\State call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
-							\State add $alternative\_state$ to $MPE\_tree$
+							\State call \texttt{generate\_alternative\_branch()} on $MPE\_polytree$ 
+							\State add $alternative\_state$ to $MPE\_polytree$
 							\State $evidence = evidence \cup alternative\_state$
 						\Else
 							\State continue
 						\EndIf
 					\EndFor
 				\Else
-					\State add $next\_state$ to $MPE\_tree$
+					\State add $next\_state$ to $MPE\_polytree$
 					\State $evidence = evidence \cup next\_state$
 				\EndIf
 			\Else 
@@ -125,7 +110,7 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 	\label{alg:pseudo-mpe-independencies}
 	\begin{algorithmic}[1]
 		\State $evidence = $ user selected $(state,value)$ tuples
-		\State $MPE\_tree = $ MPE Tree rooted in $evidence$
+		\State $MPE\_polytree = $ MPE Polytree rooted in $evidence$
 		\While{True} 
 			\State $separated = $ \texttt{evidence\_d\_separation($evidence$)} \Comment{based on evidence of previous step}
 			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
@@ -137,15 +122,15 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
 						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
 						\If{the user accepts $alternative\_state$}
-							\State call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
-							\State add $alternative\_state$ to $MPE\_tree$
+							\State call \texttt{generate\_alternative\_branch()} on $MPE\_polytree$ 
+							\State add $alternative\_state$ to $MPE\_polytree$
 							\State $evidence = evidence \cup alternative\_state$
 						\Else
 							\State continue \Comment{go to next proposal}
 						\EndIf
 					\EndFor
 				\Else
-					\State add $next\_state$ to $MPE\_tree$
+					\State add $next\_state$ to $MPE\_polytree$
 					\State $evidence = evidence \cup next\_state$
 				\EndIf
 			\Else 
@@ -169,17 +154,52 @@ D-separation, in the second variant of the algorithm, is calculated via the \tex
 \label{fig:pseudo-mpe-independencies_2}
 \end{figure}
 
-\todo{implementare e finire}
 \begin{algorithm}[htp!]
 	\caption{Thresholded pseudo-MPE algorithm}
 	\label{alg:pseudo-mpe-thresholded}
 	\begin{algorithmic}[1]
-		\State $separated\_list = \emptyset$
-		\State {\bf input:} source $X$, evidence $E$, nodes $V$
-		\For{target $Y \in V$} 
-		\State append $d-separated(X, Y, E)$ to $separated\_list$ \Comment{will return true or false}
+		\State user selected $refuse\_bound$
+		\State $refuse\_thresholds = \emptyset$
+		\State $lower\_thresholds = \emptyset$
+		\For{$v \in V$}
+			\For{value $k$ of $v$}
+				\State element $[v,k]=0$ in $refuse\_thresholds$
+			\EndFor
+			\State element $[v]=1 / |v|$ in $lower\_thresholds$ \Comment{refuse worse than random pairs}
 		\EndFor
-		\State {\bf output:} $separated\_list$
+		\State $evidence = $ user selected $(state,value)$ tuples
+		\State $MPE\_polytree = $ MPE Polytree rooted in $evidence$
+		\State $mpe\_states$ = \texttt{next\_most\_probable\_states($evidence$)}
+		\While{True} 
+			\For{$s \in mpe\_states$}
+				\If{probability of $s < lower\_thresholds[s] \wedge refuse\_thresholds[s] > refuse\_bound$}
+					\State remove $s$ from $mpe\_states$ 
+				\EndIf
+			\EndFor		
+			\If{$mpe\_states$ is not empty}
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State propose $next\_state$ to user \Comment{the least entropic state}
+				\If{the user refuses $next\_state$}
+					\State increment $refuse\_thresholds[next\_state]$
+					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
+						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
+						\If{the user accepts $alternative\_state$}
+							\State call \texttt{generate\_alternative\_branch()} on $MPE\_polytree$ 
+							\State add $alternative\_state$ to $MPE\_polytree$
+							\State $evidence = evidence \cup alternative\_state$
+						\Else
+							\State increment $refuse\_thresholds[alternative\_state]$
+							\State continue
+						\EndIf
+					\EndFor
+				\Else
+					\State add $next\_state$ to $MPE\_polytree$
+					\State $evidence = evidence \cup next\_state$
+				\EndIf
+			\Else 
+				\State return
+			\EndIf
+		\EndWhile
 	\end{algorithmic}
 \end{algorithm} 
 
@@ -192,18 +212,16 @@ The alternative branch is generated by what is essentially an automated version 
 Given that \texttt{dialogue} and \texttt{generate\_alternative\_branch} are essentially one and the same, the latter inherits the same pruning strategies as the former.
 That is, \texttt{generate\_alternative\_branch} called during the exhaustive dialogue will generate a maximally likely assignment over all variables in $V \smallsetminus E$ while when invoked from one of the other two variant of the dialogue algorithm, it will apply their same pruning strategies.
 
-The implementation of the MPE Tree was based on the \texttt{Anytree} python package (see Subsec. \ref{subsec:libraries}).
-This lightweight package lacks in flexibility but makes the creation of a tree very simple.
-Creation of a new node is done by simply passing a pointer to the parent node to the \texttt{Node} object constructor.
-Construction of trees composed of chains, as are the ones I am dealing with, can be done by simply keeping track of the pointer to the last inserted node.
+The implementation of the MPE Polytree is based on the \texttt{NetworkX} python package (see Subsec. \ref{subsec:libraries}).
+The creation of a chain of nodes is done by keeping a local pointer $alt\_node$ that refers to the last added node or set of nodes, if the node being added is the successor of multiple initial evidences. 
 
-An example of the output shown to the user at each step of the dialogue is shown in Fig. \ref{fig:alternative-branch_1} while the pseudocode for the three variants are shown in Alg. \ref{alg:alternative-branch-echaustive}, \ref{alg:alternative-branch-independencies} and \ref{alg:alternative-branch-thresholded}.
+An example of the output shown to the user at each step of the dialogue is shown in Fig. \ref{fig:alternative-branch} while the pseudocode for the three variants are shown in Alg. \ref{alg:alternative-branch-echaustive}, \ref{alg:alternative-branch-independencies} and \ref{alg:alternative-branch-thresholded}.
 Note that $alternative\_evidence$ is local to this algorithm and is separate from the $evidence$ used in the main \texttt{dialogue} procedure.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=\columnwidth]{methodology/images/alternative-explanation-tree-example}}
-\caption{Example output at the end of the d-separation-aware variant of \texttt{dialogue}.
-	The tuple (\enquote{ki67},\enquote{<14}) was proposed but the expert refused it and accepted the alternative (\enquote{c erbB 2},\enquote{0}).
+\centerline{\includegraphics[scale=0.2]{methodology/images/alternative-explanation-tree-example}}
+\caption{Example output during the d-separation-aware variant of \texttt{dialogue}.
+	The tuple (\enquote{FISH},\enquote{Aampl}) was proposed but the expert refused it and accepted the alternative (\enquote{c erbB 2},\enquote{2+}).
 	The main MPE Branch has ID 1 while the \enquote{what-if} one has ID 2.}
 \label{fig:alternative-branch}
 \end{figure}
@@ -213,7 +231,7 @@ Note that $alternative\_evidence$ is local to this algorithm and is separate fro
 	\label{alg:alternative-branch-echaustive}
 	\begin{algorithmic}[1]
 		\State $alternative\_evidence = evidence$ 
-		\State $alt\_node = $ last node in the main MPE Tree
+		\State $alt\_node = $ last node in the main MPE Polytree
 		\State $branch\_id = branch\_id + 1$
 		\While{True} 
 			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
@@ -234,7 +252,7 @@ Note that $alternative\_evidence$ is local to this algorithm and is separate fro
 	\label{alg:alternative-branch-independencies}
 	\begin{algorithmic}[1]
 		\State $alternative\_evidence = evidence$ 
-		\State $alt\_node = $ last node in the main MPE Tree
+		\State $alt\_node = $ last node in the main MPE Polytree
 		\State $branch\_id = branch\_id + 1$
 		\While{True} 
 			\State $separated = $ \texttt{evidence\_d\_separation($alternative\_evidence$)}
@@ -252,37 +270,27 @@ Note that $alternative\_evidence$ is local to this algorithm and is separate fro
 	\end{algorithmic}
 \end{algorithm} 
 
-\todo{implementare e fare}
 \begin{algorithm}[htp!]
-	\caption{Independencies alternative explanation branch algorithm}
+	\caption{Thresholded alternative explanation branch algorithm}
 	\label{alg:alternative-branch-thresholded}
 	\begin{algorithmic}[1]
-		\State $evidence = $ user selected $(state,value)$ tuples
-		\State $MPE\_tree = $ root MPE Tree in $evidence$
+		\State $alternative\_evidence = evidence$ 
+		\State $alt\_node = $ last node in the main MPE Polytree
+		\State $branch\_id = branch\_id + 1$
 		\While{True} 
-			\State $separated = $ \texttt{evidence\_d\_separation()} \Comment{based on evidence of previous step}
-			\State $mpe\_states$ = \texttt{next\_most\_probable\_states()}
-			\State $mpe\_states = mpe\_states \smallsetminus separated$ 
-			\If{$mpe\_states$ is not empty}
-				\State $next\_state$ = head of $mpe\_states$ 
-				\State propose $next\_state$ to user \Comment{the least entropic state}
-				\If{the user refuses $next\_state$}
-					\For{$alternative\_state$ in $mpe\_states \smallsetminus next\_state$}
-						\State propose $alternative\_state$ to user \Comment{the next least entropic states}
-						\If{the user accepts $alternative\_state$}
-							\State call \texttt{generate\_alternative\_branch()} on $MPE\_tree$ 
-							\State add $alternative\_state$ to $MPE\_tree$
-							\State $evidence = evidence \cup alternative\_state$
-						\Else
-							\State continue \Comment{go to next proposal}
-						\EndIf
-					\EndFor
-				\Else
-					\State add $next\_state$ to $MPE\_tree$
-					\State $evidence = evidence \cup next\_state$
+			\For{$s \in mpe\_states$}
+				\If{probability of $s < lower\_thresholds[s] \wedge refuse\_thresholds[s] > refuse\_bound$}
+					\State remove $s$ from $mpe\_states$ 
 				\EndIf
-			\Else 
-				\State return 
+			\EndFor	
+			\State $mpe\_states$ = \texttt{next\_most\_probable\_states($alternative\_evidence$)}
+			\If{$mpe\_states$ is empty}
+				\State return
+			\Else
+				\State $next\_state$ = head of $mpe\_states$ 
+				\State create $next\_state$ node, tag it with $branch\_id$ and make it son of $alt\_node$
+				\State update $alt\_node$ node to be $next\_state$ node
+				\State $alternative\_evidence = alternative\_evidence \cup next\_state$
 			\EndIf
 		\EndWhile
 	\end{algorithmic}
@@ -294,9 +302,7 @@ In order to compare the Pseudo-MPE output with the true MPE solution I implement
 The random initial evidence set is constructed by randomly choosing a number in the interval $k = [ 1, |V| ]$, with $V$ the set of vertices in the BN, and then randomly selecting $k$ of the random variables in $V$ to yield the set of variables $E$.
 The value of each variable is randomly chosen among the set of its values; as all variables are categorical, this can easily be done.
 
-\todo{vedere perchè magari sposto tutta l'implementazione su MPE\_Graph quando metto evidenze multiple ovunque}
-The implementation is based on the \texttt{NetworkX} python library (see Subsec. \ref{subsec:libraries}) package as what is being constructed is not a tree but a \textit{polytree} (see Subsec. \ref{subsec:graph-theory}), as nodes may have multiple parents.
-\texttt{NetworkX} is a much more complete package that \texttt{Anytree} and this allows greater flexibility, at the cost of slightly more complexity.
+The implementation is based on the \texttt{NetworkX} python library (see Subsec. \ref{subsec:libraries}) package as what is being constructed is not a tree but a \textit{polytree} (see Subsec. \ref{subsec:polytrees}), as nodes may have multiple parents.
 Note that $alternative\_evidence$ is considered separate from the main $evidence$ used in \texttt{dialogue}.
 
 The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an example output can be seen in Fig. \ref{fig:pseudo-mpe-random}.
@@ -312,7 +318,7 @@ The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an ex
 			\State choose random $v$ in the possible values of $e$ 
 			\State $evidence = evidence \cup (s,v)$
 		\EndFor
-		\State $MPE\_tree = $ MPE Tree rooted in $evidence$
+		\State $MPE\_polytree = $ MPE Polytree rooted in $evidence$
 		\State $last\_node = evidence$
 		\State $alternative\_evidence = evidence$ 
 		\While{True} 
@@ -365,6 +371,49 @@ Probability range & Natural language quantifier \\
 \end{table*}
 
 
-\subsubsection{Pairwise Correlations} \todo{per ora non funziona}
-An interesting addition is an algorithm to measure the interrelatedness between pairs of variables.
+\subsubsection{Pairwise Correlations}
+An interesting addition, in terms of both explainability and theory, is an algorithm to measure and graphically display the interrelatedness between pairs of variables.
+This is achieved by calculating the \textit{conditional mutual information} \todo{AA: e' giusto così?} between each pair of parent $\rightarrow$ child variables.
+The definition of mutual information presented in Subsec. \ref{subsec:mutualinformation} is extended to account for the current state of the model i.e. the set of observed variables.
+What we are calculating is:
+\begin{equation}
+	I(X,Y|E=e) = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p_{XY}(x,y|E=e) \log \left( \frac{p_{XY}(x, y|E=e)}{p_{X}(x|E=e) p_{Y}(y|E=e)} \right)
+\end{equation}
+This is not done if the parent variable, in the $X \rightarrow Y$ tuple under consideration, is in the evidence set; this is because observing a variable in a BN conceptually corresponds to disconnecting it from its children.
 
+The implementation takes advantage of pgmpy's (\cite{pgmpy}) inference capabilities. 
+To do this, I wrote a function to convert a pomegranate-based BN to an equivalent pgmpy-based one.
+The queries to the model are done using the variable Elimination algorithm, that is more than suitable for a small BN.
+The marginals for $X$ and $Y$ are calculated directly from the joint distributions, by marginalising the joint over one and then the other.
+The function exits with $-1$ if the parent variable is in the evidence set.
+As the mutual information $I(X,Y) \in [0,1]$ this signals to the calling function to treat this couple $X,Y$ differently.
+
+The pseudocode for the algorithm is shown in Alg. \ref{alg:mutual-information}.
+
+\begin{algorithm}[htp!]
+	\caption{Mutual information algorithm}
+	\label{alg:mutual-information}
+	\begin{algorithmic}[1]
+		\State $X$ parent variable in the BN DAG
+		\State $Y$ child variable in the BN DAG
+		\State $E$ set of current evidence in the BN
+		\If{$X \in E$}
+			\State return -1
+		\EndIf
+		\State $joint=p_{XY}(X, Y|E=e)$
+		\State $Y\_marginal=$ marginalise $joint$ over $X$
+		\State $X\_marginal=$ marginalise $joint$ over $Y$
+		\State $mutual\_information = 0$
+		\For{y in $Y\_marginal$}
+			\For{x in $X\_marginal$}
+				\State $j=$entry in $joint$ corresponding to $y$ and $x$
+				\If{$j$ is $0$}
+					\State $mutual\_information += 0$
+				\Else
+					\State $mutual\_information = j * log( j / ( y * x ) )$
+				\EndIf
+			\EndFor
+		\EndFor
+		\State return $mutual\_information$
+	\end{algorithmic}
+\end{algorithm}

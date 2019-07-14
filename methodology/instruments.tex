@@ -1,6 +1,7 @@
 % !TEX root = thesis-thomas-tiotto.tex
 
 \section{Methods} 
+
 \subsection{Libraries}\label{subsec:libraries}
 \subsubsection{Pomegranate}
 \textit{pomegranate} (\cite{pomegranate}) is an open-source probabilistic models package for python.
@@ -25,7 +26,7 @@ Pomegranate currently only supports Discrete Bayesian Networks so the random var
 
 \textit{Structure learning} from data is achieved using the \texttt{from\_samples} method of the \texttt{BayesianNetwork} class, with the default algorithm being the novel one described by \cite{schreiber_noble_2017}.
 The \textit{probability} of a sample is calculated using the \texttt{probability} function of an object of \texttt{BayesianNetwork} type; the \texttt{predict\_proba} function is used to return the probability of each variable in the model given some evidence.
-\textit{Predictions} (described in detail in Sec. \ref{subsec:bnupdating}) are run by passing to the \texttt{predict} function of an object a matrix with \texttt{None} as placeholders for missing values .
+\textit{Predictions} (described in detail in Subsec. \ref{subsec:bnupdating}) are run by passing to the \texttt{predict} function of an object a matrix with \texttt{None} as placeholders for missing values .
 \textit{Fitting} is done thought the \texttt{fit} function that uses MLE estimates to update each node's distribution in the model based on the input data.
 
 A \texttt{BayesianNetwork} object can also be displayed graphically by calling its \texttt{plot} function.
@@ -37,6 +38,14 @@ An example of such an output is shown in Fig. \ref{fig:pomegranate_graph_example
 \caption{Example output of \texttt{plot} (\cite{pomegranatetutorial}) }
 \label{fig:pomegranate_graph_example}
 \end{figure}
+
+\subsubsection{Pgmpy}
+\textit{Pgmpy} (\cite{pgmpy}) is, like pomegranate, another recent probabilistic graphical model package for Python.
+Unlike pomegranate, it natively implements various exact and approximate inference algorithms, like Variable Elimination, Belief Propagation and Max-Product Linear Programming.
+
+The reason that I elected to use two different probabilistic graphical model libraries is because there is still no Python package that offers all the needed functionality.
+Pomegranate implements a novel structure learning algorithm, that I wanted to use, but is severely lacking in functionality in many other areas.
+Pgmpy, on the other hand, has a very good API as regards inference.
 
 \subsubsection{Gurobi}
 \textit{Gurobi} (\cite{gurobi}) is a closed-source mathematical programming solver for Linear Programming, Quadratic Programming and Mixed-Integer Programming optimisation problems.
@@ -66,15 +75,10 @@ The closest parallel to NumPy - as R was for pandas, is MATLAB.
 
 \subsubsection{Networkx}
 \textit{NetworkX} (\cite{networkx}) is another widely-used package that is specialised in the creation and manipulation of graph-structured data.
-The main use for this package was in building the \texttt{MPEGraph} ( \todo[inline]{inserire referenza una volta scritto} ) data structure that I used to build a graph representing the outcome of pseudo-MPE (see \ref{subsubsec:pseudo-mpe} ) applied to multiple initial evidences (see \ref{subsubsec: pseudo-mpe-random} ) .
+The main use for this package was in building the \texttt{MPEGraph} data structure that I used to build a polytree representing the dialogue with the expert.
 
-\subsubsection{Anytree}
-\textit{anytree} (\cite{anytree}) is a python package providing a lightweight implementation of a tree data structure and traversal methods.
-This package was used as a lightweight substitute for NetworkX when building a chain of reasoning using the pseudo-MPE algorithm (see \ref{subsubsec:pseudo-mpe} ).
-As the \texttt{MPETree} object is guaranteed to be a single chain, using a simpler resource than NetworkX was advantageous.
-
-\subsection{Algorithms}
-\todo{quanto dettagli implementativi devo mettere?  perchè ho un sacco di funzioni di visualizzazione etc}
+\subsection{Algorithms} \todo{thresholded dialogue aggiungere}
+\todo{quanti dettagli implementativi devo mettere?  perchè ho un sacco di funzioni di visualizzazione etc}
 
 \subsubsection{Model construction}
 The data was given in \texttt{.xlsx} format and was imported using \texttt{panda}'s \texttt{read\_excel} function that returned a \texttt{DataFrame} object.
@@ -82,7 +86,7 @@ The so imported data was then preprocessed by dropping unwanted records and binn
 The actual BN representation is learned at runtime by calling the \texttt{from\_samples} method of \texttt{pomegranate}'s \texttt{BayesianNetwork} to solve the structure learning problem (defined in Subsec. \ref{subsec:bnstructurelearning}).
 
 \subsubsection{d-separation}
-A na{\"i}ve implementation according to the definition (presented in Subsec. \ref{subsec:bayesiannetworks}) to check for d-separation between node $X$ and $Y$ would have a complexity in the order of the number of trails between $X$ and $Y$; this leads to an exponential in the size of the graph running time.
+A na{\"i}ve implementation according to the definition (presented in Subsec. \ref{subsec:d-separation}) to check for d-separation between node $X$ and $Y$ would have a complexity in the order of the number of trails between $X$ and $Y$; this leads to an exponential in the size of the graph running time.
 Luckily, \cite{koller2007dseparation} present what is a linear time algorithm to solve the problem.
 
 The \texttt{reachable} procedure takes as input the DAG representing the Bayesian Network $\mathcal{G}$, a source variable $X$ and a set of observed variables $Z$; on exit it returns the set of variables $R$ that are reachable from $X$.
