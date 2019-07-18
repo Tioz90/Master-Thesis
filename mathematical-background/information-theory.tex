@@ -57,3 +57,55 @@ This can be immediately understood by rewriting Eq. \ref{eq:mutual-information} 
 \end{equation}
 The mutual information I(X,Y) is the reduction in uncertainty of one of the variables given the knowledge of the other.
 if $X$ and $Y$ are perfectly correlated ($\rho_{XY}= \pm 1$) then they both convey the same amount of information and $I_{XY}$ is equal to the entropy $\Eta(X) = \Eta(Y)$.
+
+\subsection{Hamming Distance} \label{subsec:hamming-distance}
+The \textit{Hamming Distance} is a widely-used distance measure that quantifies the similarity of strings.
+\begin{definition}
+	The Hamming Distance $d_H(x,y)$ between two vectors $x$ and $y$ is given by:
+	\begin{equation}
+		d_H(x,y) = \sum_i \Gamma(x_i, y_i)
+	\end{equation}
+	with $\Gamma(i,j)$ defined as:
+	\begin{equation}
+		\Gamma(i,j) = 
+		\begin{cases}
+			0 \quad i \neq j \\
+			1 \quad i = j	
+		\end{cases}
+	\end{equation}
+\end{definition}
+Given strings of characters, or more in general vectors over some field, of equal length, their Hamming Distance is the number of positions where they differ.
+It can be seen as the number of substitutions needed to transform one into the other.
+
+This is a valid distance measure because:
+\begin{itemize}
+  \item it is non-negative: $d_H(x,y) \geq 0 \quad \forall x, y$
+  \item it fulfils the identity of indiscernibles: $x = y \Rightarrow d_H(x,y)=0$
+  \item it respects the \textit{Triangle Inequality}: $d_H(x,y) \leq d_h(x,z) + d_H(z,y) $
+\end{itemize}
+
+For example, strings $x=01234$ and $y=15244$ have $d_H(x,y)=2$, as they differ in two positions.
+
+\subsection{Jaccard Distance} \label{subsec:jaccard-distance}
+The \textit{Jaccard Distance} is a popular metric to measure the similarity of sets.
+\begin{definition}
+	The Jaccard Similarity Coefficient $J(A,B)$ of two sets $A$ and $B$ is given by:
+	\begin{equation}
+		J(A,B) = \frac{|A \cap B |}{| A \cup B |}
+	\end{equation}
+\end{definition}
+\begin{definition}
+	The Jaccard Distance $d_J(A,B)$ between two sets $A$ and $B$ is given by:
+	\begin{equation}
+		d_J(A,B) = 1 - J(A,B)
+	\end{equation}
+\end{definition}
+
+This is a valid distance measure because:
+\begin{itemize}
+  \item it is non-negative: $d_J(A,B) \geq 0 \quad \forall A, B$
+  \item it fulfils the identity of indiscernibles: $A = B \Rightarrow d_J(A,B)=0$
+  \item it respects the \textit{Triangle Inequality}: $d_J(A,B) \leq d_J(A,C) + d_J(C,B) $
+\end{itemize}
+
+For example, the sets $A = \{ 0, 2, 3, 4, 1 \}$ and $B = \{ 1, 3, 5 \}$ have $d_J(A,B) = \frac{2}{6}$, as their intersection is of cardinality 2 and their union of cardinality 6.
