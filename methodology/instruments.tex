@@ -17,7 +17,7 @@ The package implements:
 	\item Factor Graphs
 \end{itemize} 
 
-This package was chosen among others for its good implementation of Bayesian Networks, its clear API and its performance.
+This package was chosen among others for its good implementation of Bayesian Networks and its performance.
 The package is written in cython and natively supports multi-core parallelism and out-of-core learning.
 Network structure learning from data, described in \ref{subsec:bnstructurelearning}, appears to be particularly efficient, thanks to the implementation of prior knowledge into the graph selection process as described by \cite{schreiber_noble_2017}.
 The claim of this novel selection process is that it possesses the speed of a heuristic approach while yielding a far better quality estimate.
@@ -46,6 +46,94 @@ Unlike pomegranate, it natively implements various exact and approximate inferen
 The reason that I elected to use two different probabilistic graphical model libraries is because there is still no Python package that offers all the needed functionality.
 Pomegranate implements a novel structure learning algorithm, that I wanted to use, but is severely lacking in functionality in many other areas.
 Pgmpy, on the other hand, has a very good API as regards inference.
+
+\subsubsection{DAOOPT}
+\textit{DAOOPT} is an open-source implementation of sequential AND/OR Branch-and-Bound proposed by \cite{Marinescu2006}.
+Search-based algorithms traverse the model's search space and are much more efficient in their use of space, compared to inference-based algorithms such as Variable Elimination.
+
+DAOOPT builds an AND/OR search space to generate search an AND/OR graph that takes advantage of information encoded in the graphical model, namely its independencies.
+The DAOOPT implementation found at \cite{daoopt} is an exact solver for finding an MPE solution in Bayesian Networks.
+The solver is written in C++ and accessible through a command-line interface; the only required parameter is a \texttt{.uai} file representing a Markov Random Field or a Bayesian Network but in most cases an optional \texttt{.uai.evid} file will also be given, containing the observed evidences.
+
+\subsubsection{UAI file format}
+The \texttt{.uai} file format is a simple text file used to represent problem instances.
+Such a file is composed of:
+\begin{itemize}
+  \item Preamble: containing the type of the network (MARKOV or BAYES), the number and cardinality of variables and the cliques, that in the BAYES case are simply the variables appearing in each Conditional Probability Table (CPT) 
+  \item Function tables: containing the actual definition of the CPTs i.e. the values of each node give its parents or, in the case of root nodes, the marginal probabilities.
+\end{itemize}
+
+The \texttt{.uai.evid} is a very simple file containing the number of variables in the evidence set followed by the index of each variable and its observed value.
+In both formats the variables and their values are represented only by a numerical index, starting from $0$, with the ordering being defined in the preamble of the \texttt{.uai} and maintained consistent throughout the \texttt{.uai} and \texttt{.uai.evid}.
+
+Following, is the \texttt{.uai} representing the network shown in Fig. \ref{fig:bn-example-dag}, that has been our running example throughout the last chapters.
+Lines starting with \texttt{c} are interpreted as comments; these are misinterpreted by DAOOPT and are thus removed when running it, but are here shown for clarity.
+The file starts by stating that the model is a Bayesian Network composed of 5 random variables that will then be referenced by an ordinal index starting at 0; the first variable (index 0) is of cardinality 3, the second (index 1) is of cardinality 2 and so on.
+We can then see the definition of the cliques or more precisely, as our model is a BN and not a MRF, of the CPTs; there are 5 of these, each one associated to one of the five variables just stated.
+The first CPT involves 2 random variables: the first (0) and the second (1); the second CPT involves only one variable (1) and this tells us that variable 1 is a root node in the BN's DAG.
+The ordering is such that the child node is the last in the definition of each CPT's nodes so, for example, in the first CPT we find that variable 1 is the child of variable 0.
+Finally, we have a complete definition of the function tables/CPTs.
+The tables are printed so that each row corresponds to the conditional probability value of the child node and increasing rows correspond to increasing enumeration of the parents' states, in the order given when defining the variables involved in the CPTs.
+The first table corresponds to \textbf{eta arrotondata}'s CPT shown in Tab. \ref{tab:eta-cpd}.
+It contains 6 elements as it involves variables 0 (\textbf{mut17q21}) and 1 (\textbf{eta arrotondata)} that are of cardinality 2 and 3, respectively.
+So each row corresponds to the probability distribution of the three states of variable 1, given each of the two states of variable 0.
+
+\begin{verbatim}
+c
+c Bayesian Network exported from pomegranate - Thomas Tiotto (2019)
+c
+
+BAYES
+5
+3 2 3 3 2 
+
+c
+c Cliques
+c
+
+5
+2 0 1 
+1 1 
+2 2 1 
+3 3 2 4 
+1 4 
+
+c
+c CPTs
+c
+
+6
+ 0.42105263157894735 0.42105263157894735 0.15789473684210523 
+ 0.043798177995795384 0.17063770147161877 0.7855641205325858 
+
+2
+ 0.006613296206056387 0.9933867037939436 
+
+6
+ 0.6842105263157895 0.0 0.3157894736842105 
+ 0.1373510861948143 0.021723896285914507 0.8409250175192712 
+
+18
+ 0.004385964912280701 0.2412280701754386 0.7543859649122807 
+ 0.022598870056497175 0.11864406779661016 0.8587570621468926 
+ 0.10344827586206899 0.41379310344827586 0.4827586206896552 
+ 0.2121212121212121 0.45454545454545453 0.3333333333333333 
+ 0.14094488188976378 0.6362204724409449 0.22283464566929131 
+ 0.289612676056338 0.5677816901408451 0.1426056338028169 
+
+2
+ 0.5315001740341107 0.4684998259658893 
+\end{verbatim}
+
+The following is an example of a randomly generated \texttt{.uai.evid} evidence file that simply states that the evidence set has cardinality 2 and contains variable 4 (in the ordering given in the \texttt{.uai}) in its state 1 and variable 3 in state 2.
+
+\begin{verbatim}
+ 2
+  4 1
+  3 2
+\end{verbatim}
+
+These were generated by a function I have written (see \ref{subsec:algorithms}) that is able to export a \texttt{pomegranate} model and randomly generated evidence to the correct imput format for DAOOPT.
 
 \subsubsection{Gurobi}
 \textit{Gurobi} (\cite{gurobi}) is a closed-source mathematical programming solver for Linear Programming, Quadratic Programming and Mixed-Integer Programming optimisation problems.

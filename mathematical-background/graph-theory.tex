@@ -20,6 +20,15 @@ We are also interested in enforcing that there be no \textit{cycles} in the grap
 The resulting graph possessing only directed edges and no cycles is commonly called a \textit{directed acyclic graph}, or DAG for short.  
 This data structure is of paramount importance as it's the fundamental graphical representation used for Bayesian Networks.
 
+An example of a DAG, containing five nodes, is shown in Fig. \ref{fig:bn-example-dag}.
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{mathematical-background/images/bn-example-structure}}
+\caption{Example DAG representing a subset of the data set used in this thesis}
+\label{fig:bn-example-dag}
+\end{figure}
+
 \subsection{Polytrees} \label{subsec:polytrees}
 We now have all elements to be able to formally define a Bayesian Network.
 I will also define polytrees and trees because these are a fundamental concept for the work carried out in this thesis.
@@ -60,30 +69,28 @@ If $Z \neq \emptyset$ the cases are reversed so colliders are open and the other
 
 The independencies between variables are encoded in the structure of the DAG so every distribution whose BN has the same connections between nodes also has the same independencies, regardless of the values of the variables.
 
-An example using on the real network used in this thesis is shown in Fig. \ref{fig:d-separation_example}.
-Here we can see how the network's topology and the nodes chosen to be in the observed set $Z$ define the resulting separations.
-In this case $X= \{ \text{mut17q21} \}$, $Z= \{ \text{differenziazione, pN} \}$ and $Y=V \smallsetminus X \smallsetminus Z$; the resulting set of nodes that are d-separated from $X$ contains $\{ \text{c erB 2, FISH, loss 17, situ, pT, M, lateralita} \}$.
-Basically, we are asking for the set of all nodes in the DAG that are d-separated from $X$, given evidence $Z$.
-The reason for this can easily be given by enumerating all paths through the v-structures in the network and applying the definitions for causal connections given above:
-\begin{itemize}
-  \item mut17q21 $\rightarrow$ eta arrotondata: are directly connected so the cannot be independent
-  \item mut17q21 $\rightarrow$ recettori estrogeni: like above
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ morfologia: recettori estrogeni is not in $Z$ so the path is open and mut17q21 is d-connected to morfologia
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ recettori progestinici: like above
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ ki67: as above
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione: as above
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ c erbB 2: differenziazione is in $Z$ so this path is closed, as there are no other paths between mut17q21 and c erbB 2, the two nodes are d-separated
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ FISH: the only path to mut17q21 is through c erbB 2, that is already d-separated from mut17q21, so the two nodes are d-separated
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ FISH $\rightarrow$ loss 17: as above
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ pN: as recettori estrogeni, differenziazione and pN are arranged in a \textit{collider} and differenziazione is in $Z$, then the path is open
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ pN $\rightarrow$ situ: pN is in $Z$ and differenziazione, pN, situ are arranged as a \textit{fork}, thus the path is closed
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ pN $\rightarrow$ pT: as above, M is also d-separated from mut17q21 so there are no open paths between mut17q21 and pN
-  \item mut17q21 $\rightarrow$ recettori estrogeni $\rightarrow$ differenziazione $\rightarrow$ pN $\rightarrow$ M: differenziazione, pN, M are arranged as a \textit{chain} and pN is in $Z$, the path is closed
-  \item lateralita: lateralita is not connected to any other node and is thus d-separated from all others a priori
-\end{itemize}
+A series of examples using the DAG presented in Fig. \ref{fig:bn-example-dag} are shown in Fig. \ref{fig:bn-separations-example-1}, \ref{fig:bn-separations-example-2}, \ref{fig:bn-separations-example-3}.
+We can see how the network's topology and the nodes chosen to be in the observed set $Z$, define the resulting separations.
+In all cases $X= \{ \text{eta arrotondata} \}$ and $Y=V \smallsetminus X \smallsetminus Z$; we are asking for the set of all nodes in the DAG that are d-separated from $X$, given evidence $Z$.
+The reason for this can easily be done by enumerating all paths through the v-structures in the network and applying the definitions for causal connections given above.
+In the case shown in Fig. \ref{fig:bn-separations-example-1} we see that the node \textbf{eta arrotondata} is separated from nodes \textbf{recettori estrogeni}, \textbf{differenziazione} and \textbf{pN} given the observed evidence \textbf{mut17q21}.
+The reason for this is because \textbf{$\text{eta arrotondata} \leftarrow \text{mut17q21} \rightarrow \text{recettori estrogeni}$} is a \textit{fork} and thus the flow of information from the rest of the network is blocked.
+The way in which changing the conditioning set $Z$ also changes the independencies, can clearly be seen in Fig. \ref{fig:bn-separations-example-2} and \ref{fig:bn-separations-example-3}.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=\columnwidth]{methodology/images/d-separation-example}}
-\caption{D-Separations in the provided data set (see Sec. \ref{sec:data-set}) generated using the \texttt{plot\_model} function (see Subsec. \ref{subsubsec:plot-model})}
-\label{fig:d-separation_example}
+\centerline{\includegraphics[width=\columnwidth]{mathematical-background/images/bn-example-separations-1}}
+\caption{D-Separations in a subset of the provided data set (see Sec. \ref{sec:data-set})}
+\label{fig:bn-separations-example-1}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{mathematical-background/images/bn-example-separations-2}}
+\caption{D-Separations in a subset of the provided data set (see Sec. \ref{sec:data-set})}
+\label{fig:bn-separations-example-2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{mathematical-background/images/bn-example-separations-3}}
+\caption{D-Separations in a subset of the provided data set (see Sec. \ref{sec:data-set})}
+\label{fig:bn-separations-example-3}
 \end{figure}

@@ -30,6 +30,40 @@ A good example of how BNs are well compatible with our notion of causality may b
 \textit{First}, genetic and epigenetic factors such as the environment stochastically contributed to having the predisposition and \textit{then} the development of the symptoms was stochastically determined by the degree of predisposition.
 Adding an extra time dimension certainly helps us in dealing with this class of models.
 
+The example show in Fig. \ref{fig:bn-example-dag} is the underlying graph structure of a Bayesian Network, each node is now representing a Random Variable with an associated \textit{Conditional Probability Table} (CPD), that defines its probability distribution, conditional on its parents.
+The CPDs for \textbf{eta arrotondata} and \textbf{mut17q21} in the Bayesian Network in question are shown in Tab. \ref{tab:mut-cpd} and \ref{tab:eta-cpd}.
+\textbf{Mut17q21} is a root node, i.e. has no parents, in the DAG so its probability distribution is unconditional or \textit{marginal}.
+\textbf{Eta arrotondata}, on the other hand, is a child of \textbf{mut17q21} so the probability of its values is conditional on that of its parent.
+For example, \textbf{eta arrotondata} takes on value \enquote{<40} $44\%$ of the time when \textbf{mut17q21} has value \enquote{mut}, but only $4\%$ of the time when \textbf{mut17q21} has value \enquote{unknown}.
+
+\begin{table*}[htbp]
+\centering
+\caption{\textbf{mut17q21} CPD}
+\begin{tabularx}{\textwidth/2}{cXX}
+\toprule
+& mut & unknown    \\ 
+\textbf{mut17q21} & 0.006 & 0.99  \\
+\bottomrule
+\end{tabularx}
+\label{tab:mut-cpd}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\caption{\textbf{eta arrotondata} CPD}
+\begin{tabularx}{\textwidth/2}{ccXX}
+\toprule
+      & &  \multicolumn{2}{c}{\textbf{mut17q21}} \\
+\cmidrule(lr){3-4}
+ & & mut & unknown    \\ 
+ \multirow{3}{*}{\textbf{eta arr.}}  & <40 & 0.42 & 0.04  \\
+ & 40-50 & 0.42 & 0.17    \\
+ & >50 & 0.15 & 0.78 \\
+\bottomrule
+\end{tabularx}
+\label{tab:eta-cpd}
+\end{table*}
+
 \subsection{Bayesian Networks Structure Learning} \label{subsec:bnstructurelearning} 
 In many probabilistic models initialisation is fast but then fitting the data is slow (ex. k-means).
 For Bayesian Networks the converse is true: fitting is fast as only sums of the counts in the data are needed but identifying the correct graph structure can take super-exponential time.
@@ -117,6 +151,6 @@ A special case of MAP is the \textit{Most probable explanation (MPE)} that,
 \end{definition}
 
 This is an easier problem than MAP, as can be seen by comparing Eq. \ref{eq:map} with Eq. \ref{eq:mpe}; MAP presents both a summation and a maximisation and as such is part conditional probability query, part MPE query.
-All algorithms for the computation of MAP obviously apply to MPE too, but there exist efficient approximate algorithms for MPE that do not generalise to MAP such as Loopy Belief Propagation [\cite{Pearl1988}] and Stochastic Local Search [\cite{Kask1999}].
+All algorithms for the computation of MAP obviously apply to MPE too, but there exist efficient approximate algorithms for MPE that do not generalise to MAP such as Loopy Belief Propagation (\cite{Pearl1988}) and Stochastic Local Search (\cite{Kask1999}).
 
 
