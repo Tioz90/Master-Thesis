@@ -342,7 +342,87 @@ The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an ex
 \end{figure}
 
 \subsubsection{MPE algorithms comparison}
-In order to compare the quality of the solution found using the simple Pseudo-MPE heuristic
+In order to compare the quality of the solution found using the simple Pseudo-MPE heuristic, I set up an experiment to compare it to the exact MPE solutions calculated with DAOOPT (see \ref{subsec:libraries}).
+The user selects the number of iterations over which to average the results and at each iteration a Pseudo-MPE solution is generated using Alg. \ref{alg:pseudo-mpe-random-evidence}.
+The same initial evidence is fed to DAOOPT using the \texttt{daoopt\_solver} interfacing procedure I wrote.
+
+Returning to the example used while presenting DAOOPT in \ref{subsec:libraries}, given the \texttt{.uai} representing the BN and the \texttt{.uai.evid} random evidence:
+\begin{verbatim}
+ 2
+  4 1
+  3 2
+\end{verbatim}
+DAOOPT would give the following output:
+\begin{verbatim}
+	--- Starting search ---
+[0] u 3 4 -1.3581 5 2 1 2 2 1
+[0] Cache statistics: . . . .
+
+--------- Search done ---------
+Problem name:  pomegranate
+OR nodes:      3
+AND nodes:     4
+OR processed:  3
+AND processed: 8
+Leaf nodes:    2
+Pruned nodes:  4
+Deadend nodes: 1
+Time elapsed:  0 seconds
+Preprocessing: 0 seconds
+-------------------------------
+-1.3581 (0.0438433)
+
+p 2 1 2
+l 2 1 6
+s -1.3581 5 2 1 2 2 1
+\end{verbatim}
+The end of the final line is the one of interest as it is the assignment of values to the variables that solves the MPE problem.
+The \texttt{5 2 1 2 2 1} string is to be interpreted as meaning:
+\begin{itemize}
+  \item there are 5 variables in the solution
+  \item the variable indexed by 0 (in the ordering given in the preable of the \texttt{.uai}) is assigned its second value (the ordering is inferred by the CPTs defined in the \texttt{.uai}) in the MPE solution
+  \item variable 1 is assigned its first value
+  \item variable 2 is assigned its second value
+  \item variable 3 is assigned its second value
+  \item variable 4 is assigned its first value
+\end{itemize}
+Variables 3 and 4 are constrained to assume the value specified in the input \texttt{.uai.evid}; in this case 1 and 2, respectively.
+
+At each iteration corresponds a random evidence; the solutions given by the Pseudo-MPE and by DAOOPT are scored against each other using Hamming (Subsec. \ref{subsec:hamming-distance}) and Jaccard (Subsec. \ref{subsec:jaccard-distance}) distances on the vectors representing the returned assignments.
+The sequence of distances is then averaged over the iterations to return the two averaged distances between the Pseudo-MPE and DAOOPT solutions to the MPE problem.
+
+The implementation of the algorithm had to deal with the fact that DAOOPT failed on certain configurations of input evidence.
+The reason for this is unknown so my workaround was to discard any iterations where DAOOPT had failed and retry them with another random set of evidences.
+The pseudocode for the algorithm is shown in Alg. \ref{alg:mpe-comparison}.
+
+\begin{algorithm}[htp!]
+	\caption{MPE comparison algorithm}
+	\label{alg:mpe-comparison}
+	\begin{algorithmic}[1]
+		\State user defined number of $iterations$
+		\State initialise empty $results$ list
+		\While{$i < iterations$}
+			\State generate random number $k \in [ 1, |V| ]$
+			\State $S = $ choose $k$ variables from $V$
+			\For{$s \in S$}
+				\State choose random $v$ in the possible values of $e$ 
+				\State $evidence = evidence \cup (s,v)$
+			\EndFor
+			\State $pseudo\_mpe = $ \texttt{generate\_pseudo\_mpe($evidence$)}
+			\State $model\_uai=$\texttt{export\_model\_to\_uai()}
+			\State $evidence\_uai=$\texttt{export\_evidence\_to\_uai()}
+			\State $daoopt\_mpe = $ \texttt{daoopt\_solver($model\_uai$, $evidence\_uai$)}
+			\If{$daoopt\_mpe$ == -1} \Comment{DAOOPT has failed to calculate a solution}
+				\State cancel $pseudo\_mpe$
+				\State continue
+			\EndIf
+			\State compute $d_H(pseudo\_mpe,daoopt\_mpe)$, $d_J(pseudo\_mpe,daoopt\_mpe)$ and store in $iter\_result$
+			\State append $iter\_result$ to $results$
+			\State $i+=1$
+		\EndWhile
+		\State compute average in $results$ for $d_H$ and $d_J$
+	\end{algorithmic}
+\end{algorithm}
 
 \subsubsection{Inverse Explanation}
 \todo{da fare e trovare nome migliore}
