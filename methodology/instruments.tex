@@ -4,7 +4,7 @@
 
 \subsection{Libraries}\label{subsec:libraries}
 \subsubsection{Pomegranate}
-\textit{pomegranate} (\cite{pomegranate}) is an open-source probabilistic models package for python.
+\textit{Pomegranate} (\cite{pomegranate}) is an open-source probabilistic models package for Python.
 Its core philosophy is that every probabilistic model, from Hidden Markov to Bayesian Network, can be seen as a probability distribution and, as such, can be flexibly composed into hierarchical mixture models (\cite{Schreiber2017}).
 The package implements:
 \begin{itemize}
@@ -165,17 +165,21 @@ The closest parallel to NumPy - as R was for pandas, is MATLAB.
 \textit{NetworkX} (\cite{networkx}) is another widely-used package that is specialised in the creation and manipulation of graph-structured data.
 The main use for this package was in building the \texttt{MPEGraph} data structure that I used to build a polytree representing the dialogue with the expert.
 
-\subsection{Algorithms} \todo{thresholded dialogue aggiungere}
+\subsection{Algorithms} \label{subsec:algorithms}
 \todo{quanti dettagli implementativi devo mettere?  perchè ho un sacco di funzioni di visualizzazione etc}
 
 \subsubsection{Model construction}
 The data was given in \texttt{.xlsx} format and was imported using \texttt{panda}'s \texttt{read\_excel} function that returned a \texttt{DataFrame} object.
-The so imported data was then preprocessed by dropping unwanted records and binning the remaining ones as described in Tab. \ref{tab:datasetpreprocess} .
+The imported data was then preprocessed by dropping unwanted records and binning the remaining ones as described in Tab. \ref{tab:datasetpreprocess} .
 The actual BN representation is learned at runtime by calling the \texttt{from\_samples} method of \texttt{pomegranate}'s \texttt{BayesianNetwork} to solve the structure learning problem (defined in Subsec. \ref{subsec:bnstructurelearning}).
 
+The binned data was codified into integer representations before being passed to pomegranate's structure learning algorithm.
+Thus the network's state names are in natural language but the internal representation of the values of each random variable is an integer number.
+A dictionary object is used to translate one representation into the other at runtime.
+
 \subsubsection{d-separation}
-A na{\"i}ve implementation according to the definition (presented in Subsec. \ref{subsec:d-separation}) to check for d-separation between node $X$ and $Y$ would have a complexity in the order of the number of trails between $X$ and $Y$; this leads to an exponential in the size of the graph running time.
-Luckily, \cite{koller2007dseparation} present what is a linear time algorithm to solve the problem.
+A na{\"i}ve implementation according to the definition (presented in Subsec. \ref{subsec:d-separation}) to check for d-separation between node $X$ and $Y$ would have a complexity in the order of the number of trails between $X$ and $Y$; this would lead to an exponential in the size of the graph running time.
+Luckily, \cite{koller2007dseparation} present a linear time algorithm to solve the problem.
 
 The \texttt{reachable} procedure takes as input the DAG representing the Bayesian Network $\mathcal{G}$, a source variable $X$ and a set of observed variables $Z$; on exit it returns the set of variables $R$ that are reachable from $X$.
 The procedure runs in two phases, traversing the graph twice: first bottom-up from leaves to roots, then viceversa.
@@ -184,9 +188,9 @@ During the second, the procedure distinguishes the direction it visits each node
 Any node $Y$ that is not in the evidence set is marked as reachable; if it is being visited in direction \enquote{up} it can be traversed as the v-structure is a chain.
 All the parents of $Y$ are marked to be visited in the \enquote{up} direction (i.e. from below) and the converse is done for $Y$'s children.
 If $Y$ is being visited in the \enquote{down} direction its children are again added to be visited in the \enquote{down} direction, because $Y$ is traversable.
-Additionally, if $Y$ happened to be in the set $A$, found in the first step, then $Y$'s parents are marked to be visited in the \enquote{up} direction then the collider is active and $Y$ can be traversed (a collider is open iff. the central node or any of its descendants are observed).
+Additionally, if $Y$ happened to be in the set $A$, found in the first step, then $Y$'s parents are marked to be visited in the \enquote{up} direction because the collider is active and $Y$ can be traversed (a collider is open iff. the central node or any of its descendants are observed).
 
-The full procedure can be found in \cite{koller2007dseparation}; my implementation shown in Alg. \ref{alg:d-separation} follows this pseudocode very closely but the procedure \texttt{d-separated}, instead of finding all nodes $R$ that are d-connected to the input $X$, tests if a given target $Y$ is d-separated from $X$ or not.
+The full procedure can be found in \cite{koller2007dseparation}; my implementation follows this pseudocode very closely but the procedure \texttt{d-separated}, instead of finding all nodes $R$ that are d-connected to the input $X$, tests if a given target $Y$ is d-separated from $X$ or not, as is shown in Alg. \ref{alg:d-separation}.
 This gives some extra flexibility in how the function can be used.
 To find the set $S$ of all nodes d-separated from $X$ I simply iterate the \texttt{d-separated} test over all nodes $V$ in the graph representing the BN.
 
@@ -202,8 +206,76 @@ To find the set $S$ of all nodes d-separated from $X$ I simply iterate the \text
 \end{algorithm}
 
 \subsubsection{MPE}
-\todo{descrivere come ottenere MPE con Gurobi: exporter, UAI ecc...}
+The solution to the Most Probable Explanation problem (MPE), as defined in Subsec. \ref{subsec:bnupdating}, is found by using DAOOPT (Subsec. \ref{subsec:libraries} ) as an external solver.
+The latest version of DAOOPT was downloaded from the github page (\cite{daoopt}) and compiled into a executable.
+DAOOPT only offers a command line interface so some extra work was needed in order to interface it with the Python-based application I have developed.
+The connection was done by first writing to stable storage a \texttt{.uai} containing the model definition and a \texttt{.uai.evid} with the observed evidence.
+These files are then piped to DAOOPT by using Python's \texttt{subprocess} module to run the following command in an external background shell:
+\begin{verbatim}
+	./daoopt -f pomegranate.uai -e pomegranate.uai.evid
+\end{verbatim}
+The shell output is captured and also written to stable storage, in order to be decoded and used in the system.
+
+To exemplify the process, we return to the example used while presenting DAOOPT in Subsec. \ref{subsec:libraries}.
+Given the \texttt{.uai} representing the BN and the \texttt{.uai.evid} random evidence:
+\begin{verbatim}
+ 2
+  4 1
+  3 2
+\end{verbatim}
+DAOOPT would give the following output:
+\begin{verbatim}
+	--- Starting search ---
+[0] u 3 4 -1.3581 5 2 1 2 2 1
+[0] Cache statistics: . . . .
+
+--------- Search done ---------
+Problem name:  pomegranate
+OR nodes:      3
+AND nodes:     4
+OR processed:  3
+AND processed: 8
+Leaf nodes:    2
+Pruned nodes:  4
+Deadend nodes: 1
+Time elapsed:  0 seconds
+Preprocessing: 0 seconds
+-------------------------------
+-1.3581 (0.0438433)
+
+p 2 1 2
+l 2 1 6
+s -1.3581 5 2 1 2 2 1
+\end{verbatim}
+The end of the final line is the one of interest as it is the assignment of values to the variables that solves the MPE problem.
+The \texttt{5 2 1 2 2 1} string is to be interpreted as meaning:
+\begin{itemize}
+  \item there are 5 variables in the solution
+  \item the variable indexed by 0 (in the ordering given in the preable of the \texttt{.uai}) is assigned its second value (the ordering is inferred by the CPTs defined in the \texttt{.uai}) in the MPE solution
+  \item variable 1 is assigned its second value
+  \item variable 2 is assigned its third value
+  \item variable 3 is assigned its third value
+  \item variable 4 is assigned its second value
+\end{itemize}
+Variables 3 and 4 are constrained to assume the value specified in the input \texttt{.uai.evid}; in this case 1 and 2, respectively.
+
+All the functionality relating to solving the MPE with DAOOPT is encapsulated in the \texttt{daoopt\_solver} function that given the input \texttt{.uai} files, returns the MPE solution.
 
 \subsubsection{Other Machine Learning methods}
+In order to quantify the prediction capabilities of the Bayesian Network, that is at the heart of this thesis' methods, I implemented a series of tests to find the best performing algorithm on the data set.
+Given that the performance of Machine Learning algorithms is heavily dependent on the input classes, I used a process of \textit{exhaustive variable elimination} in order to identify the most relevant features for the predictions.
+In parallel, I scored each input subset using the following ML algorithms, in order to find the best performing one:
+\begin{itemize}
+  \item Linear Regression: this method assumes that the relationship between the dependent variable $y$ and the regressors $x$ is linear i.e. that $y$ can be written as a linear combination of $x$'s components: $y = \beta_0 + \beta_1 x_1 + \ldots \beta_n x_n$.
+  \item Logistic Regression: is used in lieu of Linear Regression when the values of the variables are categorical; it assumes that the relationship between the regressors $x$ and the log-odds of $y$ are linear i.e. $\log _{b} \frac{p}{1-p}=\beta_{0}+\beta_{1} x_{1}+ \ldots + \beta_{n} x_{n}$ with $p$ the probability of the event of interest.
+  \item Linear Discriminant Analysis: LDA is related to Principal Component Analysis (PCA) in that it attempts to find a linear equation modelling the data but LDA explicitly tries to express the difference between the data classes.
+  \item Decision Tree: a Decision Tree is built using a recursive, greedy algorithm that continually splits the dataset into two.  The variable along which to bisect is the one that yields the lowest accuracy loss in the resulting split.
+  \item Na{\"i}ve Bayes: a Na{\"i}ve Bayes classifier is a conditional probability model that given features $x_1 \ldots x_n$, attempts to assign a probability to each of the possible outcomes $O_{k}$ of interest by using Bayes' Theorem (Eq. \ref{eq:bayes-theorem} ): $\mathbb{P}\left(O_{k} | x \right)=\frac{\mathbb{P}\left(O_{k}\right) \mathbb{P}\left(x| O_{k}\right)}{\mathbb{P}(x)}$.  The method is called \enquote{na{\"i}ve} because of a strong (ofter unrealistic) assumption of all the features $x_1 \ldots x_n$ being independent.
+  \item K-Nearest Neighbours: the algorithm is non-parametric with the output class depending on the predominant class among the $k$ nearest neighbours (according to some distance metric) of the input vector $x$.
+  \item Support-Vector: A Support-Vector Machine (SVM) is an algorithm that attempts to find the set of \textit{best-separating hyperplane} between classes of objects, seen as points in a high-dimensional space.  Such a hyperplane is the one that has maximum distance from the closest representatives of each class.
+  \item Random Forest: this is an ensemble method that aims to correct Decision Trees' tendency to overfit the data.  A multitude of Decision Trees is constructed and the final classification output is the class that appears most often in the intermediate step.
+  \item AdaBoost: Short for \textit{Adaptive Boosting}; this meta-learning, ensemble algorithm combines a series of weak classifiers, that may only be slight better than a random guess, through a weighted sum into a \textit{strong classifier}.  It is a meta-learning algorithm because the weak classifiers are revised over a series of iterations in order to improve their performance on previously misclassified instances.
+  \end{itemize}
+
 
 

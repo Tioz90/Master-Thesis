@@ -1,0 +1,44 @@
+\section{Validation results}
+\subsection{Clinical Validation}
+It was, for example, observed that the approach under investigation has particular relevance in contextualising the variables \enquote{mut17q21} and \enquote{loss17}.
+These variables represent two different types of mutation of chromosome 17 that could determine peculiar phenotypes depending on both their intrinsic characteristic and the results of the combination with other variables. 
+Even though they can be relevant in profiling patients’ cancer, their diagnostic role it is still not clear. 
+Moreover, the clarification of their clinical role could also aid in the elucidation of the pathological mechanism of action, thus allowing the rational design of the intervention and therapy. 
+Hence, extracting information in terms of the relationship between variables could help not only in understanding the function of these variables in patients profiling but also in helping the potential definition of novel, optimised guidelines concerning the best practice in the presence of evidence. 
+Indeed, the possibility to define the \enquote{informational flux} of the explanation depending on the evidence could allow a more robust profiling, especially in the presence of partial knowledge or reduced resources (budget and time).
+For example, Fig. \ref{fig:independencies_output} shows the graph for the query on \enquote{mut17q21}.
+ 
+\todo{completare}
+It is interesting to note how ….
+Moreover, updating the graph on the evidence is possible.….
+
+In current practice, it is quite common to have a single, standardised, certified procedure for the management of the diagnosis and treatment, independently of the evidence that is already present (or missing). 
+Typically, it is a simple decision tree with a \enquote{yes/no} progression that is independent on the pieces of evidence that are already known. 
+Information about d-separation could help to introduce a novel concept of data managing \enquote{tuned} on the specific case.
+It is worth highlighting that the available molecular biomarkers undergo a process of continuous updating thanks to ever more accurate and accessible high throughput screening. 
+Thus, new variables can be integrated, for specific patients, in the presence or not of evidence, and this can progressively aid the onset of personalised medicine. 
+At the same time, features that are already well established in the clinical practice could find new interpretation, allowing the creation of innovative hypothesis and thus of a clinical evolution. 
+For example, despite it being conceivable that the independency of the variable \enquote{lateralita} (generally annotated for all the patients for a long time) from the other features have biological meaning, there is not, to date, a well establish validation of this hypothesis. 
+In clinical practice, this modality could help in defining alternatives able to optimise time, cost or diagnosis. 
+For example, it is quite common for a sudden cyto-histo-molecular analysis to have to be performed before surgery, in order for the doctors to decide on the best way to proceed.
+ In this case, the priority of ICP is on the sample of the patient that is under surgery. 
+ It is possible that the biological sample could be degraded or not in sufficient quantity to be able to complete all the necessary assays. 
+ In this context, the importance of being able to obtain the information of interest in a quick but accurate way is self-evident.
+The type of analysis that is to be carried out should be prioritised in order to be able to formulate a diagnosis.
+At the same time, in case of degraded material the possibility to infer the missing value, in agreement with the opinion of the expert pathologist, could offer further basis and support for the clinician.
+
+\subsection{Explainability Validation}
+
+
+
+\section{Pseudo-MPE Evaluation}
+This is not a user-facing feature \textit{per se} but a way of running a test to compare the outputs of the Pseudo-MPE algorithm with the exact solution (this is described in detail in Subsec. \ref{subsec:algorithms-novel} under the \textbf{MPE Algorithms Comparison} header.
+I also implemented the possibility of scoring the MPE calculated with pgmpy's \texttt{map\_query} and with DAOOPT.
+The Hamming and Jaccard distances between these should have been zero, as they both use exact methods to solve the MPE problem.
+It was seen that this was not the case and this lead to the discovery of the problems described in Sec. \ref{sec:issues}.
+As is explained in Sec. \ref{sec:issues}, the benchmark against which to compare the Pseudo-MPE was taken to be pgmpy's \texttt{map\_query} function.
+
+The tests were run ...
+
+
+\section{Pseudo-MPE Complexity}

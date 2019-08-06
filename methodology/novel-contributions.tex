@@ -1,22 +1,24 @@
 \section{Novel contributions}\label{sec:novel-contributions}
  \todo{tengo qui o sposto nel cap 4?}
 
-\subsection{Theory} \label{subsec:theory}
 \todo{la discussione con l'esperto ci da' belief revision dei dati}
 \todo{counterfactual explanations}
 \todo{magari togliere theory e mettere tutto assieme}
 
-\subsubsection{Selection based on entropy}
+\subsection{Entropy-Based Selection} \label{subsec:entropy-based-selection}
 \todo{utilizzo entropia}
 
-\subsection{Algorithms} \label{subsec:algorithms}
+esempio fittizio che esemplifica il fatto che usare la probabilità è biased verso variabili a cardinalità più bassa
+cardinalità diversa, grandezze non confrontabili
+quanto ci si discosta dalla uniforme?  information gain, l'uniforme ha sempre entropia 1, con  cardinalita più grande a stessa probabilità abbiamo più informazione guadagnata
+
+\subsection{Algorithms} \label{subsec:algorithms-novel}
 An important part of my work was developing the algorithms needed to adapt the ideas presented in the paper \enquote{Explaining the Most Probable Explanation} by \cite{Butz2018} and \enquote{A Progressive Explanation of Inference in \enquote{Hybrid} Bayesian} by \cite{Kyrimi2016}.
 From the former, the construction of the probability tree through a constructive dialogue with the domain expert, the building of counterfactual explanation branches, the automatic generation of the most probable probability tree from initial evidence.
 From the latter, the generation of an \enquote{Inverse explanation}.
 Finally, a simple procedure to output a natural language explanation was developed.
 
-\subsubsection{\enquote{Pseudo-MPE}} \label{subsubsec:pseudo-mpe}
-\todo{dove critico il fatto che non calcolano veramente l'MPE come dicevano? qui o in cap.4 on cap.2?}
+\subsubsection{Dialogues} \label{subsubsec:dialogues}
 The so-called \enquote{Pseudo-MPE} algorithm is inherently wrapped up with the concept of \textit{dialogue} and is central to the explanatory powers of the system being developed in this thesis.
 The algorithm was developed as a way of implementing the \enquote{MPE branch} of the \enquote{Argumentative Probability Tree} hypothesised by \cite{Butz2018}.
 It was termed \enquote{Pseudo-MPE} because there are no guarantees of it returning the MPE solution (see Subsec. \ref{subsec:bnupdating}), as noted by \cite{koller2007introduction} in their definition of the MAP problem.
@@ -296,28 +298,24 @@ Note that $alternative\_evidence$ is local to this algorithm and is separate fro
 	\end{algorithmic}
 \end{algorithm} 
 
-\todo{ancora da implementare true MPE}
-\subsubsection{\enquote{Pseudo-MPE} from Random Evidence} \label{subsubsec: pseudo-mpe-random}
-In order to compare the Pseudo-MPE output with the true MPE solution I implemented a simple algorithm that, starting from a random initial set of evidence, generates the relative pseudo-MPE and MPE solutions.
+\subsubsection{\enquote{Pseudo-MPE} from Initial Evidence} \label{subsubsec:pseudo-mpe}
+In order to compare the Pseudo-MPE output with the true MPE solution I implemented a simple algorithm that, starting from an initial set of evidence, generates the relative pseudo-MPE solution.
 The random initial evidence set is constructed by randomly choosing a number in the interval $k = [ 1, |V| ]$, with $V$ the set of vertices in the BN, and then randomly selecting $k$ of the random variables in $V$ to yield the set of variables $E$.
 The value of each variable is randomly chosen among the set of its values; as all variables are categorical, this can easily be done.
+
+An optional threshold can be set in order to discard $(state,value)$ pairs whose probability is deemed too low.
 
 The implementation is based on the \texttt{NetworkX} python library (see Subsec. \ref{subsec:libraries}) package as what is being constructed is not a tree but a \textit{polytree} (see Subsec. \ref{subsec:polytrees}), as nodes may have multiple parents.
 Note that $alternative\_evidence$ is considered separate from the main $evidence$ used in \texttt{dialogue}.
 
-The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an example output can be seen in Fig. \ref{fig:pseudo-mpe-random}.
+The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-initial-evidence}.
 
 \begin{algorithm}[htp!]
-	\caption{Pseudo-MPE from random evidence algorithm}
-	\label{alg:pseudo-mpe-random-evidence}
+	\caption{Pseudo-MPE from inital evidence algorithm}
+	\label{alg:pseudo-mpe-initial-evidence}
 	\begin{algorithmic}[1]
-		\State $evidence = \emptyset$
-		\State generate random number $k \in [ 1, |V| ]$
-		\State $S = $ choose $k$ variables from $V$
-		\For{$s \in S$}
-			\State choose random $v$ in the possible values of $e$ 
-			\State $evidence = evidence \cup (s,v)$
-		\EndFor
+		\State $evidence$ defined by user
+		\State $threshold$ defined by user
 		\State $MPE\_polytree = $ MPE Polytree rooted in $evidence$
 		\State $last\_node = evidence$
 		\State $alternative\_evidence = evidence$ 
@@ -327,6 +325,9 @@ The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an ex
 				\State return
 			\Else
 				\State $next\_state$ = head of $mpe\_states$ 
+				\If{probability of $next\_state \leq threshold$}
+					\State return constructed $MPE\_polytree$
+				\EndIf
 				\State create $next\_state$ node and make it son of $last\_node$
 				\State update $alt\_node$ node to be $next\_state$ node
 				\State $alternative\_evidence = alternative\_evidence \cup next\_state$
@@ -335,61 +336,13 @@ The pseudocode is shown in Alg. \ref{alg:pseudo-mpe-random-evidence} while an ex
 	\end{algorithmic}
 \end{algorithm}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=\columnwidth]{methodology/images/pseudo-mpe-random-example}}
-\caption{Example output of the Pseudo-MPE from random evidence algorithm.}
-\label{fig:pseudo-mpe-random}
-\end{figure}
+\subsubsection{MPE Algorithms Comparison}
+In order to compare the quality of the solution found using the simple Pseudo-MPE heuristic, I set up an experiment to compare it to the exact MPE solutions calculated with DAOOPT (see Subsec. \ref{subsec:libraries}).
+The user is able to select the number of iterations over which to average the results and at each iteration a Pseudo-MPE solution is generated using Alg. \ref{alg:pseudo-mpe-random-evidence}.
+The same initial evidence is fed to DAOOPT using the \texttt{daoopt\_solver} interfacing procedure shown in Subsec. \ref{subsec:algorithms} and to pgmpy's \texttt{map\_query} function.
 
-\subsubsection{MPE algorithms comparison}
-In order to compare the quality of the solution found using the simple Pseudo-MPE heuristic, I set up an experiment to compare it to the exact MPE solutions calculated with DAOOPT (see \ref{subsec:libraries}).
-The user selects the number of iterations over which to average the results and at each iteration a Pseudo-MPE solution is generated using Alg. \ref{alg:pseudo-mpe-random-evidence}.
-The same initial evidence is fed to DAOOPT using the \texttt{daoopt\_solver} interfacing procedure I wrote.
-
-Returning to the example used while presenting DAOOPT in \ref{subsec:libraries}, given the \texttt{.uai} representing the BN and the \texttt{.uai.evid} random evidence:
-\begin{verbatim}
- 2
-  4 1
-  3 2
-\end{verbatim}
-DAOOPT would give the following output:
-\begin{verbatim}
-	--- Starting search ---
-[0] u 3 4 -1.3581 5 2 1 2 2 1
-[0] Cache statistics: . . . .
-
---------- Search done ---------
-Problem name:  pomegranate
-OR nodes:      3
-AND nodes:     4
-OR processed:  3
-AND processed: 8
-Leaf nodes:    2
-Pruned nodes:  4
-Deadend nodes: 1
-Time elapsed:  0 seconds
-Preprocessing: 0 seconds
--------------------------------
--1.3581 (0.0438433)
-
-p 2 1 2
-l 2 1 6
-s -1.3581 5 2 1 2 2 1
-\end{verbatim}
-The end of the final line is the one of interest as it is the assignment of values to the variables that solves the MPE problem.
-The \texttt{5 2 1 2 2 1} string is to be interpreted as meaning:
-\begin{itemize}
-  \item there are 5 variables in the solution
-  \item the variable indexed by 0 (in the ordering given in the preable of the \texttt{.uai}) is assigned its second value (the ordering is inferred by the CPTs defined in the \texttt{.uai}) in the MPE solution
-  \item variable 1 is assigned its first value
-  \item variable 2 is assigned its second value
-  \item variable 3 is assigned its second value
-  \item variable 4 is assigned its first value
-\end{itemize}
-Variables 3 and 4 are constrained to assume the value specified in the input \texttt{.uai.evid}; in this case 1 and 2, respectively.
-
-At each iteration corresponds a random evidence; the solutions given by the Pseudo-MPE and by DAOOPT are scored against each other using Hamming (Subsec. \ref{subsec:hamming-distance}) and Jaccard (Subsec. \ref{subsec:jaccard-distance}) distances on the vectors representing the returned assignments.
-The sequence of distances is then averaged over the iterations to return the two averaged distances between the Pseudo-MPE and DAOOPT solutions to the MPE problem.
+At each iteration corresponds a random evidence; the solutions given by the Pseudo-MPE, pgmpy and by DAOOPT are scored against each other using Hamming (Subsec. \ref{subsec:hamming-distance}) and Jaccard (Subsec. \ref{subsec:jaccard-distance}) distances on the vectors representing the returned assignments.
+The sequence of distances is then averaged over the iterations to return the two averaged distances between the three solutions to the MPE problem.
 
 The implementation of the algorithm had to deal with the fact that DAOOPT failed on certain configurations of input evidence.
 The reason for this is unknown so my workaround was to discard any iterations where DAOOPT had failed and retry them with another random set of evidences.
@@ -427,42 +380,16 @@ The pseudocode for the algorithm is shown in Alg. \ref{alg:mpe-comparison}.
 \subsubsection{Inverse Explanation}
 \todo{da fare e trovare nome migliore}
 
-\subsubsection{Natural Language Explanation}
-\todo{da fare e magari pensare anche a visual explanations?}
-The probability of each proposed tuple is quantified in natural language based on the probability of the most probable value within the variable.
-These are shown in Tab. \ref{tab:naturallanguageprobabilities}.
-
-\begin{table*}[htbp]
-\caption{Probability quantifiers in natural language}
-\begin{tabularx}{\textwidth}{@{} X X @{}}
-\toprule 
-Probability range & Natural language quantifier \\
-\midrule 
-(0, 0.2) &  "highly unlikely" \\
-(0.2, 0.3) & "very unlikely" \\
-(0.3, 0.4) & "unlikely" \\
-(0.4, 0.5) & "not plausibly" \\
-(0.5, 0.6) & "plausibly" \\
-(0.6, 0.7) & "possibly" \\
-(0.7, 0.8) & "likely" \\
-(0.8, 0.9) & "very likely" \\
-(0.9, 1) &  "highly likely" \\
-(1) &  "certain" \\
-\bottomrule
-\end{tabularx}
-\label{tab:naturallanguageprobabilities}
-\end{table*}
-
 
 \subsubsection{Pairwise Correlations}
 An interesting addition, in terms of both explainability and theory, is an algorithm to measure and graphically display the interrelatedness between pairs of variables.
-This is achieved by calculating the \textit{conditional mutual information} \todo{AA: e' giusto così?} between each pair of parent $\rightarrow$ child variables.
+This is achieved by calculating the \textit{conditional mutual information} between each pair of parent $\rightarrow$ child variables.
 The definition of mutual information presented in Subsec. \ref{subsec:mutualinformation} is extended to account for the current state of the model i.e. the set of observed variables.
 What we are calculating is:
 \begin{equation}
 	I(X,Y|E=e) = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p_{XY}(x,y|E=e) \log \left( \frac{p_{XY}(x, y|E=e)}{p_{X}(x|E=e) p_{Y}(y|E=e)} \right)
 \end{equation}
-This is not done if the parent variable, in the $X \rightarrow Y$ tuple under consideration, is in the evidence set; this is because observing a variable in a BN conceptually corresponds to disconnecting it from its children.
+This is not done if the parent or child variable, in the $X \rightarrow Y$ tuple under consideration, is in the evidence set; this is because observing a variable in a BN conceptually corresponds to disconnecting it from its children.
 
 The implementation takes advantage of pgmpy's (\cite{pgmpy}) inference capabilities. 
 To do this, I wrote a function to convert a pomegranate-based BN to an equivalent pgmpy-based one.
@@ -500,3 +427,124 @@ The pseudocode for the algorithm is shown in Alg. \ref{alg:mutual-information}.
 		\State return $mutual\_information$
 	\end{algorithmic}
 \end{algorithm}
+
+\subsection{Interfacing with the User}
+Natural language was believed to be the most spontaneous way to make the expert user aware of the knowledge in the data set and for her to interact with the system.
+Thus the main interaction mode with the implemented system is in using natural language, both as input and as output.
+Natural language denominators come \enquote{for free} when dealing with the node names and their values, regardless of their internal representation in the implemented model, as these are simply the column names and values found in the original input data set.
+
+A bit more care needs to be taken when quantifying probabilities to the user.
+The format chosen should fit in as seamlessly as possible with the rest of the phrases generated and be able to conform to the user's preconceptions regarding probabilities.
+It should be both \textit{informative} and \textit{precise}.
+
+The chosen coding was taken from \cite{Butz2018} and is shown in Tab. \ref{tab:naturallanguageprobabilities}.
+The mapping is used every time there is a need to translate a probability into natural language to be output to the user; for example when proposing tuples during a Dialogue (see Subsec. \ref{subsubsec:pseudo-mpe}) as example of which can be seen in Fig. \ref{fig:nl-dialogue}.
+
+In Fig. \ref{fig:nl-independencies}, \ref{fig:nl-conditional} and \ref{fig:nl-mpe} we can see how the interface to the system's functions leans heavily on natural language elements.
+The design ideal was for the system to be as accessible and the least intimidating possibile, in order to let the user extract the maximum amount of information in an easy way.
+Not only the terms but also the phrasing were deemed to be important: every interaction is broken down into what are though to be manageable steps.
+For example, a user isn't asked to provide all evidence at once but is asked for one at a time, when necessary.
+The idea is to reduce cognitive overload on the expert's part so that he may be able to better concentrate on the task at hand, not on the tool he is using to achieve it.
+
+Another important aspect is to translate the information into a language that would make semantic sense to the user; that is it should be part of the user's \textit{ontology}, the set of concepts part of his World.
+This can be seen in Fig. \ref{fig:nl-independencies} where the notion of d-separation in the underlying BN's DAG is remapped to a higher-level concept that is part of the user's ontology, like that of variables affecting each other's values or not.
+The underlying theme of the work carried out in this thesis is to translate \textit{information} present in a data set into \textit{knowledge} for a medical expert user.
+This is done in various ways, for example through the use of dialogue, to bring the data to a form that is manageable and comprehensible.
+
+A final element is that of a coherent use of colours, even in the experimental command-line interface that has currently been developed.
+In the generated phrases the source variables are always highlighted in magenta, the evidences in green and the results of the queries in cyan.
+It is hoped that this guide the user's eye towards the important elements of what he had set out to achieve, thus anchoring his experience and letting the marginal elements fade into background over time.
+
+The grammars for the generation of the natural language are now presented, defined in Extended Backus-Naur form (EBNF).
+
+\begin{algorithm}[htp!]
+	\caption{Grammar generating dialogue output}
+	\label{alg:nl-dialogue}
+	\begin{algorithmic}[1]
+		\State Next\_state := 'var 1' | $\ldots$ |  'var n'
+		\State Value := 'val 1' | $\ldots$ |  'val k'
+		\State Probability := 'highly unlikely' | 'very unlikely' | 'unlikely' | 'not plausibly' | 'plausibly' | 'possibly' | 'likely' | 'very likely' | 'highly likely' | 'certain'
+		\State Output := 'The next most probable state is ' Probability Next\_state 'Enter to accept or n to refuse: ' (Still\_to\_explain ',')* | 'Is state ' Next\_state ' with value ' Value ' more correct?' 
+		\State Still\_to\_explain := 'var 1' | $\ldots$ |  'var n'
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[htp!]
+	\caption{Grammar generating independencies query output}
+	\label{alg:nl-independencies}
+	\begin{algorithmic}[1]
+		\State Source := \#user input\#
+		\State Evidence := 'var 1' | $\ldots$ |  'var n'
+		\State Separated := 'var 1' | $\ldots$ |  'var n'
+		\State Output := 'Given source variable' Source 'and given evidence: '  (Evidence ',')* 'the following variables have no effect: ' (Evidence ',')*
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[htp!]
+	\caption{Grammar generating conditional probability query output}
+	\label{alg:nl-conditional}
+	\begin{algorithmic}[1]
+		\State Source := \#user input\#
+		\State Evidence := 'var 1' | $\ldots$ |  'var n'
+		\State Output := 'Given target variable' Source 'and observed evidence: ' (Evidence 'with value: ' Value)* 'then the predicted values for ' Source 'are: ' (Evidence 'with value: ' Value)*
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[htp!]
+	\caption{Grammar generating MPE query output}
+	\label{alg:nl-mpe}
+	\begin{algorithmic}[1]
+		\State Source := \#user input\#
+		\State Evidence := 'var 1' | $\ldots$ |  'var n'
+		\State Value := 'val 1' | $\ldots$ |  'val k'
+		\State Output := 'Given observed evidence:' (Evidence 'with value: ' Value)* 'the most probable configuration of the other variables is: ' (Evidence 'with value: ' Value)*
+	\end{algorithmic}
+\end{algorithm}
+
+One of the most important parts of this work is the validation of this interface with real medical expert users, the results of which are presented in chap. \ref{chap:results}.
+
+\begin{table*}[htbp]
+\centering
+\caption{Probability quantifiers in natural language}
+\begin{tabularx}{\textwidth/2}{ X X }
+\toprule 
+Probability range & Natural language quantifier \\
+\midrule 
+(0, 0.2) &  "highly unlikely" \\
+(0.2, 0.3) & "very unlikely" \\
+(0.3, 0.4) & "unlikely" \\
+(0.4, 0.5) & "not plausibly" \\
+(0.5, 0.6) & "plausibly" \\
+(0.6, 0.7) & "possibly" \\
+(0.7, 0.8) & "likely" \\
+(0.8, 0.9) & "very likely" \\
+(0.9, 1) &  "highly likely" \\
+(1) &  "certain" \\
+\bottomrule
+\end{tabularx}
+\label{tab:naturallanguageprobabilities}
+\end{table*}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{methodology/images/nl-dialogue}}
+\caption{Interface while executing a Dialogue}
+\label{fig:nl-dialogue}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{methodology/images/nl-independencies-query}}
+\caption{Interface while executing a query on the d-separations}
+\label{fig:nl-independencies}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{methodology/images/nl-conditional-query}}
+\caption{Interface while executing a conditional probability query}
+\label{fig:nl-conditional}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{methodology/images/nl-mpe-query}}
+\caption{Interface while executing an MPE query}
+\label{fig:nl-mpe}
+\end{figure}

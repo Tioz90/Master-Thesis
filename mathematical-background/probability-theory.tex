@@ -1,6 +1,6 @@
 \section{Probability Theory}
 
-\subsection{Probability distributions} \label{subsec:probability-distributions}
+\subsection{Probability Distributions} \label{subsec:probability-distributions}
 \begin{definition}
 	A \textit{probability distribution} is a function $\mathbb{P}: \mathcal{S} \rightarrow \mathbb{R}$ with $\mathcal{S}$ a set of \textit{events} of interest.  
 To be a valid probability distribution $\mathbb{P}$ must satisfy:
@@ -54,7 +54,17 @@ This can be generalised to any number of events:
 	\mathbb{P}(\alpha_1 \cap \ldots \cap \alpha_n) = \mathbb{P}(\alpha_n \mid \alpha_1 \cap \ldots \cap \alpha_{n-1}) \ldots \mathbb{P}(\alpha_1 \mid \alpha_2 ) \mathbb{P}(\alpha_1) 
 \end{equation}
 Intuitively, it means that we can decompose joint probabilities as products of conditional probabilities.  
-As we'll see, this is how the values in a Bayesian Network are calculated.
+This is how the probability values in a Bayesian Network are calculated.
+
+Another immediate, and crucial, consequence of Eq. \ref{eq:conditionalprobability} is known as \textit{Bayes' Theorem}, that lets us calculate the probability of event $\alpha$ given our knowledge of event $\beta$.
+\begin{definition} \label{eq:bayes-theorem}
+	Bayes' Theorem states that the probability of even $\alpha$ conditional on even $\beta$ is given by:
+	\begin{equation}
+		\mathbb{P}(\alpha | \beta)=\frac{\mathbb{P}(\beta | \alpha) \mathbb{P}(\alpha)}{\mathbb{P}(\beta)}
+	\end{equation}
+\end{definition}
+Intuitively, this describes the probability of an event, based on some prior knowledge of another event.
+For example, our belief in a person having breast cancer ($\alpha$) is increased if we know that the person is older than 50 years of age ($\beta$).
 
 \subsection{Independence} \label{subsec:independence}
 Now, we have just seen in Equation \ref{eq:conditionalprobability} that, in general, $\mathbb{P}(\beta | \alpha) \neq \mathbb{P}(\alpha)$ because $\mathbb{P}(\beta \cap \alpha) \neq \mathbb{P}(\beta) \mathbb{P}(\alpha)$

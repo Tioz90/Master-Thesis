@@ -1,36 +1,43 @@
-% !TEX root = thesis-thomas-tiotto.tex
-
 \section{Data set} \label{sec:data-set}
-As anticipated in Chap. \ref{chap:introduction} the work carried out in this thesis had a certain degree of collaboration with a third party, \cite{istitutocantonalepresentazione}.
 
-\subsection{Istituto Cantonale di Patologia}
+\subsection{Istituto Cantonale di Patologia} \label{subsec:istituto-cantonale}
 Istituto Cantonale di Patologia (ICP) is an institute based in Locarno that is specialised in the histological analysis of tissue samples received from private patients, clinics and hospitals, mainly in support of cancer diagnosis.
-Its Laboratory of Medical Diagnostics supports pathologists in the diagnosis of neoplastic diseases through the application of cytogenetic techniques; that is, the focus is on understanding how chromosomes relate to cell behaviour, particularly during mitosis and meiosis.
-One of the techniques used is Fluorescence in Situ Hybridization (FISH) that is able to localise the presence or absence of specific DNA sequences in chromosomes.
+Its Laboratory of Molecular Pathology supports the diagnostic approach to neoplastic diseases through the application of biomolecular and cytogenetics techniques, which focus on understanding the impact of molecular alterations in carcinogenesis.
+One of the methods used is Fluorescence in Situ Hybridization (FISH) that is able to localise the presence or absence of specific DNA sequences in chromosomes.
 These tests are aimed at identifying the precise profile of the cancer cells and thus inform the clinician on the best treatment for the specific patient.
 
-In addition to its clinical support activities, the Istituto also carries out scientific research aimed at better understanding certain types of cancers at a basic level.
+Molecular diagnosis is the most recent approach in pathology. It mainly aims to support pathologists in the diagnosis of neoplastic diseases through the employment of molecular biology and cytogenetics techniques and it enables the deep understanding and monitoring of patients' profiles, as well as as defining the prognosis and ad-hoc therapies. All together, it allows the development of an increasingly personalised medicine, also in terms of research (e.g. understanding of pathological mechanisms and thus the possibilities of intervention).
+However, it is still limited in its capabilities by the presence of a dishomogeneous information pool, especially in terms of knowledge extraction; a non-uninform data set entails, for the pathologist, an increased cognitive complexity because of having to manage a high number of variables and heterogeneous meaning behind the data; these consequently force to resort to problem decomposition and reduction.
+
+In addition to its clinical support activities, the ICP also carries out scientific research aimed at better understanding certain types of cancers at translational level i.e., at the level of protein synthesis.
 In the last ten years, the ICP has published more than 200 peer-reviewed papers and more than 100 works in non-peer reviewed journals and is active at a national and international level.
 
-\subsection{Motivation}
+\subsection{Motivation} \label{subsec:motivation}
 \todo{magari togliere CV e mettere descrizione}
-My first contact with the ICP was during a meeting with Dr. Vittoria Martin (\cite{martin2012}), molecular citogenetist, in date 28/01/2019.
-The institute had expressed interest in bringing machine learning into their workflow in order to both augment their profiling capabilities for patients and to be able to extract new knowledge from their existing data.
-This knowledge-extraction may lead towards the confirmation of current scientific theories or may be the first step towards the formulation of novel ones.
+The Istituto Cantonale di Patologia already had a collaboration in place with the Dalle Molle Institute for Artificial Intelligence (IDSIA) (\cite{idsia}) to investigate a series of specific issues, whose details are outside of the scope of this thesis.
+The work carried out in this thesis was deemed of interest because its extended beyond the existing collaboration.
+The Institute had originally expressed interest in bringing machine learning into their workflow in order to both augment its profiling capabilities for patients and to be able to extract new knowledge from their existing data; this was paired with an attention for more experimental research directions, as the facilitation of human-machine interaction.
 
-\todo[inline]{chiedere a Vittoria cosa si aspettavano/aspettano}
+Given that the theoretical work carried out in this thesis is an \textit{expert-driven MPE approximation}, collaboration with the Institute provided the precious opportunity to implement a proof-of-concept system (described in Chap. \ref{chap:methodology} and \ref{chap:results}) based on a real medical data set.
+The first contact with the ICP was during a meeting with Dr. Vittoria Martin (\cite{martin2012}), molecular citogenetist, in date 28/01/2019.
+Since then, the clinicians and researchers of the ICP have been able to validate, from an Explainable AI and clinical relevance point of view, the model software that has been developed.
+That is to say, they have validated, to an extent that will be made clear in Chap. \ref{chap:results}, the capabilities of the developed software both in its capacity to support clinical decision making and to surface clarifying explanations of the data set and in the adherence of its outputs to established medical literature.
+This is of great interest because the lack of real-world validation of ML systems with real domain experts is one of the prime gaps in the existing xAI literature (as discussed in depth in Chap. \ref{chap:literature-review}).
 
-My interest in collaborating with the Istituto stemmed from the desire to apply the methods described in Sec. \ref{sec:novel-contributions} to a real-world case.
-Being the theoretical work being carried out in this thesis an expert-driven MPE approximation, collaboration with the institute has also provided the opportunity to implement a proof of concept using real histological data.
-The doctors and researchers of the Istituto have been able to validate, from an Explainable AI and clinical relevance points of view, the model software that I have developed.
-That is to say, they have validated the capacity of the developed software both in its capacity to support clinical decision making and to surface clarifying explanations of the data set and in its adherence to established medical literature.
+An example application for a clinician of the ICT, would be ability to \enquote{fill in the blanks} of a patient's profile, as it is not uncommon, for a variety of reasons, to have missing data.
+This may be because of degraded or insufficient tissue samples or because some test may not yet be part of the standard diagnostic procedure, even though their importance may already be suggested by clinical research.
+In other cases, patients may be missing a result because the specific test hadn't yet been invented, for example FISH wasn’t available prior to 2010, so an a-posteriori inference could be made possible.
+Another crucial use may be in understanding and quantifying in an efficacious manner the relationship between clinical variables.
+It is not uncommon for some variables to have been observed but for their clinical relevance not to have yet been determined; learning their relationship with other variables could potentially not only help in defining their importance in tracing new patient profiles in terms of diagnostic, prognosis and support in decision making but also in placing them in terms of pathological mechanisms.
+These are all examples highlighting the importance of the \textit{inference} capabilities of a Machine Learning system, but my current work aims to address the interfacing of the human user with the software. \todo{aspettare idee Ginevra su ulteriori applicazioni cliniche}
+It is also hoped that facilitating the process of knowledge-extraction may lead towards the confirmation of current scientific theories or may be the first step towards the formulation of novel ones.
 
 \todo[inline]{da confermare con Vittoria piu avanti}
 
 \subsection{Provided Data Set}
-The data set I was provided with was created by \textit{Registro Tumori Ticino} (Locarno, Ticino) in order to highlight possible new relations between clinical, histopathological and molecular features, as well as to potentially discover novel biomarkers for the progression of the disease 
-It consists of the histological records over 38 recorded variables of 3218 breast cancer patients who have been diagnosed between the years 2005 and 2014 within the Ticino canton of Switzerland.
-The data set had been pre-processed by collaborators of IDSIA in agreement with the ICT with 13 of the variables being dropped, because not considered relevant.
+The data set I was provided with was created by \textit{Registro Tumori Ticino} (Locarno, Ticino) in order to highlight possible new relations between clinical, histopathological and molecular features, as well as to potentially discover novel biomarkers involved in the progression of the disease.
+It consists of the histopathological records over 38 variables of interest of 3218 breast cancer patients who have been diagnosed between the years 2005 and 2014 within the Ticino canton of Switzerland.
+The data set had been pre-processed by collaborators of IDSIA in agreement with the ICP with 13 of the variables being dropped, because not considered relevant.
 In particular, all variables relating to the patient post-treatment were discarded as well as those recording the diagnosis date.
 In Tab. \ref{tab:datasetvariables} is a description of the measured variables, together with their clinical meaning.
 The value distribution of the data set is shown in Tab. \ref{tab:datasetdistribution}.
@@ -98,8 +105,8 @@ Note that some variable names were simplified.
 \textbf{Variable} & Action \\
 \midrule 
 \textbf{Codice globale} & Remove variable \\
-\textbf{mut17q21} & Remove blanks \\
-\textbf{loss 17} & Remove blanks \\
+\textbf{mut17q21} & Remove variable \\
+\textbf{loss 17} & Remove variable \\
 \textbf{eta arrotondata} & Bin into \enquote{$< 40$}, \enquote{$40-50$}, \enquote{$\geq 50$} \\
 \textbf{lateralita} & Remove blanks and \enquote{sconosciuta} \\
 \textbf{situ} & Remove blanks \\ \addlinespace
@@ -117,7 +124,7 @@ Note that some variable names were simplified.
 \textbf{c erbB 2} & Remove blanks \\ 
 \textbf{ki67} & Remove blanks and bin into \enquote{<14}, 
 		\enquote{14-20}, \enquote{20-30}, \enquote{>30} \\ 
-\textbf{FISH} & Remove blanks \\
+\textbf{FISH} & Remove variable \\
 \bottomrule
 \end{tabularx}
 \label{tab:datasetpreprocess}

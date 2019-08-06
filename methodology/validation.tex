@@ -1,16 +1,16 @@
-\section{Validation}
+\section{Validation} \label{sec:validation}
 \todo[inline]{discutere con Vittoria come validare al meglio}
 Having direct access to expert pathologists has not only helped in guiding research into the theoretical explainability properties of the system but also enabled their validation.
 There are two main validation streams to be addressed: from the clinical point of view and from the explainability one, with the results of the latter depending on those of the former.
  
-\subsection{Clinical validation} 
+\subsection{Clinical validation} \label{subsec:clinical-validation-methodology}
 A validation of the methods carried out in this thesis in their adherence to established clinical literature, is of paramount importance.
 A failure on the Bayesian Network's part in capturing the true relationships between the variables would hamper it in being able to give any meaningful representation of them.
 For the expert to even start to trust the system or to be able to make sense of its outputs, it is vital that there be as little cognitive dissonance between the experts' basic beliefs and expectations and those that he sees represented in the system.
 
-For this reason, the initial validation phase with the Istituto Cantonale di Patologia concentrated on the clinical validation aspect.
-The methodology chosen to clinically validate the system was for a representative of the ICT to formulate a series of natural language queries; each one of these was annotated with the specific queried variable in the network and its value together with the known values of other variables.
-The ICT's delegate included the expected reply to the queries together with its probability, based on the latest medical literature and their personal expertise.
+For this reason, the initial validation phase with the ICP concentrated on the clinical aspect.
+The methodology chosen to clinically validate the system was represented by a series of queries, formulated in natural language by the ICP; each one of these questions was annotated with the specific queried variable in the network and its value together with the known values of other variables.
+The experts included the expected reply to the queries together with its probability, based on the latest medical literature and their personal, knowledge-based expertise.
 So, each query asked for the probability truth value of the following:
 \begin{align}
 	(var_1 = a \wedge \ldots \wedge var_n = z ) \Rightarrow var_k = k \quad var_1 \ldots var_n \in V, var_k \in V \smallsetminus \{ var_1 \ldots var_n \}
@@ -23,7 +23,16 @@ It is quite evident that all these validation questions are instances of the Bay
 \todo{inserire tabella qui o in Results}
 
 \subsection{Explainability validation} \label{subsec:explainability-validation}
-Having validated the system in terms of its adherence to clinical literature, it could then also meaningfully be validated from an explainability point of view.
+In general, there is strong resistance to novelty in the field of Medicine, both because of ethical reasons and because of the necessity for clinicians to be conservative in attending to best practices.
+Any tool that is too onerous in terms of time and cognitive load is liable to remain unutilised.
+In this field, a tool must only be the means by which a question is answered, not become a question itself; the system developed in this thesis aims to conform to this objective.
+The need for a comprehensible and efficient tool is especially present because the goal of a pathologist is to arrive at a diagnosis, containing the elements useful to define prognosis and therapeutical approach, in the briefest time possible.
+The main reasons are ethical, as for a patient waiting for a report is extenuating, and clinical, because tempestivity in diagnosis is the first factor at the base of life expectancy.
+Obviously, the highest accuracy possible is always strived for.
+The clinical field and that of biomedicine are forced to embrace uncertainty, as this is an integral part of their practice.
+Consequently, any tool able to support in comprehension and decision-making is automatically useful, once it has been clinically validated; in other words, even though a specific system may not be decisive or applicable to all reviewed cases, it will nonetheless be taken into account.
+
+Thus, after having validated the system in terms of its adherence to clinical literature, it could then also meaningfully be validated from an explainability point of view.
 The main question to be addressed is its capacity to relate to the expert user.
 Is the system able to engender the user's trust?
 In doing so, is she able to extract more knowledge from existing data when using the system than not?
@@ -32,14 +41,10 @@ Does the user subjectively feel that the system may positively impact her work?
 These are all hard questions to answer, as there is a very high degree of subjectivity involved.
 Thus to attempt to answer them, the chosen methods were borrowed from the social sciences.
 
-In an earlier stage, the experts were introduced to the system in prototype form and instructed on the possible use cases it offered.
-Then, they were asked to keep track of times they felt they could have used the system, had it been available, during their day-to-day work and to report back to me with the query they would have submitted to the system.
-If the query were in the realm of possibilities offered by my program, I would submit the outputs back to the users together with the following questionnaire:
-\todo[inline]{definire questionario da mandare con le domande}
-This process would both give feedback on the performance of the system and also inform its design.
+In an earlier stage, the experts were introduced to the system in prototype form and instructed on the use cases it offered.
+This process would give feedback on the functionalities of the system and help in shaping its design.
 
-In a later phase, having finalised the system's design, I provided it to the experts at the ICT for their use in their daily work.
-After \textbf{xx time} I followed up with them with an interview based on the following format:
-\todo[inline]{definire formato e metriche intervista}
-This enabled me to quantify the performance of the system, as perceived by its users in a real setting, over an extended period of time.
+The finalised system was, in a later phase, provided to the experts at the ICP for use in their daily work.
+To quantify the performance of the system, as perceived by its users in a real setting over an extended period of time, a follow-up was done after \textbf{xx time} by way of the following questionnaire, designed to test the gaps identified in Chap. \ref{chap:literature-review} in mind:
+\todo{inserire questionario}
 

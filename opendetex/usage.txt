@@ -1,0 +1,1 @@
+detex -n full_path_to_tex_file.tex > output_text_file.txt
