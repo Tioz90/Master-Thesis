@@ -2,6 +2,8 @@
 \usepackage{lipsum}
 \input{macros}
 
+%\usepackage[style=numeric,natbib=true]{biblatex}
+
 \usepackage{tikz}
 \usetikzlibrary{graphs}
 
@@ -29,25 +31,46 @@ sensitive=false,
 morecomment=[l]{//s},
 }
 
+\usepackage{csquotes}
+
+\usepackage{fge}
+\newcommand{\mysetminus}{\mathbin{\fgebackslash}}
+
+\usepackage{rotating}
 \usepackage{multirow}
+\usepackage{caption}
 
+\usepackage{nameref}
 
+\usepackage{framed}
+\usepackage{enumitem}
 
-\title{Expert-driven approximation of MPE} %compulsory
+\usepackage{centernot}
+
+\usepackage{pgfplots}
+
+\usepackage{cancel}
+\usepackage{soul}
+
+\usepackage[section]{placeins}
+
+\title{Explainable AI with Probabilistic Graphical Models} %compulsory 
 \specialization{Artificial Intelligence}%optional
-\subtitle{Subtitle: Reinventing the World} %optional 
+\subtitle{A Study with Application and Evaluation on a Medical Domain} %optional 
 \author{Thomas Francesco Tiotto} %compulsory
 \begin{committee}
-\advisor{Prof.}{Alessandro Facchini}{} %compulsory
-\coadvisor{Prof.}{Alessandro Antonucci}{}{} %optional
+\advisor{Dr.}{Alessandro Facchini}{} %compulsory
+\coadvisor{Dr.}{Alessandro Antonucci}{}{} %optional
 \end{committee}
-\Day{xx} %compulsory
+\Day{6} %compulsory
 \Month{September} %compulsory
 \Year{2019} %compulsory, put only the year
 \place{Lugano} %compulsory
 
-\dedication{To my beloved} %optional
-\openepigraph{Someone said \dots}{Someone} %optional
+\dedication{To everyone} %optional
+\openepigraph{Considerate la vostra semenza:\\
+fatti non foste a viver come bruti,\\
+ma per seguir virtute e canoscenza.}{Dante Alighieri} %optional
 
 %\makeindex %optional, also comment out \theindex at the end
 
@@ -58,12 +81,18 @@ morecomment=[l]{//s},
 \frontmatter %generates the frontmatter, this is FIXED
 
 \begin{abstract}
-This is a very abstract abstract. 
-
+\input{abstract}
 \end{abstract}
 
 \begin{acknowledgements}
-hello
+First and foremost, I would like to thank my supervisors Dr.\ Alessandro Facchini and Dr.\ Alessandro Antonucci for being patient and enthusiastic enough to follow me through all this process.
+There is no way I could have done all this without them and I thoroughly enjoyed all my the interactions with them.
+
+Likewise, Dr.\ Vittoria Martin from Istituto Cantonale di Patologia was invaluable in providing her honest support and often went beyond what could be expected.
+The same can be said of Dr.\ Ginevra Licandro, whose insights were essential in helping me to bridge the gap between the Computer Science and Medical domains.
+
+I would naturally want to thank my family and girlfriend for all the support they have always given me and understanding they have had, especially in this final period of my studies.
+Their fortitude and unwavering presence has helped in ferrying me across all rough waters.
 \end{acknowledgements}
 
 \tableofcontents 
@@ -76,200 +105,73 @@ hello
 %%%% INTRODUCTION
 %%%%
 \chapter{Introduction}\label{chap:introduction}
-
-\input{intro/context}
-\input{intro/problem}
-\input{intro/response}
+\input{introduction/context}
+\input{introduction/problem}
+\input{introduction/response}
  
 %%%%
 %%%% LITERATURE REVIEW
 %%%%  
-\chapter{Literature review}\label{chap:literature-review}
-
-\section{Introduction}
-Through a review of recent relevant literature, this chapter will clarify the concept of \textit{explainability}, that is central to the field of Explainable AI.
-It will then move on to a discussion where a justification will be given for the importance assigned to explainability in our contemporary societies.
-The evaluations methods that have been proposed to measure explainability will next be assessed.
-The analysis will then focus on an assessment of the previous concepts as applied specifically to Bayesian Networks.
-Finally, the recent paper \enquote{Explaining the Most Probable Explanation} by \cite{Butz2018} will be reviewed and connected to the previously analysed notions.
-
-Throughout the chapter, various gaps present in the literature will be identified and assessed; these will be summarised in a coherent fashion in Sec. \ref{sec:literature-review-summary}.
-
+\chapter{Literature Review}\label{chap:literature-review}
+\input{literature-review/introduction}
 \input{literature-review/explainability}
 \input{literature-review/explaining-mpe}
-
-\section{Summary} \label{sec:literature-review-summary}
-The findings outlined in this chapter refer to the concept of explainability of Machine Learning models, to its importance, to ways of evaluating it and to explainability in the specific case of Bayesian Networks.
-The concept of explainability is central to the field of Explainable AI (xAI), whose goal is to make Machine Learning systems \enquote{interpretable}.
-Explainability can briefly be defined as the property of a system that is able to \enquote{explain or to present in understandable terms to a human} its outputs.
-Two main classes of explainable models have been identified by \cite{mittelstadt2019explaining}: ante-hoc or transparent and post-hoc interpretable ones; the formers are inherently inspectable in their inner workings while the latters are made understandable by way of extra techniques.
-These two classes have also been refined by \cite{doshi2017towards} into a four-tier taxonomy consisting of: opaque, interpretable, comprehensible and explainable systems.
-An opaque system, also know as a \enquote{black-box model}, is one whose inner workings are not inspectable from the outside; an interpretable system corresponds to an ante-hoc interpretable one; a comprehensible one emits extra information together with its output; an explainable system explicitly outputs a human-understandable line of reasoning aimed at clarifying its workings.
-
-Explainability has become a central concept to the field of AI as a whole; as ML models take over more and more functions in our societies, the pressure for them to be able to explain their decisions is increased accordingly.
-The General Data Protection Regulation (GDPR) that became effective in 2018 was viewed by many as increasing the societal pressure to make systems explainable; many may have been mistaken as regards the actual rules mandated by the regulation - that aren't really prescribing a broad \enquote{right to an explanation} (\cite{edwards2018enslaving}) - but nonetheless the feeling of urgency is sure to increase the focus of both researchers and laypeople.
-In general, explainability is framed as an issue of moral necessity as it easy to find a long series of situations where ML models displayed covert bias or what we would regard as bad moral judgement.
-
-There are all manner of ways to measure explainability and these can be classified into a three-layer taxonomy (\cite{doshi2017towards}) based on the assumption that the best type of evaluation is the one that most involves humans.
-The three classes are Functionally-grounded Evaluation, Human-grounded Evaluation and Application-grounded Evaluation, ordered from the one least involving real humans to the one where the presence of the human-in-the-loop is greatest.
-As the involvement of humans in evaluating models' explanations increases, so does the cost of such an experiment and its specificity, as the highest evaluation level necessarily entails the collaboration of domain-experts on specific tasks.
-A parallel taxonomy identifies: methods to explain black box models, methods to explain black box outcomes, methods to inspect black boxes and methods to design transparent boxes.
-An overarching notion that has been stressed is that \textit{explainability is a graded notion} that depends on the knowledge and expertise of the particular user: different users, with different expertises and backgrounds, may rate the quality of a same explanation very differently.
-
-Bayesian Networks (BNs) have enjoyed widespread appeal in mission-critical domains like that of medicine and thus the drive to develop methods to explain their outputs has always been strong.
-BNs have three main elements that necessitate an explanation (\cite{lacave2002review}): the knowledge base, the reasoning process and the evidence propagated.
-Explaining the first \enquote{consists of determining which values of the unobserved variables justify the available evidence} and is done by solving the Most Probable Explanation (MPE) problem.
-For the second, a static explanation of the BN is achieved by displaying it graphically or verbally.
-The last element is explained by showing the reasoning that brought the BN to give the outputs it did that can be achieved by providing a justification for its outputs, for the results it did not give or via hypothetical reasoning.
-The fact that BNs are able to naturally support counterfactual reasoning, combine single variables into composite outputs and model causality puts them at an advantage compared to other ML systems when generating an effective explanation for a user.
-This is because the capabilities of a BN enable it to generate explanations that are uniquely suited to out psychological biases and expectations of what an explanation should entail.
-
-Some of the main gaps that were found during the review of the literature relate to how there is still a great confusion in the field of xAI regarding what an explanation really is and thus what constitutes a good instance of it.
-There is also a prevalent methodological confusion, as different authors use terms in incongruous ways, for example sometimes \textit{intepretation} is taken to mean \textit{explanation} while in other cases they refer to different concepts, for example in the taxonomy of interpretable systems proposed by \cite{doshi2017towards}.
-This naturally makes it difficult for the field to converge onto methods to evaluate such explanations and this is reflected in the barrage of methods present in the literature, each one focused only on a particular system or instance of model.
-This confusion is exacerbated by a seeming lack of interest or awareness of xAI researchers for the sizeable corpus of work in psychology, philosophy, social sciences, neuroscience and human computer interaction that has already investigated the nature of explanations, what desiderata they may possess and which are most effective.
-In fact, the great majority of proposed approaches is only focused on proving formal explainability and neglects the human side that is naturally present in any explanation; there has been little work carried out to validate approaches in real settings with real domain experts so many explainability methods are substantiated only at theoretical level.
-The underlying issue that I have seen run transversely across the various concepts investigated in this chapter is best summarised by the idea that \enquote{inmates are running the asylum}, meaning that individual researchers are claiming that their models are interpretable referring only to their own personal views and biases and not to established literature and methods.
-It would be hard for them to do otherwise, as the field of xAI seems, at present, to be a collection of diverging strands without a comprehensive program able to help it converge onto its stated goal: to make Machine Learning systems understandable by their users and thus increase their social utility and acceptance.
+\input{literature-review/summary}
 
 %%%%
 %%%% MATHEMATICAL BACKGROUND
 %%%%
 \chapter{Mathematical Background}\label{chap:mathematical-background}
-\section{Introduction}
-This chapter will arrive to give a formal definition of Bayesian Networks, a class of Probabilistic Graphical Models that are used to represent systems under conditions of uncertainty.
-Once the formalism has been defined, an overview of structure learning algorithms and the notions of Conditional Probability and Maximum a Posteriori Query are given.
-To arrive at this, it will first introduce a series of basic concepts from Probability, Information and Graph Theory.
-Some of these are not needed for the description of the BN model, but will be useful as a mathematical reference for the work carried out in later chapters of this thesis.
-
+\input{mathematical-background/introduction}
 \input{mathematical-background/probability-theory}
 \input{mathematical-background/information-theory}
 \input{mathematical-background/graph-theory}
 \input{mathematical-background/bayesian-networks}
+\input{mathematical-background/summary}
 
-\section{Summary}
-The chapter has introduced a number of concepts from Probability, Information and Graph Theory to be used as groundwork for the formal description of Bayesian Networks that are a widely used class of probabilistic graphical models.
-
-The section dealing with Probability Theory opened by describing the fundamental concept of \textit{probability distribution} that is a function from a set of events of interest to the real numbers.
-The probability of an event may be interpreted through the \textit{frequentist} or the \textit{Bayesian} lens; the former sees probability as simply the limit of the ratio between the number of times the event of interest occurred and the total number of trials; the latter views probabilities as the subjective degree of belief of the manifestation of the event.
-A \textit{random variable} is a mathematical construct that associates a value to every outcome in the set of possible events and is used to bring to the fore the attributes of interest while dealing with them in a clean way.
-The main results presented are \textit{Bayes' Theorem}, that states how to update a prior belief in light of new knowledge, and the concept of \textit{independence} between events, that will be central when introducing \textit{d-separation}.
-The final concept presented in the Probability Theory section is that of Correlation, a universally accepted measure for the interrelatedness between random variables.
-
-The second section introduces a few key concepts from Information Theory relating to entropy and distance measures.
-The \textit{Entropy} is a measure for the expected amount of information carried by a random variable, first introduced by Claude Shannon under inspiration by mechanical statistics. 
-A derived quantity is \textit{normalised entropy}, also known as \textit{efficiency}, that is convenient because it varies between $0$ and $1$ and thus enables random variables and probability distributions of different sizes to be compared.
-A second method, closely related to entropy, of measuring the interrelatedness of two random variables is that of \textit{mutual information}; this measure quantifies the amount of information of one variable already contained in the other.
-Two popular distance measures were introduced: \textit{Hamming and Jaccard Distance}; the former measures the similarity of strings, based on the number of substitutions needed to transform one into the other, and the latter quantifies the similarity of sets, given the size of their intersection over union.
-
-The third section relates to Graph Theory and starts by defining the basic notion of \textit{graph}, a set of vertices and edges connecting them, and of \textit{Directed Acyclic Graph}, a special case of graph whose edges are directed and that contains no cycles between vertices.
-\textit{Trees} and \textit{polytrees} are briefly introduced and characterised as a particular case of DAG.
-Finally, \textit{d-separation}, first introduced by Judea Pearl, is discussed.
-D-separation is a concept relating to the conditional dependence between variables; sets of variables may become independent i.e., not influence each other, based on conditioning on a third set of evidence variables.
-The independence properties depend on the topology of the graph, specifically in how the variables of interest are connected to each other; they may be organised into \textit{chains}, \textit{forks} or \textit{colliders}.
-
-The final section of the chapter deals with introducing \textit{Bayesian Networks}, using many of the concepts laid out in the previous sections.
-A Bayesian Network is a probabilistic graphical model represented by a DAG where each vertex corresponds to a random variable and the edges model the dependencies among these.
-The basic idea is to factorise a complete joint distribution of the constituent variables into a series of Conditional Probability Tables, one for each variable, that are assigned to the nodes in the DAG.
-The defining characteristic is that each variable's node values depend only on those of its parents.
-Such a representation efficiently represents a joint distribution and very naturally models the type of mixed causal and stochastic processes found in Nature.
-The DAG of a BN can either be given or learned directly from data; in the latter case, that is a super-exponential problem, there are three main classes of algorithms that may be applied: Search and Score, Constraint Learning and Approximations.
-Once a DAG has been learned, the problem moves to querying (updating) the BN; the main classes of queries are Conditional Probability and Maximum a Posteriori Queries.
-The first class asks for the value of a set of variables given the observation of the values of others in the network.
-The second class, known as MAP queries, ask the question of finding the most probable assignment of values to a subset of variables, given the observation of the values of another subset.
-This is, in general, an NP-hard problem but efficient solutions exist to a special case known as the Most Probable Explanation, where the set of query variables in the complementary subset to the evidence one.
 
 %%%%
 %%%% METHODOLOGY
 %%%%
 \chapter{Methodology} \label{chap:methodology}
-\section{Introduction} \label{sec:methodology-introduction}
- The inspiration for the work carried out in this thesis was the paper \enquote{Explaining the Most Probable Explanation} by \cite{Butz2018}, that has been reviewed in detail in Sec. \ref{sec:explaining-the-most-probable-explanation}.
- The paper proposed a system that, starting from a Bayesian Network modelling a medical data set, would learn a \enquote{knowledge base} tree representing the chain of most probable deductions, starting from a set of initial evidence.
- This tree, deemed to represent the solution to the MPE query, could then be used to generate a dialogue in natural language with the medical expert, that the authors claim could lead to the extraction of extra knowledge from the original data set.  
- The driving hypothesis of the paper was that Bayesian Networks and the solution to the MPE problem would be a powerful tool in helping medical experts gain insights into data.
- 
-The paper did not provide any indication that a such a system had ever been built and any validation of the method was left by the authors for future work.
- This lack of real-world validation has been seen, as discussed in Chap. \ref{chap:literature-review}, to, unfortunately, be the norm in most papers published under the Explainable AI moniker.
- Many works are content to only give a \textit{Functionally-grounded Evaluation} (in the taxonomy of \cite{doshi2017towards}) for the methods they propose.
-\cite{Butz2018}'s does not even give such an evaluation of the methods it proposes.
- As of the finalisation of this thesis (\today), there has been no work carried out in substantiating \cite{Butz2018}'s conclusions.
- As introduced in Chap. \ref{chap:introduction} and discussed in detail in Sec. \ref{sec:importance-of-explainability}, there is an ever greater need for Machine Learning models and systems to be explainable, especially in mission-critical domains as healthcare.
- 
- For these reason the belief is that building a proof-of-concept system, whose logic is inspired by the method presented in the aforementioned paper, and validating it with real medical experts, will prove to be an important step forwards in the direction of providing the work with the highest level of corroboration, an \textit{Application-grounded Evaluation}.
- The objective of this thesis is not only to provide an assessment of the paper, but also to set a methodological precedent for the evaluation of a Machine Learning system with real domain experts on real tasks.
- This, as has been discussed in Chap. \ref{chap:literature-review}, is one of the main gaps existing today in the field of xAI; thus, carrying out such an evaluation presents a substantial element of novelty.
- As anticipated in Chap. \ref{chap:introduction}, the work carried out in this thesis had a certain degree of collaboration with a third party, the \textit{Istituto Cantonale di Patologia}, based in Locarno in the Swiss canton of Ticino \cite{istitutocantonalepresentazione}.
-It is also hoped that the proof-of-concept system may be of real use to the medical experts who were provided with it, in performing their work.
- 
- The chapter opens with an introduction of the partner involved in the evaluation of the methods: \textit{Istituto Cantonale di Patologia} (ICP), Locarno, that specialises in the histological analysis of tissue samples.
- The data set, that was provided as base for the methods of this thesis, is comprised of the clinical profiles of 3218 breast cancer patients in the Swiss canton of Ticino.
- 
- The chapter continues with a presentation of the technological tools used to build the proof-of-concept system that was given to the ICP.
- The main ones of interest are \textit{Pomegranate}, an open-source probabilistic models package for Python, \textit{Pgmpy}, another graphical model package for Python and \textit{DAOOPT}, a specialised solver for the MPE problem that takes input in the \texttt{.uai} format, also described in the section.
- Two graphical model packages were used because there does not yet exist a Python library that conveniently implements all the functionality needed to work with Bayesian Networks.
- 
- Next, the algorithms that are part of the methods of this thesis but that making use of standard techniques are presented.
- These include how the data set is imported, preprocessed and how the actual BN is learned using Pomegranate's structure learning functions.
- A classic algorithm for \textit{d-separation} by \cite{koller2007dseparation} is presented together with how it has been adapted to work together with the other methods introduced.
- After this, a method for calculating the MPE by using the external solver DAOOPT is proposed.
- Finally, a brief survey of classic Machine Learning methods for classification is laid out, with the objective of making the reader familiar with them before describing how they are used as a benchmark for the BN's classification performance.
- 
- The main section of the chapter is the one presenting the novel methods applied in this thesis.
- The first topic addressed is a justification for using normalised entropy as the selection criterion to build the chain of deduction of \enquote{knowledge base}, as it is termed by \cite{Butz2018} in their paper (see Sec. \ref{sec:explaining-the-most-probable-explanation}).
- Then the novel algorithms that are at the core of this thesis are introduced: the three variants of the \textit{dialogue} that are adaptations of the method presented by \cite{Butz2018}, an algorithm to generate alternative explanation branches when the domain expert disagrees with the system during a dialogue, a greedy algorithm to construct a \enquote{pseudo-MPE} branch from random evidence that is then compared to the true MPE solution in a specific procedure.
-Then, the rationale and algorithm for the calculation of the \textit{mutual information} (see Subsec. \ref{subsec:mutualinformation}) between pairs of variables in the BN.
- The last algorithm introduced is the one generating the natural language that is used in all others to interface with the user.
- 
- The last section of the chapter presents the methodology used to validate the proof-of-concept tool, that implements all of the methods presented in the previous sections, from the point of view of its clinical relevance and its capacity to surface explainable outputs to the user.
- 
+\input{methodology/introduction}
 \input{methodology/data-set}
 \input{methodology/instruments}
 \input{methodology/novel-contributions}
 \input{methodology/validation}
-
-\section{Summary}
-This chapter has presented a series of methods whose aim is to enable the creation of a proof-of-concept system inspired by the paper \enquote{Explaining the Most Probable Explanation} by \cite{Butz2018} and to validate this system from the point of view of its explainability.
-This evaluation with expert pathologists at the Istituto Cantonale di Patologia (ICP), whose results will be presented in Chap. \ref{chap:results}, aims at validating the methods proposed by \cite{Butz2018} and to act as a methodological framework for future work.
-This is important because, as discussed in Chap. \ref{chap:literature-review}, the lack of evaluation of explainability is one of the main gaps in the xAI literature.
-
-The chapter opened by presenting the data set that was supplied by the ICP and how this was integrated into the system and used to learn the structure and Conditional Probability Tables of the Bayesian Network, based on the Pomegranate Python package.
-A series of standard-based algorithms have been presented to learn the BN from the data, to calculate the \textit{d-separation} between sets of nodes in the BN and to use the external solver DAOOPT to calculate the solutions to the MPE problem.
-After these, a set of novel algorithms that constitute the core of this thesis have been presented: three variants of the \textit{dialogue} that is the realisation of the interaction method proposed by \cite{Butz2018} together with a procedure to generate alternative explanation branches to the \enquote{knowledge base} when and if the expert user dissents with the system on a proposal.
-The remaining two algorithms are connected to evaluating the \enquote{pseudo-MPE} as compared to the true MPE solution.
-Then, the rationale relating to the user interface has been presented together with the boilerplates in Extended Backus-Naur form used to generate the natural language outputs of the system.
-Connected to interfacing with the user, the method for calculating and displaying pairwise \textit{mutual information} between the variables in the BN is also introduced.
-The final topic presented is the evaluation methodology that will be used to assess the proof-of-concept system from the point of view of both its adherence to clinical literature i.e., its capacity to give outputs coherent with the experts' beliefs, and its explainability: its capability to explain its outputs to the users of the ICP and to support them in their daily work.
+\input{methodology/summary}
 
 %%%%
 %%%% RESULTS
 %%%%
-\chapter{Results}\label{chap:results}
-\section{Introduction}
-
+\chapter{Results} \label{chap:results}
+\input{results/introduction}
 \input{results/implemented-tool}
-\section{Bayesian Networks Predictions Strength} \label{sec:prediction-evaluation}
 \input{results/validation-results}
+\input{results/pseudo-mpe-evaluation}
+\input{results/prediction-evaluation}
 \input{results/issues}
-\section{Summary}
-
+\input{results/summary}
 
 %%%%
 %%%% CONCLUSIONS
 %%%%
-\chapter{Conclusions}\label{chap:conclusions}
+\chapter{Conclusions} \label{chap:conclusions}
+\input{conclusions/discussion}
+\input{conclusions/future-work}
 
-\section{Reply to Introduction}
-\section{Future developments}\label{sec:future-developments}
-\todo{incorporate user feedback into the data set as in Interacting meaningfully with machine learning systems: Three experiments}
-
-
+%%%%
+%%%% CONCLUSIONS
+%%%%
 \appendix %optional, use only if you have an appendix
-
 
 \backmatter
 
-\chapter{Glossary} %optional
+\chapter{Acronyms} \label{chap:acronyms} %optional
+\input{acronyms}
+
+\chapter{Annex} \label{chap:annex}
+\input{annex}
 
 %\bibliographystyle{alpha}
 %\bibliographystyle{dcu}

@@ -1,105 +1,123 @@
-\section{Probability Theory}
+\section{Probability Theory} \label{sec:probability-theory}
+We will be dealing with \textit{standard probability} so random variables and probability measures will always be real-valued.
+We will also, in the work carried out in this thesis, only be considering the case of random variables who can assume a finite number of possible values.
+We will refer to these variables as \textit{categorical} to indicate that there is no natural ordering among their states.
 
-\subsection{Probability Distributions} \label{subsec:probability-distributions}
-\begin{definition}
-	A \textit{probability distribution} is a function $\mathbb{P}: \mathcal{S} \rightarrow \mathbb{R}$ with $\mathcal{S}$ a set of \textit{events} of interest.  
-To be a valid probability distribution $\mathbb{P}$ must satisfy:
+\subsection{Random Variables} \label{subsec:random-variables}
+\begin{definition}[Event]
+	Given $\mathcal{S}$ the space of all possible outcomes of interest, an event $\sigma$ is a subset of $\mathcal{S}$: $\sigma \subseteq \mathcal{S}$.
+	
+	$\mathcal{F} \subseteq 2^{\mathcal{S}}$ is the set of all events that are under consideration.
+	
+	Two events $\sigma$ and $\tau$ are called disjoint when $\sigma \cap \tau = \emptyset$.
+\end{definition}
+
+\begin{definition}[Random Variable]
+	A random variable $X$ is a function $X: \mathcal{S} \rightarrow \mathcal{X} \subseteq \mathbb{R}$ that associates every outcome $s \in \mathcal{S}$ with a value.
+\end{definition}
+
+\textit{Random variables} are a way of bringing to the fore the attributes of interest of events while dealing with them in a clean, mathematical way.
+The values that a random variable can take are a function of the events in sample space $\mathcal{S}$, each of these is assigned a value by the random variable function.
+
+\begin{definition}[Probability Measure] \label{def:probability-measure}
+	Given a sample space $\mathcal{S}$ and events $\mathcal{F}$, a discrete probability measure $\mathbb{P}$ is a function $\mathbb{P}: \mathcal{F} \rightarrow [0,1]$ that assigns a probability value to every event. 
+	In the discrete case all subsets of $\mathcal{S}$ can be treated as events thus $\mathcal{F}$ is the power set of $\mathcal{S}$.
+To be a valid probability measure, $\mathbb{P}$ must satisfy:
 \begin{itemize}
-	\item $\mathbb{P}(\sigma) \geq 0 \quad \forall \sigma \in \mathcal{S}$
-	\item $\sum_{\sigma} = 1 \quad \forall \sigma \in \mathcal{S}$
-	\item $\alpha, \beta \in \mathcal{S} \wedge \alpha \cap \beta=\emptyset 	\Rightarrow \mathbb{P}(\alpha \cup \beta)=\mathbb{P}(\alpha)+\mathbb{P}(\beta)$
+	\item $\mathbb{P}(\mathcal{S}) = 1$;
+	\item If events $\sigma$ and $\tau$ are disjoint then $\mathbb{P}(\sigma \cup \tau)=\mathbb{P}(\sigma)+\mathbb{P}(\tau)$.
 \end{itemize}
 \end{definition}
-Each event $\sigma \in \mathcal{S}$ must have a probability $\mathbb{P}(\sigma) \in [0,1]$ and the sum of all these must equal $1$. 
+Each event $\sigma \in \mathcal{F}$ must have a probability $\mathbb{P}(\sigma) \in [0,1]$ and the sum of all these must equal $1$. 
 An event with $P(\sigma) = 0$ is deemed \textit{impossible} while one with $\mathbb{P}(\sigma) = 1$ is \textit{certain}.
 
-There is some discord regarding how to actually \textit{interpret} the probability of an event.
-What I believe to be the initially commonly held view is the \textit{frequentist} one, that views the probability of an event as the ratio of times it would occur over a great number of trials.  
-So, for example, saying that obtaining a heads has probability $0.5$ when tossing a coin would mean that over repeated throws we would observe heads half the time.
+\begin{definition}[Probability Mass Function]
+	A probability mass function of a discrete random variable $X$ is a function $f_X: \mathcal{X} \rightarrow [0,1]$ defined, using a probability measure $\mathbb{P}$, as:
+\begin{equation*}
+	f_X(x) = \mathbb{P}(\{s \in \mathcal{S} : X(s)=x\}) \,,
+\end{equation*}
+and thus assigns a probability to every value of $X$.
+\end{definition}
+The probability mass gives the probability that a random variable $X$ takes on exactly its value $x$.
+This probability is the size of the subset of the event space $\mathcal{S}$ whose events $s$ are mapped to $x$ by the random variable $X$.
 
-Another, commonly held view is the \textit{Bayesian} (from the 18th century mathematician Thomas Bayes) one in which probabilities are viewed as the \textit{subjective} degree of belief attributable regarding the manifestation of an event.
-In this interpretation, stating that a coin has $0.5$ probability of landing on heads simply means that the person making the claim personally believes that the chances of seeing heads of tails are the same.
-This is obviously a ``softer'' definition compared to the frequentist one but it is nonetheless useful in that it lets one characterise certain events that haven't come about yet or are liable to happen only once or a few times.
+Every random variable has a probability distribution induced by the cardinality of the subsets of its values; in the case of discrete one, such a distribution is \textit{multinomial}.
+
+In what follows, we will refer to $f_X(x)$ as $\mathbb{P}(X=x)$, as the only random variables we will be dealing with will be discrete.
+
+Often, in the context of random variables the probability distribution $f_X$ is called the \textit{marginal of $X$} and is usually contrasted with the notion of \textit{joint probability distribution}.
+\begin{definition}[Joint Probability Mass Function]
+	The joint probability mass function of discrete random variables $X$ and $Y$ is a function $f_{XY} : \mathcal{X} \times \mathcal{Y} \rightarrow [0,1]$ defined as:
+	\begin{equation*}
+		f_{XY}(x,y) = \mathbb{P}( \{s \in \mathcal{S} : X(s)=x \} \cap \{ s \in \mathcal{S} : Y(s)=y\} ) \,,
+	\end{equation*}
+	and thus assigns a probability to every tuple $(x,y)$ with $x \in \mathcal{X}$, $y \in \mathcal{Y}$.
+\end{definition}
+
+In what follows, we will sometimes refer to the marginal probability $f_X$ of $X$ as $\mathbb{P}(X)$, and to $f_X(x)$ as $\mathbb{P}(X = x)$, and to joint probability $f_{XY}$ of $X$ and $Y$ as $\mathbb{P}(X,Y)$, and to $f_{XY}(x,y)$ as $\mathbb{P}(X=x,Y=y)$ as the only random variables we will be dealing with will be discrete.
+Notice that the notation $(E = e)$ is also often overloaded to signify an assignment of values to a set of random variables $E$; in this case what is meant is that every variable in the set $E = {X_1,...,X_k}$ assumes a certain value from its own domain. 
+We will denote sets of random variables in bold so $\boldsymbol{E} = \boldsymbol{e}$ stands to mean that every variable $E$ in the set of random variables $\boldsymbol{E}$ assumes a value $e$ from its own domain. 
+Finally, recall that the set of values that $X$ can take is denoted by the cursive $\mathcal{X}$.
+
+\subsection{Probability interpretations} \label{subsec:probability-interpretations}
+There are two main ways of interpreting the probability of an event: the \textit{frequentist} and the \textit{subjectivist/Bayesian} one.
+
+The former views the probability of an event as the expected ratio of times it would occur over a great number of trials.
+That is, the probability of an event is seen as the \textit{limiting frequency} of a repeatable event.
+So, for example, the probability of observing heads when tossing a coin is set at $0.5$ because over repeated throws heads was observed half the time.
+
+The other view is the subjectivist or \textit{Bayesian} one (from the 18th century mathematician Thomas Bayes) in which probabilities are instead viewed as the \textit{subjective} degree of belief attributable to the manifestation of an event.
+In this interpretation, stating that a coin has probability of heads of $0.5$ simply means that the person making the claim personally believes that the chances of seeing heads or tails are the same.
+This is useful in that it enables the characterisation of certain events that haven't yet come about or that are liable to happen only once or a small number of times (are not repeatable).
 
 Philosophically, Bayesian inference assigns a probability to a hypothesis (a \textit{prior}) while the frequentist method tests a raw hypothesis empirically before assigning it any probability.
 As Bayesian inference naturally embraces and deals with uncertainty, it is an enormously useful tool to model and reason about the real, stochastic world we live in.
 
-\subsection{Random Variables} \label{subsec:random-variables}
-\begin{definition}
-	A random variable is a function that associates every outcome in $\mathcal{S}$ with a value.
-\end{definition}
-\textit{Random variables} are a way of bringing to the fore the attributes of interest of events while dealing with them in a clean, mathematical way.
-The values that a random variable can take are a function of the events in sample space $\mathcal{S}$, each of these is assigned a value by the random variable function.
-I will only be dealing with \textit{categorical random variables} i.e. those who's codomain is a discrete set of values.
-Every random variable has a probability distribution induced by the cardinality of the subsets of its values; in the case of categorical-valued one, such a distribution is \textit{multinomial}.
-
-If we were to take a Bayesian point of view, we would consider a random variable as simply representing the subjective degree of belief we would have over a set of outcomes we believed possible.
+From the Bayesian point of view, we would consider the probability of a state of a random variable as simply representing the subjective degree of belief we would have over a set of outcomes we believed could manifest themselves.
 
 \subsection{Conditional Probabilities} \label{subsec:conditional-probabilities}
-After having defined the basic notion of probability, we can construe one the basic building blocks of Bayesian Networks: the concept of \textit{conditional probability} 
-\begin{definition}
-	The conditional probability, ``the probability of event $\beta$ given event $\alpha$'' is:
-\begin{equation} \label{eq:conditionalprobability}
-\mathbb{P}(\beta \mid \alpha) = \frac{\mathbb{P}(\beta \cap \alpha)}{\mathbb{P}(\alpha)}
-\end{equation}
+\begin{definition}[Conditional Probability] \label{def:conditional-probability}
+	The conditional probability mass function of random variable $Y$ given $X=x$, $x \in \mathcal{X}$, $y \in \mathcal{Y}$ is:
+\begin{equation*}
+\mathbb{P}(Y=y \mid X=x) = \frac{\mathbb{P}(X=x,Y=y)}{\mathbb{P}(X=x)} \,.
+\end{equation*}
+To be defined, it must be that $\mathbb{P}(X=x) > 0$.
 \end{definition}
-That is, the relative proportion of event $\beta$ compared to event $\alpha$; this intuitively represents the probability of $\beta$ \textit{knowing} that $\alpha$ has already occurred.
 
-Equation \ref{eq:conditionalprobability} can be easily manipulated to obtain another basic element of Bayesian Networks: what is called the \textit{chain rule of conditional probabilities}:
+Definition \ref{def:conditional-probability} can be easily manipulated to obtain another basic result, called the \textit{chain rule of conditional probabilities}:
 \begin{equation} \label{eq:chainrule}
-	\mathbb{P}(\beta \cap \alpha) = \mathbb{P}(\beta \mid \alpha) \mathbb{P}(\alpha)
+	\mathbb{P}(Y=y,X=x) = \mathbb{P}(Y=y \mid X=x) \mathbb{P}(X=x)
 \end{equation}
-This can be generalised to any number of events:
+This can be generalised to any number of variables:
 \begin{equation} \label{eq:chainrule}
-	\mathbb{P}(\alpha_1 \cap \ldots \cap \alpha_n) = \mathbb{P}(\alpha_n \mid \alpha_1 \cap \ldots \cap \alpha_{n-1}) \ldots \mathbb{P}(\alpha_1 \mid \alpha_2 ) \mathbb{P}(\alpha_1) 
+	\mathbb{P}(X_1=x_1, \ldots , X_n=x_n ) = \mathbb{P}(X_n=x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}) \ldots \mathbb{P}(X_1=x_1 \mid X_2=x_2 ) \mathbb{P}(X_1=x_1) 
 \end{equation}
 Intuitively, it means that we can decompose joint probabilities as products of conditional probabilities.  
-This is how the probability values in a Bayesian Network are calculated.
 
-Another immediate, and crucial, consequence of Eq. \ref{eq:conditionalprobability} is known as \textit{Bayes' Theorem}, that lets us calculate the probability of event $\alpha$ given our knowledge of event $\beta$.
-\begin{definition} \label{eq:bayes-theorem}
-	Bayes' Theorem states that the probability of even $\alpha$ conditional on even $\beta$ is given by:
-	\begin{equation}
-		\mathbb{P}(\alpha | \beta)=\frac{\mathbb{P}(\beta | \alpha) \mathbb{P}(\alpha)}{\mathbb{P}(\beta)}
-	\end{equation}
-\end{definition}
-Intuitively, this describes the probability of an event, based on some prior knowledge of another event.
-For example, our belief in a person having breast cancer ($\alpha$) is increased if we know that the person is older than 50 years of age ($\beta$).
+Another immediate, and crucial, consequence of Definition \ref{def:conditional-probability} is known as \textit{Bayes' Theorem}, that lets us calculate the probability of event given our new knowledge of another event.
+\begin{theorem}[Bayes' Theorem] \label{th:bayes-theorem}
+	Given random variables $X$, $Y$ and the events $X=x$, $Y=y$, $\mathbb{P}(Y=y) > 0$, it holds that:
+	\begin{equation*}
+		\mathbb{P}(X=x \mid Y=y)=\frac{\mathbb{P}(Y=y \mid X=x) \mathbb{P}(X=x)}{\mathbb{P}(Y=y)} \,.
+	\end{equation*}
+\end{theorem}
+Intuitively, this is a process of \textit{belief revision} as the belief in event $X=x$ is revised by the new knowledge that $Y=y$. 
 
 \subsection{Independence} \label{subsec:independence}
-Now, we have just seen in Equation \ref{eq:conditionalprobability} that, in general, $\mathbb{P}(\beta | \alpha) \neq \mathbb{P}(\alpha)$ because $\mathbb{P}(\beta \cap \alpha) \neq \mathbb{P}(\beta) \mathbb{P}(\alpha)$
-\begin{definition}
-Two events $\alpha$ and $\beta$ are \textit{unconditionally independent} $A \perp B$ - or simply \textit{independent} - when:
-\begin{equation}
-	\mathbb{P}(\beta \mid \alpha) = \mathbb{P}(\beta) \Leftrightarrow \beta \perp \alpha
-\end{equation}
+\begin{definition}[Random Variables Independence]
+	Two random variables $X$ and $Y$ with domains $\mathcal{X}$ and $\mathcal{Y}$ are independent when their joint probability mass $\mathbb{P}(X,Y)$ is equal to the product of their probability densities:
+	\begin{equation*}
+		\mathbb{P}(X=x,Y=y) =  \mathbb{P}(X=x) \mathbb{P}(Y=y) \quad \forall x \in \mathcal{X}, \forall y \in \mathcal{Y} \,.
+	\end{equation*}
 \end{definition}
-This means that knowing that $\alpha$ took place doesn't change our beliefs around $\beta$ happening. 
-In the real world it is hard, or actually impossible if we consider existence at a fine-enough level to involve Chaos Theory, to find two such perfectly non-interacting events.
-Thus, a more useful concept is that of \textit{conditional independence} where two previously dependent event become independent when also conditioned on a third one.
-\begin{definition}
-Two events $\alpha$ and $\beta$ are \textit{conditionally independent} $(\beta \perp \alpha \mid \gamma)$ when:
-	\begin{equation}
-	\mathbb{P}(\beta \mid \alpha \cap \gamma ) = \mathbb{P}(\beta \mid \gamma) \Leftrightarrow (\beta \perp \alpha \mid \gamma)
-\end{equation}
+In the real world it is hard, or actually impossible - if we consider Existence at a fine-enough level to involve Chaos Theory - to find two such perfectly non-interacting events.
+Thus, a more useful concept is that of \textit{conditional independence} where two previously dependent event become independent when also conditioned on a third one
+
+\begin{definition}[Random Variables Conditional Independence]
+	Two random variables $X$ and $Y$ with domains $\mathcal{X}$ and $\mathcal{Y}$ are conditionally independent on a third random variable $Z$ when their probability densities conditioned on $Z$ $f_{X \mid Z}$ and $f_{Y \mid Z}$ are independent.
+	That is, when the joint probability mass conditioned on $Z$ $f_{X, Y \mid Z}$ is equal to the product of the conditional probability densities:
+	\begin{equation*}
+		\mathbb{P}(X=x,Y=y \mid Z=z) = \mathbb{P}(X=x \mid Z=z) \cdot \mathbb{P}(Y=y \mid Z=z) \quad \forall x \in \mathcal{X}, \forall y \in \mathcal{Y}, \forall z \in \mathcal{Z} \,.
+	\end{equation*}
 \end{definition}
-
-\subsection{Correlation} \label{subsec:correlation}
-Correlation, as defined by \cite{Stolp2006}, is a measure of the degree to which two random variables are linearly dependent.
-The most used measure of such a dependence is the \textit{Pearson Correlation Coefficient} or \textit{bivariate correlation}.
-\begin{definition}
-	The correlation coefficient $\rho$ of random variables $X$ and $Y$ is given by:
-	\begin{align} \label{eq:correlation}
-		\rho_{XY} &= \frac{Cov(X,Y)}{\sigma_X \sigma_Y} \\
-		&= \frac{\mathbb{E}[ (X - \mu_X) (Y - \mu_Y) ]}{\sigma_X \sigma_Y} \\
-		&= \frac{\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} (x - \mu_X) (y - \mu_Y) p_{XY}(x,y)}{ \sqrt{\sum_{x \in \mathcal{X}}  (x - \mu_X)^2 p_X(x)} \sqrt{\sum_{y \in \mathcal{Y}} (x - \mu_Y)^2 p_Y(y)} } 
-	\end{align}
-	with $p_{XY}$ the joint probability mass function of $X$ and $Y$ and $p_{X}$ and $p_{Y}$ the marginal distributions of $X$ and $Y$, respectively.
-\end{definition}
-That is, the bivariate correlation coefficient for random variables $X$ and $Y$ is given by the \textit{covariance} of $X$ and $Y$ divided by the product of their standard deviations.
-
-The covariance is the \textit{first centred moment} of the \textit{joint distribution} of $X$ and $Y$ while the \textit{standard deviation} is the square root of the \textit{second centred moment} of the marginals.
-
-$\rho_{XY}$ is normalised so its values vary in the interval $[-1,1]$; the correlation coefficient represents the degree of linear association between the two variables with $\rho_{XY}=-1$ being called \textit{perfect anticorrelation} and $\rho_{XY}=+1$ \textit{perfect correlation}.
-The two correspond to the cases where the linear equation perfectly describes the relationship between $X$ and $Y$; the sign indicates the slope of the regression line describing the relationship i.e. if an increase in one of the two variables corresponds to an increase in the other in the pair, or viceversa.
-The closer $\rho_{XY}$ tends to $0$, the feebler the relationship between $X$ and $Y$ with the case $\rho_{XY}=0$ indicating that the two variables are \textit{independent}.
+Intuitively, this means that knowing any value of $Z$ makes the probability distributions of $X$ and $Y$ independent.

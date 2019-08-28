@@ -1,0 +1,36 @@
+\section{Introduction} \label{sec:methodology-introduction}
+ The inspiration for the work carried out in this thesis was the paper \citep{Butz2018} that has been reviewed in detail in Section \ref{sec:explaining-the-most-probable-explanation}.
+ This paper proposed a system that, starting from a Bayesian Network modelling a medical data set, would learn a \enquote{knowledge base} tree representing the chain of most probable deductions, starting from a set of initial evidence.
+ This tree, deemed to represent the solution to the MPE query, could then be used to generate a dialogue in natural language with the medical expert, that the authors claim could lead to the extraction of extra knowledge from the original data set.  
+ The driving hypothesis of the paper was that Bayesian Networks and the solution to the MPE problem would be a powerful tool in helping medical experts gain insights into data.
+ 
+The paper did not provide any indication that a such a system had ever been built and any validation of the method was left by the authors for future work.
+This lack of real-world validation has been seen, as discussed in Chapter \ref{chap:introduction} and \ref{chap:literature-review}, to, unfortunately, be the norm in most papers published under the Explainable AI moniker.
+ Many works are content to only give a \textit{functionally-grounded Evaluation} (in the taxonomy of \citet{doshi2017towards}) for the methods they propose.
+The one by \citet{Butz2018} does not even give such an evaluation of the methods it proposes.
+ As of the finalisation of this thesis in early September 2019, there has been no work carried out in substantiating the methods of \citet{Butz2018}.
+ As introduced in Chapter \ref{chap:introduction} and discussed in detail in Section \ref{sec:importance-of-explainability}, there is an ever greater need for Machine Learning models and systems to be explainable, especially in mission-critical domains as healthcare.
+ 
+ For these reasons the hope was that building a proof of concept system, whose logic were inspired by the method presented in the aforementioned paper, and validating it with real medical experts, would prove to be an important step forwards in the direction of providing the work with the highest level of corroboration, an \textit{application-grounded evaluation}.
+ The objective of this thesis is not only to provide an assessment of the paper, but also to set a methodological precedent for the evaluation of a Machine Learning system with real domain experts on real tasks.
+ This, as discussed in Chapter \ref{chap:introduction} and \ref{chap:literature-review}, is one of the main gaps existing today in the field of xAI.
+ Thus, carrying out such an evaluation could be seen as presenting an element of novelty.
+ It is also hoped that the proof of concept system may be of real use to the medical experts who were provided with it, in performing their daily work.
+
+ As anticipated in Section \ref{sec:response}, the work carried out in this thesis had a high degree of collaboration with a third party, the \textit{Istituto Cantonale di Patologia}, based in Locarno, Switzerland (see \citet{istitutocantonalepresentazione}).
+
+ The chapter is organised as follows:
+ \begin{itemize}
+  	\item Section \ref{sec:data-set} opens with an introduction of the partner involved in the evaluation of the methods: \textit{Istituto Cantonale di Patologia} (ICP). The institute is based in Locarno in the Swiss canton of Ticino and specialises in the histological analysis of tissue samples in support of cancer diagnosis.
+ 	\item Section \ref{sec:methods} gives an overview of the standard tools used in building the proof of concept system that was evaluated with the pathologists of the ICP and includes a brief survey of classic Machine Learning methods, with the objective of making the reader familiar with them before describing how they are used as a benchmark for the BN's classification performance.
+ 	\begin{itemize}
+  		\item Subsection \ref{subsec:libraries} presents the main Python libraries that were employed in implementing the system.
+  		\item Subsection \ref{subsec:algorithms} shows the algorithms that are part of the methods of this thesis but that making use of standard techniques are presented; these include a classic algorithm for \textit{d-separation} by \citet{koller2007}	
+	\end{itemize}
+	\item Section \ref{sec:novel-contributions} introduces the algorithms and methods that were developed specifically for the implementation of the system in question and explains the rationale behind the selection method used to build the \enquote{knowledge base} (see Section \ref{sec:explaining-the-most-probable-explanation}) and algorithm for the calculation of the \textit{mutual information} (see Subsection \ref{subsec:mutual-information}) between pairs of variables in the BN.
+	\begin{itemize}
+  		\item Subsection \ref{subsec:algorithms-novel} gives a detail presentation of the methods developed, including the three variants of the \textit{dialogue} that are adaptations of the method presented by \citet{Butz2018}, an algorithm to generate alternative explanation branches when the domain expert disagrees with the system during a dialogue, a greedy algorithm to construct a \enquote{pseudo-MPE} branch from random evidence that is then compared to the true MPE solution in a specific procedure.
+  		\item Subsection \ref{subsec:interfacing-user} concentrates on the methods in charge of interfacing with the user.
+	\end{itemize}
+	\item Section \ref{sec:validation} presents the methodology used to validate the proof of concept tool, that implements all of the methods presented in the previous sections, from the point of view of its clinical relevance and its capacity to surface explainable outputs to the user.
+\end{itemize}

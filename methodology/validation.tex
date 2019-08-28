@@ -1,33 +1,51 @@
-\section{Validation} \label{sec:validation}
-\todo[inline]{discutere con Vittoria come validare al meglio}
-Having direct access to expert pathologists has not only helped in guiding research into the theoretical explainability properties of the system but also enabled their validation.
-There are two main validation streams to be addressed: from the clinical point of view and from the explainability one, with the results of the latter depending on those of the former.
+\section{Validation Methodology} \label{sec:validation}
+Having direct access to expert pathologists has not only helped in guiding research into the theoretical explainability properties of the system but also enabled their \textit{application-grounded evaluation} (see Section \ref{sec:evaluation-of-explainability}).
+There are two main validation streams to be addressed: from the clinical point of view (Subsection \ref{subsec:clinical-validation-methodology}) and from the explainability one (Subsection \ref{subsec:explainability-validation}), with the results of the latter depending on those of the former.
  
-\subsection{Clinical validation} \label{subsec:clinical-validation-methodology}
+\subsection{Clinical Validation} \label{subsec:clinical-validation-methodology}
 A validation of the methods carried out in this thesis in their adherence to established clinical literature, is of paramount importance.
 A failure on the Bayesian Network's part in capturing the true relationships between the variables would hamper it in being able to give any meaningful representation of them.
-For the expert to even start to trust the system or to be able to make sense of its outputs, it is vital that there be as little cognitive dissonance between the experts' basic beliefs and expectations and those that he sees represented in the system.
+For the experts to even start to trust the system or to be able to make sense of its outputs, it is vital that there be as little cognitive dissonance between the experts' basic beliefs and expectations and those that he sees represented in the system.
 
 For this reason, the initial validation phase with the ICP concentrated on the clinical aspect.
 The methodology chosen to clinically validate the system was represented by a series of queries, formulated in natural language by the ICP; each one of these questions was annotated with the specific queried variable in the network and its value together with the known values of other variables.
 The experts included the expected reply to the queries together with its probability, based on the latest medical literature and their personal, knowledge-based expertise.
-So, each query asked for the probability truth value of the following:
-\begin{align}
-	(var_1 = a \wedge \ldots \wedge var_n = z ) \Rightarrow var_k = k \quad var_1 \ldots var_n \in V, var_k \in V \smallsetminus \{ var_1 \ldots var_n \}
-\end{align}
 This would translate into natural language into:
-\enquote{If $var_1$ is $a$ and $\ldots$ and $var_n$ is $z$, how probable is it that $var_k$ $k$?}.
-The complete series of eight questions, together with the expected values, is shown in Tab. \ref{tab:clinicalvalidationquestions}.
-It is quite evident that all these validation questions are instances of the Bayesian Network Updating problem, in particular they are Conditional Probability Queries (as defined in \ref{subsec:bnupdating}).
+\begin{center}
+\enquote{Given that the value of $var_1$ is $a_1$ and $\ldots$ and the value of $var_n$ is $a_n$, what is the probability that $var_{n+1}$ takes value $a_{n+1}$?}.	
+\end{center}
 
-\todo{inserire tabella qui o in Results}
+The natural language questions formulated by the ICP can be classified along two axes:
+\begin{itemize}
+  \item based on their intended purpose: \textit{validation} vs. \textit{research}.
+  The former questions are those whose reply is known from established clinical literature and are those that will actually be used to validate the system from a clinical point of view.
+  The latter are queries that don't have a definite clinical answer, but that are nonetheless extremely interesting in helping to understand the types of questions that a domain expert may want to ask the system.
+  \item based on the way they may be answered: by a \textit{conditional probability query} (Definition \ref{def:conditional-probability}), a \textit{d-separation query} (Definition \ref{def:d-separation}) or an \textit{MPE query} (Definition \ref{def:mpe}).
+\end{itemize}
+The complete series of thirty questions has been organised according to the second criterion.
+Annexes \ref{ann:conditionalprobability1} and \ref{ann:conditionalprobability2} present fourteen questions that can be answered by conditional probability queries.
+Annex \ref{ann:dseparation} shows a series of eight natural language questions that can be answered by running a d-separation query.
+Annex \ref{ann:conditionalanddseparation} presents five questions that could be answered by a conditional probability query but also, at a higher level, by a d-separation query.
+This because what is being asked, is basically if changing the value of the evidence variable has an influence on that of the target variable.
+This could be answered by running multiple conditional probability queries and comparing the resulting target variable values or, more simply, by checking if the target and evidence variables are d-connected or not.
+The first method would give a finer grained answer as it would also \textit{quantify} the magnitude of the effect of one variable on the other; checking for d-separation would only give a \textit{qualitative} answer, that may nonetheless be sufficient. 
+Finally, Annex \ref{ann:mpe} shows three questions that are naturally mapped onto a query of the MPE type.
 
-\subsection{Explainability validation} \label{subsec:explainability-validation}
-In general, there is strong resistance to novelty in the field of Medicine, both because of ethical reasons and because of the necessity for clinicians to be conservative in attending to best practices.
-Any tool that is too onerous in terms of time and cognitive load is liable to remain unutilised.
-In this field, a tool must only be the means by which a question is answered, not become a question itself; the system developed in this thesis aims to conform to this objective.
+Most importantly at this stage, all questions can be answered by the proof of concept system; this shows a good coverage of the use cases that can be imagined by a domain expert.
+If the system can, in principle, answer every question imagined by the expert, it is an indication that it conforms to her world-view and thus could be well positioned to interact fruitfully with her.
+
+The questions marked as \textit{validation} will be posed to the system, in autonomy, by the ICP's representatives, who will then compare the outputs with the result they would have expected, based on established medical literature and their expertise.
+The columns containing the experts' expected results and their comments have been omitted from the \nameref{chap:annex} and included directly in the discussion of the results in Subsection \ref{subsec:clinical-validation-results}, alongside the system's outputs.
+If the system's outputs conform to the experts' presuppositions in a high percentage of cases (as confirmed by the experts themselves) then the system can be said to have been \textit{clinically-validated}.
+This is important because the basis for the user to trust the predictions made by the software is that these aren't in strong discord with her existing beliefs.
+Not having a strong \textit{cognitive dissonance} is a \textit{necessary} - but not sufficient - condition for explainability and trust.
+
+\subsection{Explainability Validation} \label{subsec:explainability-validation}
+In general, there is strong resistance to novelty in the field of Medicine, both because of ethical reasons and because of the necessity for clinicians to be conservative in attending to established best practices in the field.
+Any tool that is too onerous in terms of time and cognitive load is liable to remain un-utilised.
+In this field, a tool must therefore only be the means by which a question is answered, not become a question itself; the system developed in this thesis aims to conform to this objective.
 The need for a comprehensible and efficient tool is especially present because the goal of a pathologist is to arrive at a diagnosis, containing the elements useful to define prognosis and therapeutical approach, in the briefest time possible.
-The main reasons are ethical, as for a patient waiting for a report is extenuating, and clinical, because tempestivity in diagnosis is the first factor at the base of life expectancy.
+The main reasons are ethical, as for a patient waiting for a report is extenuating, and clinical, because a timely diagnosis is the first factor at the base of life expectancy.
 Obviously, the highest accuracy possible is always strived for.
 The clinical field and that of biomedicine are forced to embrace uncertainty, as this is an integral part of their practice.
 Consequently, any tool able to support in comprehension and decision-making is automatically useful, once it has been clinically validated; in other words, even though a specific system may not be decisive or applicable to all reviewed cases, it will nonetheless be taken into account.
@@ -42,9 +60,28 @@ These are all hard questions to answer, as there is a very high degree of subjec
 Thus to attempt to answer them, the chosen methods were borrowed from the social sciences.
 
 In an earlier stage, the experts were introduced to the system in prototype form and instructed on the use cases it offered.
-This process would give feedback on the functionalities of the system and help in shaping its design.
+This process would enable the collection of feedback on the functionalities of the system and help in shaping its subsequent design.
 
-The finalised system was, in a later phase, provided to the experts at the ICP for use in their daily work.
-To quantify the performance of the system, as perceived by its users in a real setting over an extended period of time, a follow-up was done after \textbf{xx time} by way of the following questionnaire, designed to test the gaps identified in Chap. \ref{chap:literature-review} in mind:
-\todo{inserire questionario}
+The finalised system was, in a later phase (early August 2019), provided to the experts at the ICP for use in their daily work.
+To quantify the performance of the system, as perceived by its users in a real setting over an extended period of time, a follow-up was done after three weeks by way of a \enquote{Explainability evaluation questionnaire}, designed to test the gaps identified in Chapter \ref{chap:literature-review}.
+The full questionnaire can be found at Annex \ref{ann:questionnaire}.
 
+The \enquote{Explainability evaluation questionnaire} presents five sections:
+\begin{itemize}
+  \item \textit{Confidence}: aimed at assessing if the use of the system incremented the confidence the clinician felt in making her decisions.
+  \item \textit{Features}: to understand in more detail which interaction modes were felt most useful and the subjective reasons for this.
+  Of particular interest is the understanding of the perceived quality of the dialogical interaction modes and of the \enquote{pseudo-MPE} query.
+  \item \textit{Time}: questions focusing on the the temporal element, mainly the time needed to understand various explanations offered by the system.
+  \item \textit{Tool}: general questions regarding the use of tool and if any important use-case was felt to be missing.
+  \item \textit{Clinical}: investigating if the tool was clinically relevant in day-to-day work; unlike the clinical validation presented in Subsection \ref{subsec:clinical-validation-methodology}, these questions investigate a posteriori of the use of the tool so should provide a broader evaluation of its clinical relevance.
+  \item \textit{Satisfaction}: simple question asking to rate the general satisfaction with the proof of concept system.
+\end{itemize}
+
+As discussed throughout Chapter \ref{chap:literature-review} and summarised in Section \ref{sec:literature-review-summary}, one of the main gaps in the field of Explainable AI is the absence of real-world validation of the - supposedly - explainable models.
+The objective of the questionnaire is to act as an \textit{application-grounded evaluation}, in the taxonomy proposed by \citet{doshi2017towards} and presented in Section \ref{sec:evaluation-of-explainability}, and thus provide what is considered the gold standard evaluation of a machine learning system.
+Also included, as it is almost always neglected in literature, is a focus on the \textit{temporal element} of the explanations that was noted as important by \citet{gilpin2018explaining}.
+Of particular interest is evaluating the Bayesian Network underlying the tool in its capacity to surface cogent explanations for the target user; the questionnaire inflects the questions in order to identify which particular characteristics of the system and BNs were perceived most useful by the user in order to gain an understanding of the system's workings.
+As noted by \citet{miller2018explanation} (see Sections \ref{sec:explainability-in-bayesian-networks}), explanations have various essential characteristics that should be inherent to BNs; the questionnaire thus seeks to understand if these are actually present and perceived as useful by the domain experts.
+
+The questionnaire is not the only source of the results relating to the explainability of the developed system; as explored by \citet{stumpf2009interacting} in their \enquote{think-aloud experiment}, many results and details throughout Chapter \ref{chap:results} will be the outcome of observing and listening to the expert users while they were engaging with the system.
+We refer to these as \enquote{informal explainability evaluation results} contrasting them with the \enquote{formal explainability evaluation results} that would be the outcome of the questionnaire.

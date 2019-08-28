@@ -1,45 +1,51 @@
 \section{Issues} \label{sec:issues}
 
 \subsection{Zero Probabilities in Learned CPTs}
-It was noticed that some of the Conditional Probability Tables (CPT/CPD), that pomegranate learned from the data set (i.e. by solving the problem defined in Subsec. \ref{subsec:bnstructurelearning}), presented entries with $0$ value.
+It was noticed that some of the Conditional Probability Tables, that Pomegranate learned from the data set (i.e. by solving the structure learning problem defined in Subsection \ref{subsec:learning-bn-structure}), presented entries with $0$ value.
 
 The assignment of the extreme probabilities $1$ and $0$, while perfectly coherent in the frequentist approach, is not in line with the Bayesian one.
-This is because of the different conception of probabilities between the two approaches, as discussed in Subsec. \ref{subsec:probability-distributions}.
-A frequentist perspective would happily assign probability zero to an event not present in the data set while a Bayesian would refrain to do so, as having a zero or one prior belief makes every posterior, calculated using Bayes' Rule (Eq. \ref{eq:bayes-theorem}), also zero or one.
-The necessity to avoid assigning prior probability beliefs of $0$ or $1$, has been named \enquote{Cromwell's Rule} by \cite{Jackman2009}.
+This is because of the different conception of probabilities between the two approaches, as discussed in Subsection \ref{subsec:probability-interpretations}.
+A frequentist practitioner would happily assign probability zero to an event not present in the data set while a Bayesian would refrain in doing so, as having a zero or one prior belief makes every posterior, calculated using Bayes' Rule (Definition \ref{th:bayes-theorem}), also zero or one.
+The necessity of avoiding the assignment of prior probability beliefs equal to $0$ or $1$, has been named \enquote{Cromwell's Rule} by \citet{Jackman2009}.
 
-It would be an epistemological error to be absolutely sure, one way or another, of any \textit{a posteriori/syntetic proposition} and thus we should refrain from assigning absolute belief or disbelief into their truth value.
-This, apart from questions regarding the ontological determinism of Reality, is also against the intended use of statistics, that should be applied in cases of uncertainty and not in those of deterministic mechanism.
-We should do so only for \textit{a priori propositions}, for example those referring to Mathematic or Logic, but not for any \textit{a posteriori statements} i.e. those whose truth value is based on experience (for a definition of these see the Introduction of \cite{Kant1998}).
+A useful distinction to make that could help in deciding when to accept extreme probabilities or not, is between \textit{a priori} and \textit{a posteriori} propositions; the former are those whose truth value is not empirical but can, in general, be deduced based on logical necessity alone; the latter are those whose truth value is based on experience, for example any statement regarding the physical world.
+An example of \textit{a priori} proposition could be a tautology, such as \enquote{Every wife is married}; an example of \textit{a posteriori} proposition could be a statement regarding the state of the world, such as \enquote{Yesterday it rained}.
+It would be an epistemological error to believe in the absolute truth or falsity of any proposition that is not necessary and thus one should refrain from assigning absolute belief or disbelief to their truth value.
+This is because, apart from issues regarding the ontological determinism of Reality and of the contingency of experience, it is also against the intended use of statistics; statistical methods should only be applied in cases of uncertainty and not in those where a deterministic mechanism is implied.
+If a proposition's truth value can be known without resorting to the senses, then its value doesn't depend on the state of things in the sensible world.
+Thus, we can assign absolute confidence in the truth value of a priori statements.
 
-To solve the issue in the context of this work, a simple post-learning correction was applied; specifically a small positive constant was added to every zero-valued entry in the CPTs in pomegranate's model.
-The methodologically correct approach would have been to apply \textit{Laplace Smoothing}, a standard technique used to \textit{smooth} categorical data.
-The method would entail adding a \textit{pseudocount} $\alpha$ to every empirical probability estimated from the data set; given $x_i$ the count of occurrences of event $i$ a set of $N$ events, the un-smoothed empirical probability is:
+To solve the issue in the context of this work, a simple post-learning correction was applied; specifically a small positive constant was added to every zero-valued entry in the CPTs in Pomegranate's model.
+The methodologically correct approach would have been to apply \textit{Laplace smoothing}, a standard technique used to \textit{smooth} categorical data.
+The method would have entailed adding a \textit{pseudocount} $\alpha$ to every empirical probability estimated from the data set.
+Given $x_i$ the count of occurrences of event $i$ a set of $N$ events, the un-smoothed empirical probability is:
 \begin{equation}
 	p_i = \frac{x_{i}}{N}
 \end{equation}
-while the smoothed one is given by:
+while the smoothed one would be given by:
 \begin{equation}
 	p_i^*=\frac{x_{i}+\alpha}{N+\alpha d}
 \end{equation}
 with $d$ the number of possible categories.
+
 The value of $\alpha$ should be chosen to reflect any prior knowledge regarding the events; in the case there were none, a non-informative prior should be chosen as stated by the \textit{principle of indifference} (in absence of any evidence one should distribute his beliefs uniformly).
 The simplest possible non-informed approach is to increment every event's count in the data set by one, including the ones not appearing.
-Thus the relative frequency between events will be maintained but there will be no event $i$ s.t. $x_i=0=p_i$.
-Unfortunately implementing this approach, while the most methodologically sound way of proceeding, would have been very time-consuming and outside the main focus of this thesis.
-The chosen strategy of adding a small positive constant $\epsilon$ to each empirical probability $p_i$, while not strictly correct, is extremely unlikely to change the learned CPTs.
-This can not be ruled out a priori and would necessitate of sensitivity analysis to be settled, but the prior belief is that it is very unlikely to happen.
+Thus the relative frequency between events will be maintained but there will be no event $i : x_i=0=p_i$.
 
-The applied algorithm, termed \textit{epsilon smoothing}, is based on adding and subtracting \enquote{probability atoms} $\epsilon$ with the objective of removing zeros in the CPTs and maintaining the normalisation, so that the result is still a valid probability distribution (for an introduction, see Subsec. \ref{subsec:probability-distributions}).
+Unfortunately implementing this approach, while recognisably the most methodologically sound way of proceeding, would have been very time-consuming and outside the main focus of this thesis.
+The chosen strategy of adding a small positive constant $\epsilon$ to each empirical probability $p_i$, while not strictly correct, is extremely unlikely to change the learned CPTs.
+This can not be ruled out a priori and would necessitate of sensitivity analysis to be decided, but the working prior belief is that it is very unlikely to happen.
+
+The applied algorithm, termed \textit{epsilon smoothing}, is based on adding and subtracting \enquote{probability atoms} $\epsilon$ with the objective of removing zeros in the CPTs and maintaining the normalisation, so that the result will still be  a valid probability distribution (based on Definition \ref{def:probability-measure}).
 We work with probability atoms $\epsilon$ so as not to incur in numerical imprecisions in the implementation, as only additions and subtractions are used.
 Every zero-valued element in a CPT column has a quantity $\epsilon \times \#!0$ added to it, with $\#!0$ the number of elements in the distribution that are not zero, and every non-zero entry has $\#0$, the number of zero elements, atoms subtracted from it.
-The end result is obviously still a correctly normalised probability distribution because given a probability distribution $P$, with $n$ elements $p$, of which $\#0$ are zero, and the  distribution $P^*$ resulting from to the described procedure:
-\begin{align*}
-	&\sum_{i=0}^{n} p_i = 1 \\
+The end result is obviously still a correctly normalised probability distribution because given a probability distribution $P$, with $n$ elements $p_i$, of which $\#0$ are zero, and the  distribution $P^*$ resulting from to the described procedure:
+\begin{align}
+	&\sum\limits_{i=0}^{n} p_i = 1 \\
 	\wedge  \quad &1 - \{ \#0 \times [(n - \#0) \times \epsilon] \} + \{ (n - \#0) \times [\#0 \times \epsilon] \}  = 1 \\
-	\Rightarrow \quad  &\sum_{i=0}^{n} p^*_i = 1
-\end{align*}
-The pseudocode is shown in Alg. \ref{alg:epsilon-smoothing}.
+	\implies \quad  &\sum\limits_{i=0}^{n} p^*_i = 1
+\end{align}
+The pseudocode is shown in Algorithm \ref{alg:epsilon-smoothing}.
 
 \begin{algorithm}[htp!]
 	\caption{Epsilon Smoothing algorithm pseudocode}
@@ -62,12 +68,12 @@ The pseudocode is shown in Alg. \ref{alg:epsilon-smoothing}.
 	\end{algorithmic}
 \end{algorithm}
 
-If the procedure were applied to the CPT reproduced in Tab. \ref{tab:rec-cpd-issues}, it would yield the one shown in Tab. \ref{tab:rec-cpd-epsilon}.
+If the procedure were applied to the CPT in Table \ref{tab:rec-cpd-issues}, it would yield the one shown in Table \ref{tab:rec-cpd-epsilon}.
 
 \begin{table*}[htbp]
 \centering
-\caption{\textbf{recettori estrogeni} CPD}
-\begin{tabularx}{\textwidth/2}{ccXX}
+\caption{recettori estrogeni CPT}
+\begin{tabularx}{0.5\textwidth}{ccXX}
 \toprule
       & &  \multicolumn{2}{c}{\textbf{mut17q21}} \\
 \cmidrule(lr){3-4}
@@ -81,55 +87,66 @@ If the procedure were applied to the CPT reproduced in Tab. \ref{tab:rec-cpd-iss
 \end{table*}
 
 
-\subsection{MPE Calculation}
-The main issue encountered during the implementation of the system described in Sec. \ref{sec:implemented-tool}, was that of correctly calculating the MPE.
-Initially, an attempt was made to write a custom function \texttt{export\_model\_to\_uai} to generate a UAI file (described in \ref{subsec:libraries}) directly from the pomegranate Bayesian Network model.
-This UAI file was fed to DAOOPT to generate the MPE solution as recounted in Subsec. \ref{subsec:algorithms} under the \textbf{MPE Algorithms Comparison} header.
-When compared with the MPE solution generated directly using pgmpy's \texttt{map\_query} function, it was seen that these disagreed in almost all cases.
-This shouldn't have been the case as both were generated using exact methods: Variable Elimination in pgmpy's case and AND/OR Branch-and-Bound for DAOOPT.
+\subsection{MPE Calculation} \label{subsec:results-mpe-calculation-issues}
+The main issue encountered during the implementation of the system described in Section \ref{sec:implemented-tool}, was that of correctly calculating the MPE.
+Initially, an attempt was made to write a custom function \texttt{export\_model\_to\_uai} to generate a UAI file (described in \ref{subsec:libraries}) directly from the Pomegranate Bayesian Network model.
+This UAI file was fed to DAOOPT to generate the MPE solution as recounted in Subsection \ref{subsec:algorithms} under the \textbf{MPE Algorithms Comparison} header.
+When compared with the MPE solution generated directly using Pgmpy's \texttt{map\_query} function, it was seen that these disagreed in almost all cases.
+This shouldn't have been the case as both were generated using exact methods: variable elimination in Pgmpy's case and AND/OR branch-and-bound for DAOOPT.
 
-While investigating the cause for this divergence, I came across an undocumented feature of pgmpy: a \texttt{UAIWriter} class that should have converted the pgmpy-based model (that was converted from the pomegranate-based model as recounted in Subsec. \ref{subsec:algorithms} at the \textbf{Pairwise Correlations} header) to the correct UAI file representing it.
-When this alternative UAI file was used as input for DAOOPT, the resulting MPE not only diverged from that calculated based on \texttt{export\_model\_to\_uai}, that was to be expected, but also from that calculated directly with pgmpy using \texttt{map\_query}, that was surprising.
+While investigating the cause for this divergence, an undocumented feature of Pgmpy was discovered: a \texttt{UAIWriter} class that should have converted the Pgmpy-based model (that was, in turn,converted from the Pomegranate-based model as recounted in Subsection \ref{subsec:algorithms} at the \textbf{Pairwise Correlations} header) to the correct UAI file representing it.
+When this alternative UAI file was used as input for DAOOPT, the resulting MPE not only diverged from that calculated based on \texttt{export\_model\_to\_uai}, that was to be expected, but also from that calculated directly with Pgmpy using \texttt{map\_query}, that was surprising.
 
-The conversion from the pomegranate-based to the pgmpy-based model was thoroughly tested using conditional probability and independencies query, so the issue is most likely to be found elsewhere.
-As the DAOOPT MPE solution generated starting from the UAI differs from the one calculated directly with pgmpy, there must be a bug either in pgmpy's UAI exporter or in its inference method.
-It is unclear if the following is still an issue (\url{https://github.com/pgmpy/pgmpy/issues/856}) but a series of test on simple networks, where the MPE calculation were carried out manually, seemed to confirm that \texttt{map\_query} was returning the correct MPE solution.
-
-For example, in the small BN whose structure is shown in Fig. \ref{fig:issues-bn} and the CPDs of the nodes in Tab. \ref{tab:mut-cpd-issues}, \ref{tab:eta-cpd-issues}, \ref{tab:rec-cpd-issues} and \ref{tab:diff-cpd-issues}, pgmpy's \texttt{map\_query} and DAOOPT returned different solutions to the following MPE query:
-\begin{align*}
-  argmax_{x,y,z}\mathbb{P}(
-  &\text{differenziazione}=x, \\
-  &\text{mut17q21}=y, \\
-  &\text{recettori estrogeni}=z | \text{eta arrotondata}=0) \\
-\end{align*}
-\texttt{map\_query} returned the assignment: 
-\begin{align} \label{eq:pgmpy-assignment}
-  \text{differenziazione}=1, 
-  \text{mut17q21}=1, 
-  \text{recettori estrogeni}=2
-\end{align}
-while DAOOPT returned:
-\begin{align} \label{eq:daoopt-assignment}
-  \text{differenziazione}=0, 
-  \text{mut17q21}=1, 
-  \text{recettori estrogeni}=2
-\end{align}
-
-In such a small network it is easy to verify that the probability of \ref{eq:pgmpy-assignment} is: $0.99 \times 0.84 \times 0.60 = 0.50$ and that it is the MPE solution; while that of \ref{eq:daoopt-assignment} is $0.99 \times 0.84 \times 0.21 = 0.17$ that makes it obviously incorrect.
+The architecture of the MPE calculation is shown in Figure \ref{fig:mpe_conversion_process}; initially a Pomegranate-based BN is learned from the data set by using the built-in \texttt{from\_samples} method, then a custom \texttt{convert\_to\_pgmpy} function converts the Pomegranate-based model to a Pgmpy-based one.
+The custom function \texttt{export\_to\_uai} and Pgmpy's built-in \texttt{UAIWriter} class are used to generate the \texttt{.uai} and \texttt{.uai.evid} files that are the input for DAOOPT to generate the MPE solutions.
+The \texttt{map\_query} method that is part of Pgmpy's API is also used to generate an MPE assignment.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=\columnwidth/2]{results/images/issues-bn}}
+\centerline{\includegraphics[width=\textwidth]{results/images/mpe_conversion_process}}
+\caption{MPE calculation flow.}
+\label{fig:mpe_conversion_process}
+\end{figure}
+
+The conversion from the Pomegranate-based to the Pgmpy-based model was thoroughly tested using conditional probability and independencies queries, so the issue is most likely to be found elsewhere.
+As the DAOOPT MPE solution generated starting from the UAI differs from the one calculated directly with Pgmpy, there must be a bug either in Pgmpy's UAI exporter or in its inference method.
+It is unclear if the following is still an issue (\url{https://github.com/pgmpy/pgmpy/issues/856}) but a series of test on simple networks, where the MPE calculation were carried out manually, seemed to confirm that \texttt{map\_query} was returning the correct MPE solution.
+
+For example, in the small BN whose structure is shown in Figure \ref{fig:issues-bn} and the CPDs of the nodes in Tables \ref{tab:mut-cpd-issues}, \ref{tab:eta-cpd-issues}, \ref{tab:rec-cpd-issues} and \ref{tab:diff-cpd-issues}, Pgmpy's \texttt{map\_query} and DAOOPT returned different solutions to the following MPE query:
+\begin{align}
+\begin{split}
+	\text{MPE}( \text{\enquote{differenziazione}}=x, \text{\enquote{mut17q21}}=y, \text{\enquote{recettori estrogeni}}=z \\
+	\mid \text{\enquote{eta arrotondata}}=0 )
+\end{split} 
+\end{align}
+\texttt{map\_query} returned the assignment: 
+\begin{align} \label{eq:pgmpy-assignment}
+  (\text{\enquote{differenziazione}}=1, 
+  \text{\enquote{mut17q21}}=1, 
+  \text{\enquote{recettori estrogeni}}=2)
+\end{align}
+while DAOOPT on the UAI exported with Pgmpy's returned:
+\begin{align} \label{eq:daoopt-assignment}
+  (\text{\enquote{differenziazione}}=0, 
+  \text{\enquote{mut17q21}}=1, 
+  \text{\enquote{recettori estrogeni}}=2)
+\end{align}
+
+In such a small network it is easy to verify that the probability of Equation \ref{eq:pgmpy-assignment} is: $0.99 \times 0.84 \times 0.60 = 0.50$ and that it is the MPE solution.
+The fact that the probability of Equation \ref{eq:daoopt-assignment} is $0.99 \times 0.84 \times 0.21 = 0.17$, makes it obviously incorrect.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{results/images/issues-bn}}
 \caption{Independencies query natural language output.}
 \label{fig:issues-bn}
 \end{figure}
 
 \begin{table*}[htbp]
 \centering
-\caption{\textbf{mut17q21} CPD}
-\begin{tabularx}{\textwidth/2}{cXX}
+\caption{mut17q21 distribution}
+\begin{tabularx}{\textwidth/3}{ccX}
 \toprule
-& 0 & 1    \\ 
-\textbf{mut17q21} & 0.006 & 0.99  \\
+ \multirow{2}{*}{\textbf{mut17q21}} & 0 & 0.01  \\
+ & 1 & 0.99 \\
 \bottomrule
 \end{tabularx}
 \label{tab:mut-cpd-issues}
@@ -137,8 +154,8 @@ In such a small network it is easy to verify that the probability of \ref{eq:pgm
 
 \begin{table*}[htbp]
 \centering
-\caption{\textbf{eta arrotondata} CPD}
-\begin{tabularx}{\textwidth/2}{ccXX}
+\caption{eta arrotondata CPT}
+\begin{tabularx}{0.5\textwidth}{ccXX}
 \toprule
       & &  \multicolumn{2}{c}{\textbf{mut17q21}} \\
 \cmidrule(lr){3-4}
@@ -153,8 +170,8 @@ In such a small network it is easy to verify that the probability of \ref{eq:pgm
 
 \begin{table*}[htbp]
 \centering
-\caption{\textbf{recettori estrogeni} CPD}
-\begin{tabularx}{\textwidth/2}{ccXX}
+\caption{recettori estrogeni CPT}
+\begin{tabularx}{0.5\textwidth}{ccXX}
 \toprule
       & &  \multicolumn{2}{c}{\textbf{mut17q21}} \\
 \cmidrule(lr){3-4}
@@ -169,8 +186,8 @@ In such a small network it is easy to verify that the probability of \ref{eq:pgm
 
 \begin{table*}[htbp]
 \centering
-\caption{\textbf{differenziazione} CPD}
-\begin{tabularx}{\textwidth/2}{ccXXX}
+\caption{differenziazione CPT}
+\begin{tabularx}{0.5\textwidth}{ccXXX}
 \toprule
       & &  \multicolumn{3}{c}{\textbf{recettori estr.}} \\
 \cmidrule(lr){3-5}
@@ -182,3 +199,38 @@ In such a small network it is easy to verify that the probability of \ref{eq:pgm
 \end{tabularx}
 \label{tab:diff-cpd-issues}
 \end{table*}
+
+\subsection{Late Removal of Clinical Variables} \label{subsec:removal-clinical-variables}
+As discussed in Section \ref{sec:data-set}, some variables were chosen to be dropped from the initial data set.
+Among these, \enquote{mut17q21}, \enquote{loss 17} and \enquote{FISHRatio} were initially included in the post-processed data set and became part of the Bayesian Network.
+Thus, in the initial phases of development and validation the network topology was the one shown in Figure \ref{fig:old-bn-plot}, which can be compared with the current one shown in Figure \ref{fig:sw_plot_result}.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth]{results/images/old-bn-plot}}
+\caption{Bayesian Network topology before the removal of \enquote{mut17q21}, \enquote{loss 17} and \enquote{FISH}.}
+\label{fig:old-bn-plot}
+\end{figure}
+
+At a later phase a decision was made, in concert with the ICP, to remove these three variables from the data set during the preprocessing phase; this on the basis of them being extremely skewed in their values, as can be seen by inspecting the \enquote{Distribution} column in Table \ref{tab:datasetdistribution}.
+
+The reason for their skewness was briefly mentioned in Subsection \ref{subsec:motivation} and can be traced to the fact that these variables are all connected to the technique of Fluorescence in Situ Hybridisation (FISH).
+This can be understood by analysing the \enquote{Clinical meaning} column in Table \ref{tab:datasetvariables} and knowing that FISH enables the analysis of specific DNA sequences on chromosomes and in particular of chromosome 17, because of its significance in breast cancer \citep{zhang2011important}.
+FISH was a technique that was not available prior to 2010 and thus nearly 70\% of the patients in the data base had a value of \enquote{NCO} for \enquote{FISHRatio}, meaning this test had not been carried out on them.
+Even worse, \enquote{mut17q21} presented more than 99\% \enquote{unknown} values and \enquote{loss 17} had 78\% of \enquote{FISH non fatta/FISH non valutabile}, meaning that the great majority of cases presented values with no real clinical meaning.
+
+It can be seen in Figure \ref{fig:old-bn-plot} how strong the association between \enquote{loss 17} and \enquote{FISH} was - \textit{a posteriori}, a clear case of spurious correlation -, and how feebly \enquote{mut17q21} was connected to the rest of the network.
+Leaving these variables thus introduced a very large amount of bias that confounded the resulting model.
+An example of this effect was experienced in the early stages of validation; a previous series of validation questions had been prepared by the ICP and included queries in a form similar to:
+\begin{quotation}
+	In the general population, if \textit{[...]} is \textit{[...]}, then is it more/less probable that \textit{[...]} is \textit{[...]}?
+\end{quotation}
+and
+\begin{quotation}
+	In young patients, if \textit{[...]} is \textit{[...]}, then is it more/less probable that \textit{[...]} is \textit{[...]}?
+\end{quotation}
+Queries of these forms, when compared against each other, reliably returned identical answers thus indicating that the age of the patient (\enquote{eta arrotondata} in the benchmark data set) had little or no influence of the values of other variables.
+Inspection of Figure \ref{fig:sw_plot_result} will show how, after the removal of \enquote{mut17q21}, \enquote{loss 17} and \enquote{FISHRatio}, \enquote{eta arrotondata} actually becomes disconnected from the rest of the network.
+The removal of the spurious \enquote{bridge} created by \enquote{mut17q21} now explicitly shows and confirms that patient age can have no influence on other variables' values, as had already been noticed. 
+
+The ICP confirmed that removing these three variables helped its users in better understanding the differences between a correlation in the variables representing the data set and a correlation in the actual clinical meaning behind the data.
+That is, they felt that it reduced the \textit{confounding factors} thus allowing a better appreciation of the explainability method used.

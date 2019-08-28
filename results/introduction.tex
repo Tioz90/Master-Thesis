@@ -1,0 +1,38 @@
+\section{Introduction} \label{sec:introduction-results}
+At a high level, the work in this thesis has been carried out with the objective of investigating the \textit{explainability} of a medical AI system.
+To this end, a proof of concept system was developed, based on a Bayesian Network model and inspired by the paper \citep{Butz2018}, in order to have a tool to probe the research hypotheses laid out in Section \ref{sec:response} \ref{sec:response} and \ref{sec:methodology-introduction}.
+These are: to substantiate the claims made in \citep{Butz2018} regarding the explainability of their method, extend this method to better explore the space of BN explainability and thus investigate the effectiveness of Bayesian Networks in providing explanations to expert users; the hope is also to set a methodological precedent for an \textit{application-grounded evaluation} of an AI system in the medical domain.
+The methods, algorithms and tools underlying the developed system have been presented in Subsections \ref{subsec:algorithms} and \ref{subsec:algorithms-novel} while the design rationale in Subsection \ref{subsec:interfacing-user}. 
+
+This chapter will present the experimental results obtained through the implementation of the proof of concept system, both from the point of view of its clinical significance (as described in Subsection \ref{subsec:clinical-validation-methodology}) and of its capacity to explain the data set and meaningfully interact with the expert medical user (see Subsection \ref{subsec:explainability-validation}).
+A successful clinical evaluation of the system, done in collaboration with the medical professionals of the Istituto Cantonale di Patologia (see Section \ref{sec:data-set}), is of paramount importance as one of the prerequisites for the system to be useful to its users is for them to trust its judgement.
+Intuitively, there is little hope for a meaningful interaction between man and machine if the former distrusts or doesn't believe the latter.
+The evaluation of the explainability of the system - and, as a consequence, of Bayesian Networks at large and of the method proposed in \citep{Butz2018} - has also been carried out together with the ICP, by using methods akin to those in the Social Sciences.
+This has been necessary because what is being done is an \textit{application-grounded evaluation} (see Section \ref{sec:evaluation-of-explainability}) and, as such, the process involves humans to a high degree.
+As identified in Chapter \ref{chap:literature-review}, it is important for the field of Explainable AI to borrow methods from outside Computer Science, Statistics and Mathematics in order to validate the explainability of its models.
+
+The system was built on the foundation set by the framework identified by \citet{lacave2002review} (see Section \ref{sec:explainability-in-bayesian-networks}), as this seems to be the most complete taxonomy present in the literature.
+As such the concepts of the taxonomy will be the yardstick that the software will be compared against.
+The system was developed to attempt to explain all three of the elements that the authors identified as needing clarification in a BN: the \textit{knowledge base}, the \textit{model} and the \textit{evidence propagated}.
+Explaining the first element is at the core of the methods of this thesis, as the \enquote{dialogues} (see Subsection \ref{subsec:algorithms-novel}) are essentially a way of approximating the MPE problem, which the authors identify as the way to explain the \textit{knowledge base}.
+The \textit{model} is explained in multiple ways, by describing it both \textit{graphically} and \textit{verbally}.
+The description of the \textit{evidence propagate} is also achieved by the \enquote{dialogues} and by the \enquote{pseudo-MPE method of interaction}, as their aim is to make the \enquote{reasoning} of the system clear to the user.
+Every interaction mode is also compared with the characteristics that \citet{miller2018explanation} identified should be in an explanation, from a psychological perspective; that is explanations should be: \textit{contrastive}, \textit{selected}, \textit{causal} and \textit{social}.
+
+At the same time, the findings by \citet{miller2018explanation} regarding the psychological nature of explanations (see Section \ref{sec:explainability-in-bayesian-networks}) have also been a guiding light and an excellent measure of the quality of the explanatory powers of the system.
+
+The chapter is organised as follows:
+\begin{itemize}
+  \item Section \ref{sec:implemented-tool} presents the developed proof of concept system in detail and from a user-centric point of view, mainly by the use of screenshots.
+	  Each subsection is dedicated to describing an interaction mode and integrated throughout are explainability and clinical significance remarks that were observed first-hand or collected informally from the ICP, that is not through the use of the structured questionnaire described in Subsection \ref{subsec:explainability-validation}.
+	  Every user feature is described in terms of the taxonomy presented by \citep{lacave2002review}.
+	\item Section \ref{sec:results-validation-results} exhibits the formal results of the clinical and explainability validation of the developed system, based on the methods presented in Section \ref{sec:validation}.
+	\item \begin{itemize}
+			  \item Subsection \ref{subsec:clinical-validation-results} presents the results of the clinical validation of the system through the display of the results to the questions described in Subsection \ref{subsec:clinical-validation-methodology} and a discussion on the significance of the results.
+			  \item Subsection \ref{subsec:explainability-validation-results} shows and discusses the results of the explainability validation of the developed system by means of analysing the answers given to the questionnaire presented in Subsection \ref{subsec:explainability-validation}.
+			\end{itemize}
+	\item Section \ref{sec:pseudo-mpe-evaluation} Section \ref{sec:bn-prediction-evaluation} shows the results of the comparison between the Pseudo-MPE (see \ref{subsec:algorithms-novel} under the \textbf{\enquote{Pseudo-MPE} from Initial Evidence} header) and the true MPE (Definition \ref{def:mpe}) solution, from a quantitative point of view.
+	The qualitative evaluation by the medical experts has been included in the questionnaire (Annex \ref{ann:questionnaire}).
+	\item Section \ref{sec:bn-prediction-evaluation} quantifies the performance of the BN as a classifier against the machine learning methods listed in Subsection \ref{subsec:algorithms-novel} under the \textbf{Other Machine Learning Methods} header.
+	\item Section \ref{sec:issues} discusses the issues that presented themselves during the implementation of the methods of this thesis, together with the solutions and workarounds found to address them.
+\end{itemize}

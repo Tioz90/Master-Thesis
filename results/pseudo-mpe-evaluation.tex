@@ -1,0 +1,45 @@
+\section{Pseudo-MPE Evaluation} \label{sec:pseudo-mpe-evaluation}
+This is not a user-facing feature \textit{per se}, but a way of running a test to compare the outputs of the Pseudo-MPE algorithm with the exact solution (this is described in detail in Subsection \ref{subsec:algorithms-novel} under the \textbf{MPE Algorithms Comparison} header).
+
+The Hamming and Jaccard distances between the MPE calculated with Pgmpy's \texttt{map\_query} and with DAOOPT should have been zero, as both use exact methods to solve the MPE problem.
+It was seen that this was not the case and this lead to the discovery of the problems described in Subsection \ref{subsec:results-mpe-calculation-issues}.
+As is explained in Section \ref{sec:issues}, the benchmark against which to compare the Pseudo-MPE was thus chosen to be Pgmpy's \texttt{map\_query} function.
+
+The tests were run over 1000 iterations; that is, 1000 initial random evidences $\boldsymbol{U_e}$ were generated and the Pseudo-MPE solution was found using Algorithm \ref{alg:pseudo-mpe-initial-evidence} and was compared with the true MPE solution.
+Given that there are twelve variables in the BN, the maximum distance possible for both Hamming and Jaccard distances is 12.
+Thus, the average distances shown in Table \ref{tab:mpe-vs-pseudo-results}, are a very promising result.
+
+\begin{table}[h]
+	\centering
+	\caption{Distance of Pseudo-MPE from true MPE solution}
+	\begin{tabularx}{0.5\textwidth}{Xl}
+		\toprule
+		Distance measure & Average distance  \\
+		\midrule	
+		Hamming & 0.062 \\
+		Jaccard & 0.048 \\
+		\bottomrule
+		\end{tabularx}
+	\label{tab:mpe-vs-pseudo-results}
+\end{table}
+
+As discussed by \citet{gamez2013advances}, the MPE problem is \textit{NP-hard} and remains such even in restricted network topologies, networks with restricted probabilities and for constant-bound approximations.
+MAP, as anticipated in Subsection \ref{subsec:bnupdating} is a harder problem than MPE and is in fact NP\textsuperscript{PP}-complete and, unlike MPE, remains NP-complete when restricted to polytrees.
+\todo[inline]{numero quadratico di chiamate, si riduce MAP ad updating. entrambi sono hard ma di classe inferiore}
+The proposed \enquote{Pseudo-MPE} algorithm, whose pseudocode is shown in Algorithm \ref{alg:pseudo-mpe-initial-evidence}, reduces the MAP problem to the updating problem that is polynomial and thus has a complexity $O(kV^2)$, in the number of nodes $V$ with $k$ a parameter that depends on the algorithm used for the calculation of posterior probabilities.
+
+The quadratic term $V^2$ comes from the fact that every \textit{(state,value)} pair is greedily chosen based solely on its efficiency and added to the existing evidence set so at every step the number of available \textit{(state,value)} pairs decreases by $1$.
+So, at every step one fewer updating call is done and the resulting complexity is that shown in Equation \ref{eq:pseudo-mpe-complexity}.
+\begin{equation} \label{eq:pseudo-mpe-complexity}
+	\sum_{x=1}^{V} x=\frac{1}{2} V(V+1) = O(V^2)
+\end{equation}
+It is trivial to see that there are at most only $V$ \textit{(state,value)} pairs because every \textit{state} is paired at each step with only one of its \textit{values} - the most probable.
+The single most efficient pair is chosen at each step and then the corresponding \textit{state} is not selectable anymore.
+
+The extra term $k$ depends on the algorithm used to compute the posterior probabilities, as at each step these are recalculated based on the updated evidence.
+The Pomegranate-based implementation does this inference utilising the \texttt{predict\_proba} built-in function, that is based on \textit{loopy belief propagation}.
+Loopy belief propagation is an \textit{approximate inference algorithm} that estimates a solution to the exact \textit{belief propagation algorithm} introduced by \citet{pearl1982reverend}, that is unfortunately exponential in complexity $O(M^V)$, with $M$ the maximum number of states that a variable in the network may have.
+Loopy belief propagation is instead quadratic in the maximum number of values for a state $O(M^2)$.
+\todo[inline]{giusto?}
+
+Thus, the current Pseudo-MPE implementation has complexity $O(M^2V)$ with $M$ the maximum number of \textit{values} in any state and $V$ the number of states.

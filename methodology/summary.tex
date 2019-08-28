@@ -1,0 +1,16 @@
+\section{Summary}
+This chapter has presented a series of methods whose aim is to enable the creation of a proof of concept system inspired by the paper \enquote{Explaining the Most Probable Explanation} \citep{Butz2018} and to validate this system from the point of view of its explainability.
+This evaluation with expert pathologists at the Istituto Cantonale di Patologia (ICP), whose results will be presented in Chapter \ref{chap:results}, aims at validating the methods proposed by \citet{Butz2018} together with newly proposed one, BNs' explainability in general and to act as a methodological framework for future work.
+This is important because, as discussed in Chapter \ref{chap:literature-review}, the lack of evaluation of explainability is one of the main gaps in the xAI literature.
+
+The chapter opens by presenting the data set that was supplied by the ICP and how this was integrated into the system and used to learn the structure and Conditional Probability Tables of the Bayesian Network, based on the \textit{Pomegranate} Python package.
+A series of standard-based algorithms have been presented to learn the BN from the data, to calculate the \textit{d-separation} between sets of nodes in the BN and to use the external solver DAOOPT to calculate the solutions to the MPE problem.
+
+After these, a set of novel algorithms that constitute the core of this thesis have been presented: three variants of the \textit{dialogue} that is the realisation of the interaction method proposed by \citet{Butz2018} together with a procedure to generate alternative explanation branches to the \enquote{knowledge base} when and if the expert user dissents with the system on a proposal.
+The remaining two algorithms are connected to evaluating the \enquote{pseudo-MPE} as compared to the true MPE solution.
+
+Then, the rationale relating to the user interface has been presented together with the boilerplates in Extended Backus-Naur form used to generate the natural language outputs of the system.
+Regarding to interfacing with the user, the method for calculating and displaying pairwise \textit{mutual information} between the variables in the BN is also introduced.
+
+The final topic discussed is the evaluation methodology that will be used to assess the proof of concept system from the point of view of both its adherence to clinical literature i.e., its capacity to give outputs coherent with the experts' beliefs, and its explainability: its capability to explain its outputs to the users of the ICP and to support them in their daily work.
+
