@@ -1,0 +1,31 @@
+\section{Summary}
+This chapter has dealt with the outcomes of the work introduced in Chapter \ref{chap:methodology}: the developed proof of concept software system which was used to validate the initial hypotheses regarding the explainability of Bayesian networks.
+
+The implemented tool has been described and presented in detail by looking at every user interaction mode separately and at how these relate to the framework proposed by \citet{lacave2002review} and the characteristics of an explanation advanced by \citet{miller2018explanation}.
+Where present, the outcomes of an \enquote{informal evaluation} of the system have been included; these are the result of observing and interacting personally with the ICP's experts.
+The interaction modes analysed are:
+\begin{itemize}
+  \item \enquote{plot model};
+  \item \enquote{independencies/d-separation query};
+  \item \enquote{conditional probability query};
+  \item \enquote{MPE query};
+  \item \enquote{pseudo-MPE query};
+  \item three variants of \enquote{dialogue}.
+\end{itemize}
+
+The first validation results that have been reported are those regarding the \textit{clinical validation} of the system as the outcome of these underpins the validity of all others.
+The complete series of results to the natural language questions presented in Subsection \ref{subsec:clinical-validation-methodology} has been presented, together with the experts' comments.
+The results, when summarised, confirm that the ICP considers the system's outputs clinically valid.
+An extra discussion to better contextualise the clinical relevance of the system has also been included.
+
+The evaluation of the system's explainability hinges on an \enquote{explainability evaluation questionnaire}, a method borrowed from the social sciences, which was submitted to the ICP around three weeks after they had started using the software.
+The questionnaire aims to disentangle the explainability of the single interaction modes and thus trace them back to more general explainability concepts for BNs.
+The results seem to confirm that the system was indeed explainable, based on the warm reception it received from seasoned medical professionals, who had explicitly stated their aversion to having to deal with the inner workings of a ML tool.
+The dialogical mode of interaction was appreciated in its novelty and potential to conduct clinical research, but was ultimately deemed more onerous than the other implemented approaches.
+A novel result was that \textit{linguistic} explanations were consistently rated more highly than \textit{graphical} ones, contradicting findings in \citep{lacave2002review}.
+
+An evaluation has then been discussed for a non-user-facing feature comparing the quality of the solutions given by the \enquote{pseudo-MPE} algorithm with the true MPE.
+%, the second assessed the power of the learned BN as a classifier against common machine learning methods.
+
+The final section of the chapter has assessed the main issues encountered during the development and implementation of the methods in this thesis.
+These include zero-valued entries in the conditional probability tables learned by Pomegranate and  an outline of the algorithm used to solve this problem, complications in the calculation of the true MPE solution using DAOOPT and Pgmpy, and the effect that a late-stage removal of three variables from the data set had on the resulting model.

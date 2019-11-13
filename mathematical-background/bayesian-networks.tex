@@ -5,52 +5,52 @@ Each column is a probability mass function over $X$, say $P(X \mid Y_1=y_1, \ldo
 An example CPT can be seen in Table \ref{tab:b-cpd}.
 
 \begin{definition}[Bayesian Network] \label{def:bayesian-network}
-	A Bayesian Network (BN) is a probabilistic graphical model represented by a DAG $\mathcal{G}$ whose vertices are in one-to-one correspondence with a set of random variables $\mathcal{U}$ and the edges model the dependencies among these.
-	The probability distribution of each variable $U \in \mathcal{U}$ is given by a CPT whose entries depend only on its parents in the graph structure.
+	A Bayesian network (BN) is a probabilistic graphical model represented by a DAG $\mathcal{G}$ whose vertices are in one-to-one correspondence with a set of random variables $\boldsymbol{U}$ and the edges model the dependencies among these.
+	The probability distribution of each variable $U \in \boldsymbol{U}$ is given by a CPT whose entries depend only on its parents in the graph structure.
 	
-	The so-called Markov Condition states that every variable $U$ is independent of all nodes in the network, except its descendent $Desc(U)$, given its parents $Pa(U)$:
+	The so-called Markov Condition states that every variable $U$ is independent of all nodes in the network, except from its descendents $Desc(U)$, given knowledge of its parents $Pa(U)$:
 	\begin{equation*}
-		\forall U \in \mathcal{U}:  ( U \perp \neg Desc(U) \mid Pa(U)) \,.
+		\forall U \in \boldsymbol{U}:  ( U \perp \neg Desc(U) \mid Pa(U)) \,.
 	\end{equation*}
 \end{definition}
-The Markov Condition (named after the 19th century mathematician Andrej Markov) defines a d-separation on the DAG where each node/variable $U$ is d-separated from all others given the conditioning set $Pa(U) = \boldsymbol{Z}$.
+The \textit{Markov condition} (named after the 19th century mathematician Andrej Markov) imposes a d-separation on the DAG where each node/variable $U$ is d-separated from all others given the conditioning set $Pa(U) = \boldsymbol{Z}$.
 
 A BN model is basically a way of representing an explicit joint distribution of random variables $\mathbb{P}(U_1=u_1, \ldots ,U_n=u_n) $ in a compact way.
-The compactness is achieved by leveraging the Markov Condition, that is the independencies that exist among the random variables, and the Chain Rule (see Equation \ref{eq:chainrule}) to rewrite the joint as:
+The compactness is achieved by leveraging the Markov condition i.e., the independencies that exist among the random variables, and the \textit{chain rule} (Equation \ref{eq:chainrule}) to rewrite the joint as:
 \begin{equation}
 	\mathbb{P}(U_1=u_1, \ldots ,U_n=u_n) = \prod_i \mathbb{P}(U_i=u_i \mid Pa(U_i))
 \end{equation} 
-A BN gives the flexibility to drop the many weak dependencies that are bound to exist between variables thus leading to an even simpler model.
+A BN gives the flexibility to drop the many weak dependencies that are bound to exist between variables, thus leading to an even simpler model.
 A full probability table for a joint distribution of random variables obscures the independencies and requires an exponential number of entries for the representation.
-A Bayesian Network on the other hand can represent the same distribution using only a linear number of parameters.
-The way that Bayesian Networks can be used to reduce the storage requirements for uncertain information is by taking advantage of the conditional independencies embedded in the underlying distribution being modelled.
-The power of BNs comes from the additional information encoded in their structure and this was first explicitly described in its entirety by \citet{Pearl1988}, who defined the concept of dependence separation (see Subsection \ref{subsec:d-separation}) and applied it to Bayesian Networks.
+A Bayesian network on the other hand can represent the same distribution using only a linear number of parameters.
+The power of BNs comes from the additional information encoded in their structure as first explicitly described in its entirety by \citet{Pearl1988}, who defined the concept of dependence separation (Definition \ref{def:d-separation}) and applied it to Bayesian networks.
 A classic example of BN has been shown in Figure \ref{fig:asia-bn}.
 
-One nice characteristic of BNs is that they very naturally model the type of mixed causal and stochastic processes that we find in all of Nature.
-Imagine we want to represent the process modelled by joint distribution $\mathbb{P}(U,V)$; using the chain rule for conditional probabilities (Equation \ref{eq:chainrule}) we can write this as $\mathbb{P}(V \mid U) \mathbb{P}(U)$.
-A BN modelling this process would be composed of two nodes $U$ and $V$ with an edge from the former to the latter $U \rightarrow V$, $U$ is called the \enquote{parent} of $V$.  Each of these two nodes would have its own probability table, with $\mathbb{P}(U)$ representing the \textit{prior} distribution over $V$ and $\mathbb{P}(V \mid U)$ the \textit{conditional probability distribution} of $V$ given $U$.
+One convenient characteristic of BNs is that they very naturally model the type of mixed causal and stochastic processes that are found in all of Nature.
+Imagine we want to represent the process modelled by joint distribution $\mathbb{P}(U,V)$; using the chain rule for conditional probabilities (Equation \ref{eq:chainrule}) we can write this as $\mathbb{P}(V \mid U) \times \mathbb{P}(U)$.
+A BN modelling this process would be composed of two nodes $U$ and $V$ with an edge from the former to the latter $U \rightarrow V$, $U$ is identified as the \enquote{parent} of $V$. 
+Each of these two nodes would have its own probability table, with $\mathbb{P}(U)$ representing the \textit{prior} distribution over $V$ and $\mathbb{P}(V \mid U)$ the \textit{conditional probability distribution} of $V$ given $U$.
 
-We can now see why these types of models are named \textit{Bayesian} Networks: the inference process is based in a given prior distribution/belief and evolves through a parent $\rightarrow$ child relationship to constantly yield an updated \textit{posterior} belief.
-The BN DAG encodes a generative sampling where each variable's value is determined stochastically by Nature, based on the value of its parents.
-This process is also highly compatible with our view of causality and this is one of the reason that makes BNs highly interpretable.
+We can now see why these types of models are named \textit{Bayesian} networks: the inference process is based in a predetermined \textit{prior} distribution/belief and evolves through a parent $\rightarrow$ child relationship to constantly yield an updated \textit{posterior} belief.
+The BN's DAG encodes a generative sampling where each variable's value is determined stochastically by Nature, based on the value of its parents.
+This process is also highly compatible with our view of \textit{causality} and this is one of the reason that could make BNs highly \textit{interpretable}.
 The prior $\mathbb{P}(A)$ can be seen as the result of some stochastic process caused by a series of latent (unmodelled) variables while the posterior $\mathbb{P}(B \mid A)$ is stochastically, causally determined by $A$. 
-As mentioned in the previous paragraphs, there are probably no truly ``prior'' distributions in the Universe, at the modelling scale we are usually interested in.
-Only on arriving on the quantum particle level may we find ``pure'' stochastic, uncaused processes due to quantum collapse.
+As mentioned in the previous paragraphs, there are probably no truly \enquote{prior} distributions in the Universe, at the modelling scale we are usually interested in.
+Only on arriving on the quantum particle level may we find \enquote{pure} stochastic, uncaused processes created by quantum collapse.
 
-A good example of how BNs are well compatible with our notion of causality may be to imagine $A$ as the random variable modelling the predisposition to having a certain disease and $B$ the one indicating actually developing the symptoms for it.
+A good example of how BNs are compatible with our notion of causality may be to imagine $A$ as the random variable modelling the predisposition to having a certain disease and $B$ the one indicating actually developing the symptoms for it.
 \textit{First}, genetic and epigenetic factors such as the environment stochastically contributed to having the predisposition and \textit{then} the development of the symptoms was stochastically determined by the degree of predisposition.
-Adding an extra time dimension certainly helps in dealing with this class of models.
+Adding an extra time dimension certainly helps in understanding this class of probabilistic models.
 
-If the example show in Figure \ref{fig:bn-example-dag} is taken as the underlying graph structure of a Bayesian Network, each node now represents a random variable with an associated \textit{Conditional Probability Table} (CPT), that defines its probability distribution based on that of its parents.
-The distributions for \enquote{eta arrotondata} and \enquote{mut17q21} in the Bayesian Network in question are shown in Table \ref{tab:mut-cpd} and \ref{tab:eta-cpd}.
+If the example show in Figure \ref{fig:bn-example-dag} is taken as the underlying graph structure of a Bayesian network, each node now represents a random variable with an associated \textit{conditional probability table} that defines its probability distribution based on that of its parents.
+The distributions for \enquote{eta arrotondata} and \enquote{mut17q21} in the Bayesian network in question are shown in Table \ref{tab:mut-cpd} and \ref{tab:eta-cpd}.
 \enquote{Mut17q21} is a root node i.e., has no parents, in the DAG so its probability distribution is unconditional or \textit{marginal}.
-\enquote{Eta arrotondata}, on the other hand, is a child of \enquote{mut17q21} so the probability of its values is conditional on that of its parent and is represented by a CPT.
+\enquote{Eta arrotondata}, on the other hand, is a child of \enquote{mut17q21} so the probability of its values is the results of a conditioning on those of its parent and is thus represented by a CPT.
 For example, \enquote{eta arrotondata} takes on value \enquote{<40} $44\%$ of the time when \enquote{mut17q21} has value \enquote{mut}, but only $4\%$ of the time when \enquote{mut17q21} has value \enquote{unknown}.
 
 \begin{table*}[htbp]
 \centering
-\caption{mut17q21 mass function}
+\caption{\enquote{mut17q21} mass function}
 \begin{tabularx}{0.5\textwidth}{ccX}
 \toprule
  \multirow{2}{*}{\textbf{mut17q21}} & mut & 0.01  \\
@@ -62,7 +62,7 @@ For example, \enquote{eta arrotondata} takes on value \enquote{<40} $44\%$ of th
 
 \begin{table*}[htbp]
 \centering
-\caption{eta arrotondata CPT}
+\caption{\enquote{eta arrotondata} CPT}
 \begin{tabularx}{0.5\textwidth}{ccXX}
 \toprule
       & &  \multicolumn{2}{c}{\textbf{mut17q21}} \\
@@ -76,42 +76,44 @@ For example, \enquote{eta arrotondata} takes on value \enquote{<40} $44\%$ of th
 \label{tab:eta-cpd}
 \end{table*}
 
-Probabilistic graphical models such as Bayesian networks - as just defined - are often used to express expert knowledge about a particular domain and perform reasoning on that problem. 
+Probabilistic graphical models such as Bayesian networks are often used to express expert knowledge about a particular domain and perform reasoning on that problem. 
 Alternatively, the specification of the network can be automatically achieved from a sufficient amount of data about the variables under consideration for a particular reasoning task. 
-In this thesis we focus on the case of Bayesian network learned from data, but the methods presented in Chapter \ref{chap:methodology} would apply also to a user-designed network, as would be the case in an Expert System. 
-As the Bayesian Network formalism consists of both a qualitative element (the directed graph) and a quantitative one (the conditional probability tables), in the following sections we will detail how these two components can be obtained automatically from data.
+In this thesis we focus on the case of Bayesian network learned from data, but the methods presented in Chapter \ref{chap:methodology} would also apply to a user-designed network, as would be the case in an \textit{expert system}. 
+As the Bayesian network formalism consists of both a qualitative element (the directed graph) and a quantitative one (the conditional probability tables), in the following sections we will detail how these two components can be obtained automatically from data.
 
 \subsection{Learning Bayesian Networks Structure from Data} \label{subsec:learning-bn-structure} 
-Learning a BN DAG from data is typically addressed as an optimisation task and is known as the \textit{Bayesian Network Structure Learning problem}. 
+Learning a BN DAG from data is typically addressed as an optimisation task and is known as the \textit{Bayesian network structure learning problem}. 
 In many probabilistic models initialisation is fast but then fitting the data is slow (for example in \textit{k-means}).
-For Bayesian Networks the converse is true: fitting is fast as only sums of the counts in the data are needed, but learning the correct graph structure can take super-exponential time - more precisely, the space of Bayesian Networks that have $|V|$ variables has size $2^{O(|V|^2)}$ \citep{berzan2012exploration} - in the number of variables and thus easily becomes an intractable problem.
+For Bayesian networks the converse is true: fitting is fast as only sums of the counts in the data are needed, but learning the correct graph structure can take super-exponential time - more precisely, the space of Bayesian networks that have $|V|$ variables has size $2^{O(|V|^2)}$ \citep{berzan2012exploration} - in the number of variables and this easily leads to an intractable problem.
 
 Let us consider the specification of a BN over the variables $\boldsymbol{X}=(X_1,\ldots,X_n)$ and denote as $\boldsymbol{D}$ a data set of joint and complete observations of $\boldsymbol{X}$. 
-A \textit{score function} is a map $f$ giving a score to any possible DAG $\mathcal{G}$ whose nodes are in correspondence with $\boldsymbol{X}$ as a function of the dataset $\boldsymbol{D}$. 
-The resulting score $f(\mathcal{G},\boldsymbol{D})$ is a measure of how well a BN with graph $\mathcal{G}$ fits the dataset $\boldsymbol{D}$.
-The simplest approach consists in using the likelihood (i.e., the probability assigned by the BN to the data) as a score. 
-Yet, to prevent over-fitting additional terms penalised complex models are added.
+A \textit{score function} is a map $f$ giving a score to any possible DAG $\mathcal{G}$ whose nodes are in correspondence with $\boldsymbol{X}$ as a function of the data set $\boldsymbol{D}$. 
+The resulting score $f(\mathcal{G},\boldsymbol{D})$ is a measure of how well a BN with graph $\mathcal{G}$ fits the data set $\boldsymbol{D}$.
+The simplest approach consists in using the likelihood (the probability assigned by the BN to the data) as a score. 
+Yet, additional terms that penalise complex models are added to prevent over-fitting.
 Given the score, the problem is basically a search over the set $\Gamma$ of all the possible DAGs with $|V|$ nodes i.e., $\mathcal{G}^* = \underset{\mathcal{G} \in \Gamma}{\arg\max} f(\mathcal{G},\boldsymbol{D})$. 
-Such a task is NP-hard but approximate search procedures to solve it efficiently can be defined.
+Such a task is NP-hard but approximate search procedures can be defined to solve it efficiently.
 
 The methods to solve this problem can be roughly categorised into three categories:
 \begin{description}
-	\item[Search and Score] This is the most na{\"i}ve method as it does a brute force search over all the possibile graph structure space - i.e., all DAGs with the same number of variables as the input data - and scores all these depending on some cost function.
+	\item[Search and Score] This is the most na{\"i}ve method as it does a brute force search over all the possible graphs' structure space - i.e., all DAGs with the same number of variables as the input data - and scores all these depending on some cost function.
 	
-	There are many cost functions that have been proposed over the years; for example, a Bayesian cost function represents the probability of the DAG $G$ given the data $\boldsymbol{D}$: $\mathbb{P}(G \mid \boldsymbol{D})$, an Information Theory one scores the fitness of a DAG by its ability to balance graph description length and data description length given the graph. 
+	There are many cost functions that have been proposed over the years; for example, a Bayesian cost function represents the probability of the DAG $\mathcal{G}$ given the data $\boldsymbol{D}$: $\mathbb{P}(\mathcal{G} \mid \boldsymbol{D})$ while an information theory one scores the fitness of a DAG by its ability to balance graph description length and data description length given the graph. 
 	
 		This process is super-exponential in the number of variables but through the use of dynamic programming and heuristic search algorithms it can become sub-exponential.
 		Nonetheless, solving the exact problem is only feasible up to $\approx 30$ variables.
+		
 	\item[Constraint Learning] Methods of this type calculate some measure of correlation to identify the presence and direction of edges between nodes and are much less used than the other ones presented.
 		A typical test is to iterate over all triplets while testing for conditional independencies.
 		Thanks to the d-separation properties outlined in Subsection \ref{sec:bayesiannetworks}, this test is able to identify the correct edges.
 		The algorithm is quadratic in time and in the number of vertices.
+		
 	\item[Approximations] Several heuristical approaches have been developed to be able to find good network structures in an efficient manner.
 		Examples of these are:
 		\begin{itemize}
-		  \item Chow-Liu, that builds a tree approximation of the probability distribution.
-		  \item Greedy Hill-Climbing, that adds/removes/flips an edge at a time.
-		  \item Optimal Reinsertion, that iteratively calculates the optimal \textit{Markov blanket} (the subset of all nodes that are sufficient to determine the value of another subset) of an ever-smaller subset of nodes.
+		  \item \textit{Chow-Liu}, which builds a tree approximation of the probability distribution;
+		  \item \textit{greedy hill-climbing}, which adds/removes/flips an edge at a time;
+		  \item \textit{optimal reinsertion}, which iteratively calculates the optimal \textit{Markov blanket} (the subset of all nodes that are sufficient to determine the value of another subset) of an ever-smaller subset of nodes.
 		\end{itemize}
 \end{description}
 
@@ -131,11 +133,11 @@ Once the DAG structure is given, learning the CPTs from the data $\boldsymbol{D}
 \end{description}
 
 \subsection{Bayesian Networks Updating} \label{subsec:bnupdating}
-All the types of inference presented are instances of \textit{diagnostic reasoning}, also known as \textit{abductive reasoning}. 
-Abductive reasoning is a form of inference that starts from observed evidences and looks for the best/most simple \textit{explanation} for them.
-Unlike \textit{deductive reasoning}, abductive reasoning is not based on logical necessity, but on inferences based on observations; thus it can not verify the conclusion with absolute certainty but only yield, at best, a highly probable explanation.
+All the types of inference that will be presented are instances of \textit{diagnostic reasoning}, also known as \textit{abductive reasoning}. 
+Abductive reasoning is a form of inference that starts from observed evidence and looks for the best/most simple \textit{explanation} for them.
+Unlike \textit{deductive reasoning}, abductive reasoning is not based on logical necessity, but on inferences based on observations; thus it cannot verify the conclusion with absolute certainty but only yield, at best, a highly probable explanation.
 The direction of inference is reversed in abduction - this is why it is sometimes called \textit{retroduction} - as compared to deduction.
-It would be a logical fallacy know as \enquote{affirming the consequent} to state that any explanation were certain, because there may be multiple possible explanations for the same observation.
+It would be a logical fallacy known as \enquote{affirming the consequent} to state that any explanation were certain, because there may be multiple possible explanations for the same observation.
 
 The following examples may help to clarify the difference between the two inference processes:
 \begin{description}
@@ -143,11 +145,10 @@ The following examples may help to clarify the difference between the two infere
 	\item[abductive reasoning] given that \enquote{Diogenes is mortal}$(b)$ it is very probable that \enquote{Diogenes is a man}$(a_2)$; this is not certain as it may also be that \enquote{Diogenes is a dog}$(a_3)$: $(b) \centernot\implies (a_2) \wedge (b) \centernot\implies (a_3) $.
 \end{description}
 
-Abductive reasoning can either be modelled as a conditional probability or a MAP query and is of fundamental importance in many important problems of machine learning including medical diagnosis, that is of particular interest in this thesis.
-Let us define three sets of variables of interest in the BN: $\boldsymbol{U_q}$ the \textit{query variables}, $\boldsymbol{U_e}$ the \textit{evidence variables} and $\boldsymbol{U_m}$ all other variables.
+Abductive reasoning can either be modelled as a conditional probability or a MAP query and is of fundamental importance in many important problems of machine learning, including medical diagnosis which is of particular interest for this thesis.
+Let us define three sets of variables of interest in the BN: $\boldsymbol{U_q}$ the \textit{query variables}, $\boldsymbol{U_e}$ the \textit{evidence variables} and $\boldsymbol{U_m}$ all remaining variables.
 
 We can thus define the conditional probability query as the updated probability of $\boldsymbol{U_q}$ based on the observation of the values of $\boldsymbol{U_e}$.
-
 \begin{definition}[Conditional Probability Query]
 	The conditional probability query $\mathbb{P}(\boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e})$ for variables $\boldsymbol{U_q}$ given evidence $\boldsymbol{U_e}=\boldsymbol{e}$ is:
 \begin{equation*} 
@@ -155,29 +156,30 @@ We can thus define the conditional probability query as the updated probability 
 	\frac{ \sum\limits_{\boldsymbol{U_m}} \prod_i \mathbb{P}(U_i \mid Pa(U_i)) }{ \sum\limits_{\boldsymbol{U_m, U_q}} \prod_i \mathbb{P}(U_i \mid Pa(U_i)) } \,.
 \end{equation*}
 \end{definition}
+The solution will be the \textit{posterior} probability of $\boldsymbol{U_q}$.
 
-Another common type of question we might ask a BN is the following: \enquote{given evidence $\boldsymbol{U_e}$ which is the most likely assignment of a subset of variables $\boldsymbol{U_q}$?}.
+Another common type of question we might ask a BN is the following: \enquote{given evidence $\boldsymbol{U_e}$ which is the most likely assignment to a subset of variables $\boldsymbol{U_q}$?}.
 This is know as \textit{Maximum a posteriori (MAP)} inference and is a much harder problem that a conditional probability query.
-The solution is given by solving an optimisation problem.
+The solution is found by solving an optimisation problem.
 \begin{definition}[Maximum a Posteriori Query]  \label{def:map}
-Given sets $\boldsymbol{U_q} \subseteq \mathcal{U}$ and $\boldsymbol{U_z} = \mathcal{U} \mysetminus \boldsymbol{U_e} \mysetminus \boldsymbol{U_q}$, the MAP query for $\boldsymbol{U_q}$, $\text{MAP }( \boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e} )$, is:
+Given sets $\boldsymbol{U_q} \subseteq \boldsymbol{U}$ and $\boldsymbol{U_z} = \boldsymbol{U} \mysetminus \boldsymbol{U_e} \mysetminus \boldsymbol{U_q}$, the MAP query for $\boldsymbol{U_q}$, $\text{MAP}\,( \boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e} )$, is:
 	\begin{equation*}
-		\text{MAP }( \boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e} ) = \underset{\boldsymbol{q}}{\arg\max} \sum\limits_{\boldsymbol{z}} \mathbb{P}(\boldsymbol{U_q}=\boldsymbol{q}, \boldsymbol{U_z}=\boldsymbol{z} \mid \boldsymbol{U_e}=\boldsymbol{e}) \,.
+		\text{MAP}\,( \boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e} ) = \underset{\boldsymbol{q}}{\arg\max} \sum\limits_{\boldsymbol{z}} \mathbb{P}(\boldsymbol{U_q}=\boldsymbol{q}, \boldsymbol{U_z}=\boldsymbol{z} , \boldsymbol{U_e}=\boldsymbol{e}) \,.
 	\end{equation*}
 \end{definition}
-The solution will be the assignment of values $\boldsymbol{z}$ to all variables in the set $\boldsymbol{U_z}$ that maximises their joint probability.
+The solution will be the assignment of values $\boldsymbol{q}$ to all variables in the set $\boldsymbol{U_q}$ that maximises their joint probability.
 
-An important thing to note is that the greedy assignment where each variable picks its most likely value can be very different from the most likely joint assignment of all variables.
+An important thing to note is that the greedy assignment, where each variable picks its most likely value, can be very different from the most likely joint assignment of all variables.
 A simple example showing this is given by \citet[pag. 26]{koller2007}.
-Suppose a Bayesian Network is composed of two nodes $U$ and $V$ with the former the parent of the latter: $U \rightarrow V$.
+Suppose a Bayesian network is composed of two nodes $U$ and $V$ with the former the parent of the latter: $U \rightarrow V$.
 Assume their CPDs are represented by the CPTs shown in Tables \ref{tab:a-cpd} and \ref{tab:b-cpd}.
 The most probable value for $U$ is $U=u_1$ and this constrains $V$ to choose equivalently between $V=v_0$ or $V=v_1$.
-The probability of the assignment $(U=u_1,V=v_1)$ given by $( \underset{u}{\arg\max} \mathbb{P}(U=u), \underset{v}{\arg\max} \mathbb{P}(V=v)) )$ is $0.6 \times 0.5 = 0.3$.
-On the other hand, the most likely joint assignment given by $\underset{u,v}{\arg\max} \mathbb{P}(U=u)\mathbb{P}(V=v)$ is $(U=u_0,V=v_1)$ and has probability $0.4 \times 0.9 = 0.36$.
+The probability of the assignment $(U=u_1,V=v_1)$ given by $( \underset{u}{\arg\max}\, \mathbb{P}(U=u), \underset{v}{\arg\max}\, \mathbb{P}(V=v)) )$ is $0.6 \times 0.5 = 0.3$.
+On the other hand, the most likely joint assignment given by $\underset{u,v}{\arg\max}\, \mathbb{P}(U=u,V=v)$ is $(U=u_0,V=v_1)$ and has probability $0.4 \times 0.9 = 0.36$.
 
 \begin{table*}[htbp]
 \centering
-\caption{U CPT}
+\caption{\enquote{U} CPT}
 \begin{tabularx}{\textwidth/4}{ccX}
 \toprule
  \multirow{2}{*}{\textbf{A}} & $u_0$ & 0.4  \\
@@ -189,7 +191,7 @@ On the other hand, the most likely joint assignment given by $\underset{u,v}{\ar
 
 \begin{table*}[htbp]
 \centering
-\caption{V CPT}
+\caption{\enquote{V} CPT}
 \begin{tabularx}{\textwidth/3}{ccXX}
 \toprule
        &  \multicolumn{3}{c}{\textbf{A}} \\
@@ -202,22 +204,22 @@ On the other hand, the most likely joint assignment given by $\underset{u,v}{\ar
 \label{tab:b-cpd}
 \end{table*}
 
-The MAP problem is hard to solve efficiently because it is part of the \textit{NP-hard} complexity class, as proved by \citet{Shimony1994}.
-Calculating it in a brute-force way would mean elencating all the possible variable-value tuples and computing their joint probabilities; as these are exponential in the number of variables, the problem is evidently untractable.
+The MAP problem is hard to solve efficiently because it is part of the NP\textsuperscript{PP}-hard complexity class, as proved by \citet{Shimony1994}.
+Attempting to solve it in a brute-force way would mean listing all the possible variable-value tuples and computing their joint probabilities; as the number of these combinations is exponential in the number of variables the problem is evidently intractable.
 
-This is true even in a Bayesian Network.  
+The problem remains intractable even in a Bayesian network.  
 Such a model may possess a linear number of parameters but the underlying distribution is still implicitly exponential in size.
-Explicitly calculating the MAP defeats the very purpose of the BN, that is computational efficiency.
-For this reason, there exist a host of approaches to optimising MAP: elimination algorithms, gradient methods, simulated annealing and other stochastic local searches, belief propagation and integer linear programming.
+Explicitly calculating the MAP defeats the very purpose of the BN: computational efficiency.
+For this reason, a host of approaches exist to optimise MAP: elimination algorithms, gradient methods, simulated annealing and other stochastic local searches, belief propagation, and integer linear programming.
 
-A special case of MAP is the \textit{Most probable explanation (MPE)} and is an easier problem to solve.
+A special case of MAP, which is also an easier problem to solve, is the \textit{most probable explanation (MPE)}.
 \begin{definition}[Most Probable Explanation Query]  \label{def:mpe}
- Given set $ \boldsymbol{U_q}= \mathcal{U} \mysetminus \boldsymbol{U_e}$, the MPE query for $\boldsymbol{U_q}$, $\text{MPE }( \boldsymbol{U_q}\mid \boldsymbol{U_e}=\boldsymbol{e} )$, is:
+ Given set $ \boldsymbol{U_q}= \boldsymbol{U} \mysetminus \boldsymbol{U_e}$, the MPE query for $\boldsymbol{U_q}$, $\text{MPE}\,( \boldsymbol{U_q}\mid \boldsymbol{U_e}=\boldsymbol{e} )$, is:
 	\begin{equation*} 
-		\text{MPE }( \boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e} ) = \underset{\boldsymbol{q}}{\arg\max}\, \mathbb{P}(\boldsymbol{U_q}=\boldsymbol{q} , \boldsymbol{U_e}=\boldsymbol{e}) \,.
+		\text{MPE}\,( \boldsymbol{U_q} \mid \boldsymbol{U_e}=\boldsymbol{e} ) = \underset{\boldsymbol{q}}{\arg\max}\, \mathbb{P}(\boldsymbol{U_q}=\boldsymbol{q} , \boldsymbol{U_e}=\boldsymbol{e}) \,.
 	\end{equation*}
 \end{definition}
-The solution will be the assignment of values $\boldsymbol{u_q}$ to all variables in the set $\boldsymbol{U_q}$ that maximises their joint probability.
+The solution will be the assignment of values $\boldsymbol{q}$ to all variables in the set $\boldsymbol{U_q}$ that maximises their joint probability.
 
-An intuition for why the MPE is easier to solve can be given by comparing Definition \ref{def:map} with Definition \ref{def:mpe}; unlike MPE, MAP presents both a summation and a maximisation and as such is part conditional probability query, part MPE query.
-All algorithms for the computation of MAP obviously apply to MPE too, but there exist efficient approximate algorithms for MPE that do not generalise to MAP such as Loopy Belief Propagation \citep{Pearl1988} and Stochastic Local Search \citep{Kask1999}.
+An intuition for why the MPE is easier to solve can be given by comparing Definitions \ref{def:map} and \ref{def:mpe}; unlike MPE, MAP presents both a summation and a maximisation and as such is part conditional probability query, part MPE query.
+All algorithms for the computation of MAP obviously apply to MPE too, but efficient approximate algorithms exist for MPE that do not generalise to MAP such as Loopy Belief Propagation \citep{Pearl1988} and Stochastic Local Search \citep{Kask1999}.

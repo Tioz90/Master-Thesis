@@ -2,58 +2,58 @@
 This section will present the clinical and explainability results of the developed system, based on the methods outlined in Section \ref{sec:validation}.
 
 \subsection{Domain Experts' Initial Expectations for an Explanation} \label{subsec:domain-experts-initial-expectations}
-At the beginning of this project, it was not easy for the ICP's experts to understand what AI was exactly and how an interactive tool in this domain could look like.
-For these reasons, they considered the idea of receiving an output in natural language highly intriguing, as this was the output modality they had the most experience working with.
+At the beginning of this project, it was not easy for the ICP's experts to understand what AI was exactly and what form an interactive tool in this domain could take.
+For these reasons, they considered the idea of receiving an output in natural language highly intriguing, since this was the output modality they had the most experience working with.
 
-Because of the novelty of the approach developed in this thesis as applied to the field of medicine, the experts were open to receiving many different types of explanation, for example, textual, graph-based or tables.
-Nonetheless, in their mind, the preferred one would still be a natural language output, as they imagined it as being much simpler, clearer and compact than any other output modality.
-Thus, their ideal explanation would be a natural language output that were corroborated by the values in the data, presented a summary of their inputs to the system (for example, the used query and evidence variables) and that were understandable in terms of probability.
+Because of the novelty of the approach developed in this thesis as applied to the field of medicine the experts were very receptive to receiving many different forms of explanation, for example textual, graph-based and tabular.
+Nonetheless, in their mind, the preferred one would still be a natural language output, as they imagined it as being simpler, clearer and more compact than any other output modality.
+Thus, their ideal explanation would be a natural language output corroborated by the values in the data, presenting a summary of their inputs to the system (e.g., the used query and evidence variables) and understandable in terms of probability.
 
-The ICP representatives felt that their preference for \textit{verbal} explanations over any other form, stemmed from a \textit{forma mentis} ascribable to the fact that nearly all medical literature is highly verbal in the way it communicates content; tables are little used and graphs are often ignored because there is little standardisation in the way they are presented across the subfields of the medical domain.
-Clinicians thus prefer to focus on reading the textual, conversational description that accompanies the results presented and this habit has shaped their expectations of what an explanation should look like.
+The ICP representatives felt that their preference for \textit{linguistic} explanations over any other form might have stemmed from the fact that \textit{nearly all medical literature is highly linguistic} in the way it communicates content; tables are little used and graphs are often ignored because there is little standardisation in the way they are presented across the subfields of the medical domain.
+Clinicians thus prefer to focus on reading the textual, conversational description that accompanies the results presented and this habit may have shaped their expectations of what form an explanation should take.
 
 \subsection{Clinical Validation} \label{subsec:clinical-validation-results}
 \subsubsection{Natural Language Questions Results}
-The natural language questions marked as \textit{validation}, that were presented in Subsection \ref{subsec:clinical-validation-methodology} have been discussed and validated by Dr. Vittoria Martin, molecular cytogeneticist at the ICP (see Subsection \ref{subsec:istituto-cantonale}), and Dr. Luca Mazzucchelli, director of the ICP. 
-The questions tagged as \textit{research} necessarily have an \textit{unknown} \textit{Expected result} but, as noted in Subsection \ref{subsec:clinical-validation-methodology}, are nonetheless extremely interesting in order to understand how the user relates to the system.
-The system's outputs to their questions are shown together with the results they would have expected, based on established medical literature and their professional expertise.
-The ICP representatives had the faculty to \textit{agree} or \textit{disagree} with the software's judgement and, where they felt it necessary, were able to leave notes, that have also been reported in this section.
+The natural language questions marked as \textit{validation}, presented in Subsection \ref{subsec:clinical-validation-methodology} have been discussed and validated by the clinicians at the ICP.
+The questions tagged as \textit{research} necessarily have an \textit{unknown} \enquote{Expected result} but, as noted in Subsection \ref{subsec:clinical-validation-methodology}, these queries are nonetheless extremely interesting in order to understand how the user might want to relate to the system.
+The system's outputs to the natural language questions are shown together with the results they would have expected based on established medical literature and their professional expertise.
+The ICP's representatives had the faculty to \textit{agree} or \textit{disagree} with the software's verdict and, where they felt it necessary, were able to leave notes, which have also been reported in this section.
 
-Tables \ref{tab:resultsconditionalquestions}, \ref{tab:resultsdseparationquestions}, \ref{tab:resultsdseparationquestions} and \ref{tab:resultsdseparationquestions} present the clinical validation results for the natural language questions in Annexes \ref{ann:conditionalprobability1}, \ref{ann:conditionalprobability2}, \ref{ann:dseparation}, \ref{ann:conditionalanddseparation} and \ref{ann:mpe}. 
-Table \ref{tab:recapquestionsresult} shows the experts' comments in aggregated form by summing the number of times the comment appeared over the thirty questions.
-Comments followed by \enquote{to further explore} were aggregated except for question number 4 where \enquote{agree, to further explore} was also counted in \textit{agree}.
-Note that questions 12 and 13 are compound, that is they were run multiple times by changing the \textit{evidence values} for the same \textit{evidence variable.}
+Tables \ref{tab:resultsconditionalquestions}, \ref{tab:resultsdseparationquestions}, \ref{tab:resultscondsepquestions} and \ref{tab:resultsmpequestions} present the clinical validation results for the natural language questions in Appendixes \ref{app:conditionalprobability1}, \ref{app:conditionalprobability2}, \ref{app:dseparation}, \ref{app:conditionalanddseparation} and \ref{app:mpe}. 
+Table \ref{tab:recapquestionsresult} shows the experts' assessments, aggregated by summing the number of times each evaluation appeared over the thirty questions.
+Comments followed by \enquote{to further explore} were aggregated together; the assessment of question number 4 \enquote{agree, to further explore} was also counted in the \enquote{agree} category.
+Note that questions 12 and 13 are compound i.e., they were run multiple times by changing only the \textit{evidence values} for the same \textit{evidence variable}.
 
-Table \ref{tab:recapquestionsresult} strongly supports the idea that the developed system, and by extension the underlying Bayesian Network, is able to capture the clinical relevance of the variables in the data set, in the current application domain.
-Twenty-four query answers out of a total of thirty-five found the ICP experts as either in \enquote{full agreeance} of in \enquote{agreeance} with the system's predictions while one was deemed \enquote{acceptable}.
+Table \ref{tab:recapquestionsresult} strongly supports the idea that the developed system, and by extension the underlying Bayesian network, is able to capture the clinical relevance of the variables in the data set, in the current application domain.
+Twenty-four query answers out of a total of thirty-five found the ICP experts as either in \enquote{full agreeance} of in \enquote{agreeance} with the system's predictions, one was deemed \enquote{acceptable} while none were refuted outright.
 
-Three queries (numbers 23, 25 and 27 in Annex \ref{ann:conditionalanddseparation}) were not executed by the domain experts; this is because they had framed them as conditional probability queries but these were, in actuality, questions that could have easily been answered by d-separation queries.
+Three queries (numbers 23, 25 and 27 in Appendix \ref{app:conditionalanddseparation}) were not executed by the domain experts; this is because they had framed them as conditional probability queries but, in actual fact, these were questions that could easily have been answered by d-separation queries.
 For example, question number 23 reads:
 \begin{quotation}
 	In young patients, does a negative expression of the progestinic receptors influence the lymph nodes' state?
 \end{quotation}
-Framing this as a conditional probability query would mean having to obtain the value of \enquote{lymph nodes' state} (\enquote{pN} in the benchmark data set) for all the combinations of values of \enquote{age} and \enquote{progestinic receptors} (\enquote{eta arrotondata} and \enquote{progestinici} in the data set) in order to see if a change in the latter produced a variation in the former.
+Framing this as a conditional probability query would mean having to obtain the value of \enquote{lymph nodes' state} (\enquote{pN} in the benchmark data set) for all the combinations of values of \enquote{age} and \enquote{progestinic receptors} (\enquote{eta arrotondata} and \enquote{recettori progestinici} in the data set) in order to see if a change in the latter produced a variation in the former.
 Instead, a d-separation query can directly answer if the nodes of the variables representing \enquote{lymph nodes' state} are d-separated from those for \enquote{age} and \enquote{progestinic receptors}.
-The answer given by the d-separation query is less informative than that of a conditional probability query in case the nodes are not d-separated, but nonetheless answers the question as it was posed.
-This misunderstanding of the use of the tool is certainly to take note of but the instances of confusion are also limited to only a particular phrasing of question among all those posed.
-As such, it could probably be addressed by tweaking the information presented to the user.
+The response given by the d-separation query is less informative than that of a conditional probability query in the case that the nodes are not d-separated, but nonetheless answers the question as it was posed.
+This misunderstanding of the use of the tool is certainly something to take note of, but the instances of confusion are also limited to only a particular phrasing of questions among all those posed.
+As such, it could probably be addressed by adjusting how the information is presented to the user and not by radically changing the interaction mode.
 
 The answers to the remaining nine questions were not excluded \textit{a priori} by the ICP's representatives but were deemed interesting enough \enquote{to further explore}.
 
 \begin{table}[h]
 	\centering
-	\caption{Aggregation of expert answers}
-	\begin{tabularx}{0.7\textwidth}{lXl}
+	\caption{Aggregation of the experts' evaluations of the answers given by the software tool.}
+	\begin{tabularx}{0.7\textwidth}{Xr}
 		\toprule
-		& Expert comment & Counts  \\
+		Expert comment & Counts  \\
 		\midrule	
-		& fully agree & 4 \\
-		& agree & 20 \\
-		& acceptable & 1 \\
-		& to further explore & 9 \\
-		& query not executed & 3 \\	
+		fully agree & 4 \\
+		agree & 20 \\
+		acceptable & 1 \\
+		to further explore & 9 \\
+		query not executed & 3 \\	
 		\midrule
-		\textbf{Total} & & 35 \\
+		\textbf{Total} & \textbf{35} \\
 		\bottomrule
 		\end{tabularx}
 	\label{tab:recapquestionsresult}
@@ -61,7 +61,7 @@ The answers to the remaining nine questions were not excluded \textit{a priori} 
 
 \begin{table}[h]
 	\centering
-	\caption{Results for questions in Annexes  \ref{ann:conditionalprobability1} and \ref{ann:conditionalprobability2}}
+	\caption{Results for questions in Appendixes  \ref{app:conditionalprobability1} and \ref{app:conditionalprobability2}}
 	\begin{tabularx}{\textwidth}{lllX}
 		\toprule
 		\textbf{\#} & Expected result & System result & Expert comment  \\
@@ -102,7 +102,7 @@ The answers to the remaining nine questions were not excluded \textit{a priori} 
 
 \begin{table}[h]
 	\centering
-	\caption{Results for questions in Annex \ref{ann:dseparation}}
+	\caption{Results for questions in Appendix \ref{app:dseparation}}
 	\begin{tabularx}{\textwidth}{llXX}
 		\toprule
 		\textbf{\#} & Expected result & System result & Expert comment  \\
@@ -129,7 +129,7 @@ The answers to the remaining nine questions were not excluded \textit{a priori} 
 
 \begin{table}[h]
 	\centering
-	\caption{Results for questions in Annex \ref{ann:conditionalanddseparation}}
+	\caption{Results for questions in Appendix \ref{app:conditionalanddseparation}}
 	\begin{tabularx}{\textwidth}{lXXX}
 		\toprule
 		\textbf{\#} & Expected result & System result & Expert comment  \\
@@ -145,12 +145,12 @@ The answers to the remaining nine questions were not excluded \textit{a priori} 
 		\textbf{27} & In young patients, does a negative expression of the progestinic receptors influence the expression of the c-ERBB2 marker? &    -   & query not executed \\
 		\bottomrule
 		\end{tabularx}
-	\label{tab:resultsdseparationquestions}
+	\label{tab:resultscondsepquestions}
 \end{table}
 
 \begin{table}[h]
 	\centering
-	\caption{Results for questions in Annex \ref{ann:mpe}}
+	\caption{Results for questions in Appendix \ref{app:mpe}}
 	\begin{tabularx}{\textwidth}{llXX}
 		\toprule
 		\textbf{\#} & Expected result & System result & Expert comment  \\
@@ -200,136 +200,136 @@ The answers to the remaining nine questions were not excluded \textit{a priori} 
 		& fully agree \\
 		\bottomrule
 		\end{tabularx}
-	\label{tab:resultsdseparationquestions}
+	\label{tab:resultsmpequestions}
 \end{table}
 
 
 \subsubsection{More discussion of Natural Language Questions Results}
-It was, for example, observed that the approach under investigation has had particular success in evidencing the interesting contextualisation of the variable \enquote{eta arrotondata}, which represents the age of the patient when she was diagnosed for the tumour. 
-Till now, it was supposed that tumours could have some differences in their clinical morphological status depending on the age of onset. 
+Regarding the use of separations in a clinical setting, it was observed that the approach under investigation has had particular success in evidencing the interesting contextualisation of the variable \enquote{eta arrotondata}, which represents the age of the patient at first diagnosis of the tumour. 
+Current medical understanding assumes that tumours could have some differences in their clinical morphological status depending on the age of onset. 
 The novel knowledge that the age at diagnosis does not influence and does not depend on tumour morphology, dimensions, nodes, differentiation, hormonal status and proliferation opens the door to new clinical and therapeutical approaches. 
-Hence, extracting information in terms of the relationship between variables could help not only in understanding the function of these variables in patients profiling but also in helping the potential definition of novel, optimised guidelines concerning the best practice in the presence of evidence. 
-Indeed, the possibility to define the \enquote{informational flux} of the explanation depending on the evidence could allow a more robust profiling, especially in the presence of partial knowledge or reduced resources (budget and time).
-For example, Figure \ref{fig:independencies_output} shows the graph for the query on \enquote{pM}.
+Hence, extracting information in terms of the relationship between variables could help not only in understanding the function of these variables in patient profiling but also in helping in the potential definition of novel, optimised guidelines relating to the best practices in the presence of evidence. 
+The ability to define the \enquote{informational flux} of the explanation depending on the evidence could allow for more robust patient profiling, especially in the presence of partial knowledge or reduced resources (e.g., budget and time).
+For example, Figure \ref{fig:independencies_output} shows the graph for the query on \enquote{pM} and how many other clinical variables are not relevant once the result of \enquote{ki67} and \enquote{pN} are known.
 
-In current practice, it is quite common to have a single, standardised, certified procedure for the management of the diagnosis and treatment, independently of the evidence that is already present (or missing). 
-Typically, it is a simple decision tree with a \enquote{yes/no} progression that is independent on the pieces of evidence that are already known. 
-Information about d-separation could help to introduce a novel concept of data managing \enquote{tuned} on the specific case.
+In current practice, it is quite common to have a single, standardised, certified procedure for the management of the diagnosis and treatment, independent of the evidence that is already present (or missing). 
+Typically, it is a simple decision tree with a \enquote{yes/no} progression that is independent on the pieces of evidence already known. 
+Information about d-separation could help to introduce a novel concept of data managing \enquote{tuned} to the specific case.
 
 It is worth highlighting that the available molecular biomarkers undergo a process of continuous updating thanks to ever more accurate and accessible high throughput screening. 
-Thus, new variables can be integrated, for specific patients, in the presence or not of evidence, and this can progressively aid the onset of personalised medicine. 
-At the same time, features that are already well established in the clinical practice could find new interpretation, allowing the creation of innovative hypothesis and thus of a clinical evolution. 
-For example, despite it being conceivable that the independency of the variable \enquote{lateralita} (generally annotated for all the patients for a long time) from the other features has a biological meaning, there is not, to date, a well established validation of this hypothesis. 
+Thus, new variables can be integrated for specific patients, in the presence or absence of evidence, and this can progressively aid the onset of personalised medicine. 
+At the same time, features that are already well established in clinical practice could find new interpretations, allowing the creation of innovative hypotheses and thus of an evolution in clinical practice. 
+For example, despite it being conceivable that the independency of the variable \enquote{lateralita} (that have, generally, long been annotated for all the patients) from the other features has a biological meaning; to date there is not a well established validation of this hypothesis. 
 
-In clinical practice, considering d-separation could help in defining alternatives that are enable the optimisation of time, cost and diagnosis. 
+In clinical practice, considering d-separation could help in defining alternatives that could enable the optimisation of time, cost and diagnosis. 
 For example, it is quite common for a sudden cyto-histo-molecular analysis to have to be performed before surgery, in order for the doctors to decide on the best way to proceed.
- In this case, the priority of ICP is on the sample of the patient that is to undergo surgery. 
- It is possible that the biological sample could be degraded or not in sufficient quantity to be able to complete all the necessary assays. 
+ In this case, the ICP prioritises the analyses of the sample of the patient who is to undergo surgery. 
+ It is possible that the biological sample could be degraded or not in sufficient quantity to enable completion of all the necessary assays. 
  In this context, the importance of being able to obtain the information of interest in a quick but accurate way is self-evident.
-The type of analysis that is to be carried out should be prioritised in order to be able to formulate a diagnosis and d-separation could lead to considering excluding certain tests that turn out to be redundant, given the already know variables.
+The type of analysis that is to be carried out should be prioritised in order to be able to formulate a diagnosis and d-separation could lead to the exclusion of certain tests that may turn out to be redundant, given some already known exam results or patient characteristics.
 
-At the same time, in case of degraded material, the possibility of inferring the missing value using MPE or conditional probability queries, in agreement with the opinion of the expert pathologist, could offer further basis and support for the clinician.
+At the same time, in the case of degraded material, the possibility of inferring the missing value using MPE or conditional probability queries, in agreement with the opinion of the expert pathologist, could offer further basis and support for the clinician.
 
 \subsection{Explainability Validation} \label{subsec:explainability-validation-results}
-The \enquote{Explainability evaluation questionnaire} introduced in Subsection \ref{subsec:explainability-validation} - visible in its entirety in Annex \ref{ann:questionnaire} - was submitted to the ICP in late August, around three weeks after giving the institute members access to the proof of concept system that was developed as part of the methods of this thesis (see Sections \ref{sec:methods} and \ref{sec:implemented-tool}).
-Dr. Martin and Mazzucchelli (see \ref{subsec:istituto-cantonale}) took ownership of the survey and replied to it at the best of their knowledge and sincerity.
+The \enquote{explainability evaluation questionnaire} introduced in Subsection \ref{subsec:explainability-validation} - visible in its entirety in Appendix \ref{app:questionnaire} - was submitted to the ICP in late August, around three weeks after giving the institute members access to the proof of concept system developed as part of the methods of this thesis (see Sections \ref{sec:methods} and \ref{sec:implemented-tool}).
+The clinicians at the ICP (see \ref{subsec:istituto-cantonale}) took ownership of the survey and replied to the questions it posed frankly and to the best of their knowledge.
 
-Following, the answers to the \enquote{Explainability evaluation questionnaire} are presented, one section at a time together with the unedited answers that the ICP representatives gave where it was requested.
+In the following, the answers to the \enquote{explainability evaluation questionnaire} are presented, one section at a time together with the unedited answers that the ICP representatives gave where requested.
 A presentation of the various interaction modes available in the tool is found in Section \ref{sec:implemented-tool}.
 
 \subsubsection{Confidence}
-The first section, \hyperref[ques:confidence]{Confidence}, deals with the \enquote{confidence} induced by the system in the expert user.
-From the answers, it can be gleamed that the developed system did indeed help in clinical decision-making.
+The first section, \hyperref[ques:confidence]{Confidence}, deals with the \enquote{confidence} brought about by the system in the expert user.
+From the answers, it can be deduced that the developed system did indeed help in clinical decision-making.
 
-The \enquote{MPE query} interaction mode was highly-valued because of its capability to \enquote{fill-in the blanks} in a patient's profile; given a series of known values for a patient, it is immediate to find the most probable assignment to the other variables and thus complete a profile.
+The \enquote{MPE query} interaction mode was highly-valued because of its capability to \enquote{fill in the blanks} in a patient's profile; given a series of known values for a patient, the most probable assignment to the other variables is immediately found and thus complete a profile is obtained.
 As discussed in Subsection \ref{subsec:motivation}, this was one of the initial hopes that the ICP had and the tool seems to have fulfilled it.
-This seems to validate the claim by \citet{lacave2002review} (see Section \ref{sec:explainability-in-bayesian-networks}) that the solution to the MPE problem (Definition \ref{def:mpe}) is an excellent way to explain the \textit{knowledge base}.
+This seems to validate the claim by \citet{lacave2002review} (see Section \ref{sec:explainability-in-bayesian-networks}) that the solution to the MPE problem (Definition \ref{def:mpe}) is the way to explain the \textit{evidence}.
 
 \enquote{D-separation queries} were instead valued because of their ability to give a high-level overview of the data set and of the relationship between variables.
 This enabled the prioritisation of certain clinical tests over others, as having observed the value of a variable representing the outcome of a given analysis may render others redundant.
 This information is contained in the BN's DAG topology and could turn out to be a powerful tool in clinical practice.
-The claim \enquote{the most direct and intuitive way of showing the information embodied in a Bayesian network is to display the corresponding graph} \citep{lacave2002review} seems to have been somewhat confirmed by the expert users' evaluation as the \enquote{plot} and \enquote{d-separation} modes are inherently \textit{graphical} in nature.
-Though, this may not actually be the case because d-separation was also implemented with a \textit{verbal} output and so this may have been the characteristic that made it be appreciated.
+The claim \enquote{the most direct and intuitive way of showing the information embodied in a Bayesian network is to display the corresponding graph} \citep{lacave2002review} seems to have been somewhat confirmed by the expert users' evaluation since the \enquote{plot} and \enquote{d-separation} modes are inherently \textit{graphical} in nature.
+Though, this may not actually be the case because d-separation was also implemented with a \textit{linguistic} output and so this may have been the characteristic that triggered the appreciation.
 
-[NB: A cohort - in clinical setting - is a group of individuals who share a common trait.]
+[NB: A \textit{cohort} - in clinical setting - is a group of individuals who share a common trait.]
 
-\begin{framed}
+\begin{mdframed}
 	{\Large Confidence}
 	\begin{enumerate} 
 		\item Did the tool increase the confidence in diagnosis when diagnostic screening results were missing for a patient?  Why? \\
 		\xcancel{O} Yes O No \\
-		\ul{Validation of the tool by queries on well-known interactions between some clinical features helped in considering reliable the proposed variables for missing data in patients' profile.}
+		\textit{Validation of the tool by queries on well-known interactions between some clinical features helped in considering reliable the proposed variables for missing data in patients' profile.}
 		\item Did the tool help in characterising a particular patient's profile? \\
 		O Not at all O Somewhat \xcancel{O} Absolutely\\
-		\ul{MPE gives at once the full profile of missing variables, for example in patients affected by triple negative breast cancer (see details below).}
+		\textit{MPE gives at once the full profile of missing variables, for example in patients affected by triple negative breast cancer (see details below).}
 		\item Did the tool help in your confidence of understanding the cohort characteristics?  How? \\
 		O Not at all O Somewhat \xcancel{O} Absolutely\\
-		\ul{Plot and d-separation are able, by a quick visualization, to give the general idea about the presence or the absence of a relationship between variables, thus giving at once the general idea about the characteristics of the entire cohort.}
+		\textit{Plot and d-separation are able, by a quick visualization, to give the general idea about the presence or the absence of a relationship between variables, thus giving at once the general idea about the characteristics of the entire cohort.}
 		\item Did the tool improve your confidence in your clinical decision-making?  How? \\ 
 		O Not at all \xcancel{O} Somewhat O Absolutely\\
-		\ul{Complete integration of the tool in the clinical decision-making workflow requires further time; at the moment it has been used for validation of corroborate data and for exploration of new hypothesis.}
+		\textit{Complete integration of the tool in the clinical decision-making workflow requires further time; at the moment it has been used for validation of corroborate data and for exploration of new hypothesis.}
 		\item Did having the tool at your disposal improve your confidence when making time-constrained decisions?  How? (for example, did it improve confidence in prioritising some tests over others?) \\
 		O Not at all \xcancel{O} Somewhat O Absolutely\\
-		\ul{Knowing `independencies' between variables could help in prioritizing some tests over others, for example in case of poor tumor material we can decide to investigate only one specific related marker rather than more unrelated markers. }
+		\textit{Knowing `independencies' between variables could help in prioritizing some tests over others, for example in case of poor tumor material we can decide to investigate only one specific related marker rather than more unrelated markers. }
 	\end{enumerate}
 	\label{ques:confidence}
-\end{framed}
+\end{mdframed}
 
 \subsubsection{Features}
-\hyperref[ques:features]{Features} was designed to probe the various interaction modes in more detail, in order to understand which characteristics were perceived as the most useful.
+The \hyperref[ques:features]{Features} section of the questionnaire was designed to probe the various interaction modes in more detail, so as to understand which characteristics were perceived as the most useful.
 
-The most striking result is that \textit{natural language} was perceived as a more useful output modality than \textit{graphically} displaying the results; this is a step towards confirming the hypothesis just laid out when discussing \hyperref[ques:confidence]{Confidence}, that the \enquote{d-separation query} was principally appreciated not because of its \textit{graphical} nature but because of it being \textit{verbal}.
-This is also supported by the \enquote{MPE query} being preferred over the \enquote{Pseudo-MPE} one; the former is a purely \textit{verbal} explanation while the latter is nearly completely \textit{visual} (compare Figures \ref{fig:sw_4_mpe} with \ref{fig:pseudo_mpe_output}).
+The most conspicuous result is that \textit{natural language} was perceived as a more useful output modality than \textit{graphically} displaying the results; this is a step towards confirming the hypothesis just laid out when discussing \hyperref[ques:confidence]{Confidence}, that the \enquote{d-separation query} was principally appreciated not because of its \textit{graphical} nature but because of also being \textit{linguistic}.
+This is also supported by the preference for the \enquote{MPE query} over the \enquote{pseudo-MPE} one; the former is a purely \textit{linguistic} explanation while the latter is nearly completely \textit{graphical} (compare Figures \ref{fig:sw_4_mpe} with \ref{fig:pseudo_mpe_output}).
 The quantitative comparison between the solutions, presented in Section \ref{sec:pseudo-mpe-evaluation}, shows that there is very little difference between the two answers and this further lends credence to the \textit{output modality} of the explanations being the discriminant factor.
-However, in light of Subsection \ref{subsec:domain-experts-initial-expectations}, the preference for a \textit{verbal} explanation over a \textit{visual} one could be explained by the experts' \textit{preconceived notions} carrying over until the end of the testing phase.
-It can not be excluded that given a longer hands-on period with the system and thus the possibility of acquiring more familiarity with the alternative output modalities, their belief of preferring a \textit{verbal} over a \textit{graphical} explanation may have been reversed.
+However, in the light of Subsection \ref{subsec:domain-experts-initial-expectations}, the preference for a \textit{linguistic} explanation over a \textit{graphical} one could be explained by the experts' \textit{preconceived notions} carrying over until the end of the testing phase.
+It cannot be excluded that given a longer hands-on period with the system and thus the prospect of acquiring more familiarity with the alternative output modalities, their belief of preferring a \textit{linguistic} over a \textit{graphical} explanation may have been reversed.
 
-\citet{lacave2002review} contrasted the two output modalities but seemed to lean towards stating that the former were more important than the latter when explaining a BN; the current evaluation does not seem to support such a claim, barred all the reservations that have just bee expounded.
-Naturally, this does not disprove the importance of a graphical explanation and it may be the case that different graphical outputs may have been more efficacious in communicating the model to the user.
-For example, the \enquote{Pseudo-MPE} output, as noted in Section \ref{sec:implemented-tool}, had been deemed confusing already in the \enquote{informal evaluation}.
-Nonetheless, the feeling is that a verbal output could be easier to design and tailor to the specific application and can be made as explicit and deep as wanted by increasing its verbosity.
+\citet{lacave2002review} contrasted the two output modalities but seemed to lean towards stating that the former were more important than the latter when explaining a BN; the current evaluation does not seem to support such a claim, barring all the reservations that have just been set forth.
+Naturally, this does not disprove the importance of a graphical explanation and it may be the case that different graphical outputs might have been more efficacious in communicating the model to the user.
+For example, the \enquote{pseudo-MPE} output, as noted in Section \ref{sec:implemented-tool}, had been deemed confusing already in the \enquote{informal evaluation}.
+Nonetheless, the feeling is that a linguistic output could be easier to design and tailor to the specific application and could be made as explicit and deep as desired by increasing its verbosity.
 A graphical output, on the other hand, may risk being more easily misinterpreted because of the greater preexisting knowledge needed to decipher it.
-A graphical explanation could certainly be more intuitive than a textual one but it may be much more difficult to properly design it as such.
+A graphical explanation could certainly be more intuitive than a textual one, but it may be much more difficult to properly design it as such.
 
-The second main result is that regarding what is probably the central method developed in this thesis, the \enquote{dialogue}.
-The \textit{dialogical} output (an example of a \textit{dynamic} explanation in the running classification \citep{lacave2002review}) was appreciated because of its ability to offer \enquote{what-if} cases but the perception, based both on this \enquote{formal} and on the \enquote{informal} assessment, is that this interaction mode is too cumbersome for the average expert medical user.
-This could be because of the added cognitive load needed to keep track of a long dialogue and of the proposed counterfactual alternatives.
-The novel alternative dialogue modes that were proposed, d-separation-aware and thresholded, were rated higher than the plain exhaustive one; as these different dialogues aim to remove unnecessary proposals (as explained in Sections \ref{sec:novel-contributions} and \ref{sec:implemented-tool}) this seems to go in the direction of confirming the \textit{cognitive overload hypothesis}.
-The experts do, though, recognise the potential of such an interaction mode and seem to feel that they could appreciate it more given more time with the system.
+The second main result is that regarding the \enquote{dialogue}, which is probably the central method developed in this thesis.
+The \textit{dialogical} output (an example of a \textit{dynamic} explanation in the considered classification \citep{lacave2002review}) was appreciated because of its ability to offer \enquote{what-if} cases; but the perception, based both on this \enquote{formal} and on the \enquote{informal} assessment, is that this interaction mode is too cumbersome for the average expert medical user.
+This could be because of the added cognitive load needed to keep track of a long dialogue together with the proposed counterfactual alternatives.
+The novel alternative dialogue modes proposed, d-separation-aware and thresholded, were rated higher than the plain exhaustive one; as these different dialogues aim to remove unnecessary proposals (as explained in Sections \ref{sec:novel-contributions} and \ref{sec:implemented-tool}) this seems to go in the direction of confirming the \textit{cognitive overload hypothesis}.
+Nonetheless, the experts recognise the potential of such an interaction mode and seem to feel that they could appreciate it more if they were given more time to test the system.
 
-The display of the connection strength between variables in the network, a feature developed based suggestions from the ICP, was not deemed essential to the comprehensibility of the outputs, where it was used.
+The display of the connection strength between variables in the network, a feature developed based on suggestions from the ICP, was not deemed essential to the comprehensibility of the outputs, where it was used.
 
-\begin{framed}
+\begin{mdframed}
 	{\Large Features}
 	\begin{enumerate}[resume]
 		\item[6.] Given the modes of interaction with the system labelled as \enquote{dialogues}, do you think you would have had more difficulty in interpreting the data without the these modalities? \\
 		O No \xcancel{O} Maybe O Yes\\
-		\ul{The other modes cover the vast majority of our queries; dialogue could be useful in exploring new hypothesis and evaluating different scenarios such as `what if is not...' at the same time.}
+		\textit{The other modes cover the vast majority of our queries; dialogue could be useful in exploring new hypothesis and evaluating different scenarios such as `what if is not...' at the same time.}
 		\item[7.] Was natural language useful during the interaction?  Why? \\
 		O Not at all O Somewhat \xcancel{O} Absolutely\\
-		\ul{Natural language allowed 1) the better selection of the proper interaction mode depending on the question to answer; 2) useful recapitulation of evidence, variables and features selected during analysis; 3) easy comprehension of the output.}
+		\textit{Natural language allowed 1) the better selection of the proper interaction mode depending on the question to answer; 2) useful recapitulation of evidence, variables and features selected during analysis; 3) easy comprehension of the output.}
 		\item[8.] Which type of \enquote{dialogue} did you feel was most useful? Why? \\
 		O Exhaustive \xcancel{O} Separations \xcancel{O} Thresholded O A combination of the previous O All O None\\
-		\ul{In our opinion, exhaustive dialogue resulted in a time consuming and redundant process; separation and threshold offered a much more focused and efficient output.}
+		\textit{In our opinion, exhaustive dialogue resulted in a time consuming and redundant process; separation and threshold offered a much more focused and efficient output.}
 		\item[9.] Did you feel that the dialogue helped you in cases of uncertainty?  If yes, how?  If no, why? \\
 		O No O Somewhat \xcancel{O} Yes\\
-		\ul{In case of uncertainty dialogue shows the counterpart hypothesis in an uncomplicated way.}
+		\textit{In case of uncertainty dialogue shows the counterpart hypothesis in an uncomplicated way.}
 		\item[10.] Did you feel that the \enquote{dialogue} helped your clinical decision-making?  If yes, how?  If no, why? \\
 		O No \xcancel{O} Somewhat O Yes\\
-		\ul{We understand the potential of this mode of interaction but we requires further practice to apply it in clinical decision-making process.}
+		\textit{We understand the potential of this mode of interaction but we requires further practice to apply it in clinical decision-making process.}
 		\item[11.] Did the generation of \enquote{counterfactual branches} help in your understanding of the data?  Why? \\
 		O No \xcancel{O} Somewhat O Yes\\
-		\ul{Visualization helps in giving a immediate and direct approach to the output.}
-		\item[12.] Given the interaction mode labelled \enquote{Pseudo-MPE query}, how would you rate the solutions it proposed from a point of view of their understandability? (1 poor, 5 good) \\
+		\textit{Visualization helps in giving a immediate and direct approach to the output.}
+		\item[12.] Given the interaction mode labelled \enquote{pseudo-MPE query}, how would you rate the solutions it proposed from a point of view of their understandability? (1 poor, 5 good) \\
 		O 1 O 2 O 3 O 4 \xcancel{O} 5
-		\item[13.] How would you rate the Pseudo-MPE solutions from a point of view of their clinical usefulness? \\
+		\item[13.] How would you rate the \enquote{pseudo-MPE} solutions from a point of view of their clinical usefulness? \\
 		O 1 O 2 O 3 O 4 \xcancel{O} 5
-		\item[14.] Do you feel that the interaction mode labelled as \enquote{MPE query} gave better solutions than that labelled \enquote{Pseudo-MPE query}?  Why? \\
+		\item[14.] Do you feel that the interaction mode labelled as \enquote{MPE query} gave better solutions than that labelled \enquote{pseudo-MPE query}?  Why? \\
 		O No O Maybe \xcancel{O} Yes\\
-		\ul{MPE query output is much more easy to understand, probably due to the natural language.}
-		\item[15.] Did you find the \enquote{Pseudo-MPE} or \enquote{MPE} interaction mode the most useful?  Why? \\
-		O Pseudo-MPE \xcancel{O} MPE O Both O None\\
-		\ul{Gives at once the most probable profile of many different variables in natural language.}
+		\textit{MPE query output is much more easy to understand, probably due to the natural language.}
+		\item[15.] Did you find the \enquote{pseudo-MPE} or \enquote{MPE} interaction mode the most useful?  Why? \\
+		O \enquote{pseudo-MPE} \xcancel{O} MPE O Both O None\\
+		\textit{Gives at once the most probable profile of many different variables in natural language.}
 		\item[16.] How important was the highlighting of the independencies between variables? \\
 		O 1 O 2 O 3 \xcancel{O} 4 O 5
 		\item[17.] Do you think you would have had more difficulty in interpreting the data without the correlation strength displayed? \\
@@ -340,27 +340,28 @@ The display of the connection strength between variables in the network, a featu
 		O No O Maybe \xcancel{O} Yes
 	\end{enumerate}
 	\label{ques:features}
-\end{framed}
+\end{mdframed}
 
 \subsubsection{Time}
 The \hyperref[ques:time]{Time} section focuses on the \textit{temporal} element of an explanation.
-This, as touched on in Section \ref{sec:evaluation-of-explainability}, is still uncommon and has been advocated for by \citet{gilpin2018explaining}.
+This, as touched upon in Section \ref{sec:evaluation-of-explainability}, is still uncommon in current xAI literature and its inclusion has been advocated by \citet{gilpin2018explaining}.
 
-What is immediately noticeable is that the responses in this section align with and confirm both the ones in the other sections of the  questionnaire but also the results of the informal validation.
-\textit{Conditional probability queries'} outputs were the easiest for the experts to relate to; this was to be expected based on the number of validation questions (see Subsections \ref{subsec:clinical-validation-methodology} and \ref{subsec:clinical-validation-results}) that could answered by such a class of queries.
-As previously noted, when discussing the clinical validation of the system, the fact that questions can be answered by the software means that it probably is well positioned to align with the expert's worldview; similarly, a high number of natural language questions that are answerable with a certain query class, likely denotes a tendency for the expert to think in terms compatible with that query type.
+What is immediately noticeable is that the responses in this section align with - and confirm - both the ones in the other sections of the questionnaire and also the results of the informal validation; i.e., there is an inverse relation between the subjective rating of the quality of an explanatory mode and the time needed to understand it.
 
-Accordingly, the \enquote{MPE} and \enquote{pseudo-MPE queries'} outputs were ranked slightly lower based on the time it took to understand them, but still higher than the \enquote{dialogues}.
-This is to be expected based on the findings of the rest of the questionnaire, that seem to point to the \enquote{dialogues} being less easily accessible to the user.
+\textit{Conditional probability queries'} outputs were the easiest for the experts to relate to; this was to be expected based on the number of validation questions (see Subsections \ref{subsec:clinical-validation-methodology} and \ref{subsec:clinical-validation-results}) answerable by such a class of queries.
+As previously noted when discussing the clinical validation of the system, the fact that questions can be answered by the software means that it is probably well positioned to align with the expert's worldview; similarly, a high number of natural language questions answerable with a certain query class, likely denotes a tendency for the expert to think in terms compatible with that query type.
 
-\begin{framed}
+Accordingly, the \enquote{MPE} and \enquote{pseudo-MPE} queries' outputs were ranked slightly lower based on the time it took to understand them, but still higher than the \enquote{dialogues}.
+This is to be expected based on the findings of the rest of the questionnaire, which seem to point to the \enquote{dialogues} being the least easily accessible interaction modes for the users.
+
+\begin{mdframed}
 		{\Large Time}
 	\begin{enumerate}[resume]
 		\item[20.] How would you rate the time it took to understand the dialogues' outputs?  Which of the three was best? (1 bad, 5 good) \\
 		O 1 O 2 \xcancel{O} 3 O 4 O 5
 		\item[21.] How would you rate the time it took to understand the conditional probability query's outputs \\
 		O 1 O 2 O 3 O 4 \xcancel{O} 5
-		\item[22.] How would you rate the time it took to understand the MPE and Pseudo-MPE query's outputs? \\
+		\item[22.] How would you rate the time it took to understand the MPE and \enquote{pseudo-MPE} query's outputs? \\
 		O 1 O 2 O 3 \xcancel{O} 4 O 5
 		\item[23.] Did natural language help in reducing the time needed to understand the outputs? \\
 		O No O Somewhat \xcancel{O} Yes
@@ -368,29 +369,29 @@ This is to be expected based on the findings of the rest of the questionnaire, t
 		O No O Somewhat \xcancel{O} Yes
 	\end{enumerate}
 	\label{ques:time}
-\end{framed}
+\end{mdframed}
 
 \subsubsection{Tool}
 The \hyperref[ques:tool]{Tool} module of the questionnaire directly asks the users for their opinion regarding the developed system as a whole.
 
-The findings support those of the other segments of the questionnaire, namely that the \enquote{conditional probability}, \enquote{pseudo-MPE} and \enquote{MPE queries} were those explanations perceived as most useful by the ICP.
-Somewhat surprisingly the \enquote{dialogues} were indicated among the two most used interaction modes even though they had been ranked as the explanations that were hardest to relate to.
-The fact that they were used for longer, could exactly be a consequence of them being harder to utilise so the users would themselves spending more time on them to understand the outputs.
+The findings support those of the other sections of the questionnaire, namely that the \enquote{conditional probability}, \enquote{pseudo-MPE} and \enquote{MPE} queries were the explanatory modes perceived as most useful by the ICP.
+Somewhat surprisingly the \enquote{dialogues} were indicated among the most used interaction modes even though they had been ranked as the explanations that were hardest to relate to.
+The fact that they were used for longer, could precisely be a consequence of them being harder to utilise; this may be because the users would be spending more time on them to understand the outputs.
 
 The other finding in this section is that the tool seems to have fulfilled the needs of the ICP and this is a good confirmation of the explanatory powers of the system itself.
-Considering the resistance to change inside the field of Medicine, somewhat confirmed by the experts of the ICP, who had expressly stated they did not want to be dealing with understanding a tool but only focus on their work, it would then be difficult to imagine them being satisfied with the developed system if its explanatory powers had been considered subpar.
+Considering the resistance to change inside the field of medicine, somewhat confirmed by the experts of the ICP who had expressly stated they did not want to be dealing with understanding a software tool but only to focus on their work, it would then be difficult to imagine them being satisfied with the developed system if its explanatory powers had been considered insufficient.
 
-\begin{framed}
+\begin{mdframed}
 	{\Large Tool}
 	\begin{enumerate}[resume]
 		\item[25.] Which interaction modes did you feel could be the most useful?  Why? \\
-		O Plot model O Independencies \xcancel{O} Conditional Probability Query \xcancel{O} Pseudo-MPE and MPE O Dialogues\\
-		\ul{These two Modes are really user friendly and help in solving the majority of the queries.}
+		O Plot model O Independencies \xcancel{O} Conditional Probability Query \xcancel{O} \enquote{pseudo-MPE} and MPE O Dialogues\\
+		\textit{These two Modes are really user friendly and help in solving the majority of the queries.}
 		\item[26.] Which interaction modes did you use the most?  Why? \\
-		O Plot model O Independencies O Conditional Probability Query \xcancel{O} Pseudo-MPE and MPE \xcancel{O} Dialogues\\
-		\ul{Cause we are mainly interested in patients profiling.}
+		O Plot model O Independencies O Conditional Probability Query \xcancel{O} \enquote{pseudo-MPE} and MPE \xcancel{O} Dialogues\\
+		\textit{Cause we are mainly interested in patients profiling.}
 		\item[27.] How did you use the tool in your day-to-day work?\\
-		\ul{For validation and research purpose.}
+		\textit{For validation and research purpose.}
 		\item[28.] Is the tool missing any functionality that would address your needs?  If yes, which ones? \\
 		\xcancel{O} No O Yes
 		\item[29.] Did you have any difficulties in understanding which functionalities to use to address your needs?  If yes, when? \\
@@ -399,50 +400,48 @@ Considering the resistance to change inside the field of Medicine, somewhat conf
 		\xcancel{O} No O Yes
 		\item[31.] If you answered Yes to the previous question, how do you think this could be addressed?
 		\item[32.] Could you suggest any functionalities you would like to be implemented?\\
-		\ul{Maybe could be useful the possibility to import other `similar' data set and also have the possibility to save the textual and visual outputs.  We would also like to be able to save queries and dialogues half-way and maybe have some ready-made query masks.}
+		\textit{Maybe could be useful the possibility to import other `similar' data set and also have the possibility to save the textual and visual outputs.  We would also like to be able to save queries and dialogues half-way and maybe have some ready-made query masks.}
 	\end{enumerate}
 	\label{ques:tool}
-\end{framed}
+\end{mdframed}
 
 \subsubsection{Clinical}
-The \hyperref[ques:clinical]{Clinical} part was included to understand if after personally using the system over a period of time, the experts at the ICP still felt that the software had clinical significance.
-This because the \textit{clinical validation questions} in natural language were formulated before they had had the opportunity to interact meaningfully with the system.
-It was thus believed that a follow-up at the end of the testing period would be able to capture a clearer view of the clinical noteworthiness of the developed system.
+The \hyperref[ques:clinical]{Clinical} part was included to understand if after personally using the system over a period of time, the experts at the ICP still felt that the software had the clinical significance confirmed in the first part of the evaluation (see Subsections \ref{subsec:clinical-validation-methodology} and \ref{subsec:clinical-validation-results}).
+This was because the \textit{clinical validation questions} in natural language were formulated before they had had the opportunity to interact meaningfully with the system.
+It was expected that a follow-up at the end of the testing period would be able to capture a clearer view of the clinical noteworthiness of the developed system.
 
-From reviewing the answers, it seems that the clinical noteworthiness  of the system is highly regarded by the pathologist of the ICP.
-The open question format of the questionnaire is certainly a good way to elicit and gleam their judgement and the results are encouraging.
+The open question format of the questionnaire is undoubtedly an excellent way to elicit and understand the clinicians' judgement and, from reviewing the answers, it seems that the clinical worth of the system is still highly regarded by the pathologists of the ICP.
 
-\begin{framed}
+\begin{mdframed}
 	{\Large Clinical}
 	\begin{enumerate}[resume]
 		\item[33.] Did the tool help in recovering missing features of patients thus supporting diagnostic profile creation and decision making? If yes, which is/are the feature/s that benefited the most? \\
 		O No \xcancel{O} Yes\\
-		\ul{The tool has the great powerful to recover missing features and scale their values. One of the features that benefited the most of this process is the `lymph node involvement' represented by the variable pN. Knowing this status is crucial for therapeutic decision in patients affected by breast cancer because it indicates to treat or not to treat with chemotherapy (i.e. depending if it is positive or negative, respectively). In daily practice this datum come from an invasive exam that is performed as a secondary step in the clinical patients workup, therefore knowing a priori pN status on the basis of only data coming from the first standard diagnosis of the tumors (i.e. morphology, dimension, differentiation) has a really high clinical impact.}
+		\textit{The tool has the great powerful to recover missing features and scale their values. One of the features that benefited the most of this process is the `lymph node involvement' represented by the variable pN. Knowing this status is crucial for therapeutic decision in patients affected by breast cancer because it indicates to treat or not to treat with chemotherapy (i.e.,depending if it is positive or negative, respectively). In daily practice this datum come from an invasive exam that is performed as a secondary step in the clinical patients workup, therefore knowing a priori pN status on the basis of only data coming from the first standard diagnosis of the tumors (i.e.,morphology, dimension, differentiation) has a really high clinical impact.}
 		\item[34.] Did any of the tool's predictions have clinical confirmation later on?  If yes, how? \\
 		O No \xcancel{O} Yes\\
-		\ul{As example the tool predicted that in lobular carcinoma cerb expression is absent, confirming an established evidence in breast cancer literature.}
+		\textit{As example the tool predicted that in lobular carcinoma cerb expression is absent, confirming an established evidence in breast cancer literature.}
 		\item[35.] Did the tool help in highlighting new relationships between variables? \\
 		O No \xcancel{O} Yes\\
-		\ul{The tool showed no relationship between patients' age at diagnosis and the other clinical morphological features (i.e. morphology, TNM, grade, hormonal status), a new observation with a really high clinical impact that should be further explored.}
+		\textit{The tool showed no relationship between patients' age at diagnosis and the other clinical morphological features (i.e.,morphology, TNM, grade, hormonal status), a new observation with a really high clinical impact that should be further explored.}
 		\item[36.] Did the tool help in highlighting new patient subgroups? \\
 		O No \xcancel{O} Yes\\
-		\ul{The tool helped in better understanding features of patients with triple negative breast cancer showing that they carry a profile of aggressive tumors in terms of proliferation index (ki67) and grade (poorly differentiated), but without nodes involvement (pN=0) and no metastasis at diagnosis (pM=0).}
+		\textit{The tool helped in better understanding features of patients with triple negative breast cancer showing that they carry a profile of aggressive tumors in terms of proliferation index (ki67) and grade (poorly differentiated), but without nodes involvement (pN=0) and no metastasis at diagnosis (pM=0).}
 	\end{enumerate}
 	\label{ques:clinical}
-\end{framed}
+\end{mdframed}
 
 \subsubsection{Satisfaction}
-The final question in the questionnaire aimed to be as general as possible to elicit the user's feedback on the whole system and the experience of using it.
+The final question in the questionnaire aimed to be as general as possible to elicit the users' feedback on the whole system and their experience of using it.
 
+The experts confirmed - and this is also corroborated by their other answers - that despite the fact that they lacked a complete understanding of the inner workings of the tool and that their technical understanding of the methods was far from clear, their initial expectations (see Subsec. \ref{subsec:domain-experts-initial-expectations}) had been completely fulfilled.
+That is, they confirmed that the tool was entirely satisfactory in being able to provide them with understandable outputs they could use efficiently in their daily clinical work.
 
-The experts confirmed, and this is also corroborated by their answers to the explainability evaluation questionnaire, that despite the fact that they lacked a complete understanding of the inner workings of the tool and that their technical understanding of the methods was far from clear, their initial expectations (see Subsec. \ref{subsec:domain-experts-initial-expectations}) had been completely fulfilled.
-That is, they confirmed that the tool was entirely satisfactory in being able to provide them with understandable outputs that they could use efficiently in their daily clinical work.
-
-\begin{framed}
+\begin{mdframed}
 	{\Large Satisfaction}
 	\begin{enumerate}[resume]
 		\item[37.] What is your general satisfaction with the tool? For what reasons? \\
 		O Completely dissatisfied O Somewhat dissatisfied O Neutral O Somewhat satisfied \xcancel{O} Completely satisfied
 	\end{enumerate}
-	\label{ann:questionnaire}
-\end{framed}
+	\label{app:questionnaire}
+\end{mdframed}

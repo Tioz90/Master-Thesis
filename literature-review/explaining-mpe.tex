@@ -1,43 +1,41 @@
-% !TEX root = thesis-thomas-tiotto.tex
-
 \section{\enquote{Explaining the Most Probable Explanation}} \label{sec:explaining-the-most-probable-explanation}
-The paper \enquote{Explaining the Most Probable Explanation} by \citet{Butz2018} inserts itself into the literature concerned with the explainability of Bayesian Networks.
-In particular, taking the classification proposed by \citet{lacave2002review} presented in Section \ref{sec:explainability-in-bayesian-networks}, it attempts to define a \textit{verbal explanation} to the \textit{knowledge base} and of the \textit{propagated evidence}.
-Unlike in the definition of explanation of a knowledge base given by \citet{lacave2002review} and of other previous works, the paper is not concerned with finding the most probable assignment of variables that would explain the given evidence but, rather, the inverse problem.
-By starting with evidence and finding a maximally probable configuration, the authors hope \enquote{to look at the complete scenario to get an overview before deciding which variables should be focused on}; that is, the goal appears to give the user an overview of the situation.  
+The paper \enquote{Explaining the Most Probable Explanation} by \citet{Butz2018} places itself in the literature concerned with the explainability of Bayesian networks.
+In particular, taking the classification proposed by \citet{lacave2002review} presented in Section \ref{sec:explainability-in-bayesian-networks}, it attempts to define a \textit{linguistic explanation} of the \textit{evidence} and of the \textit{reasoning}.
+It differs from the previous attempt to define the explanation of the \textit{evidence} given by \citet{lacave2002review} and in other works, in that the paper is not concerned with finding the most probable assignment of variables that would explain the given evidence but, rather, the inverse problem.
+By starting with the evidence and finding a maximally probable configuration, the authors hope \enquote{to look at the complete scenario to get an overview before deciding which variables should be focused on}; i.e., the goal appears to be to give the user an overview of the situation.  
 
-The initial claim of the paper is that BNs, even though they provide a graphical structure to the knowledge base, remain of difficult interpretation for domain experts.
+The initial claim of the paper is that BNs are still difficult to interpret for domain experts, even though these models provide a graphical structure to the \textit{knowledge base}.
 The examples brought to justify the claim are that edges in the graph do not necessarily represent causal dependencies and that d-separation (Definition \ref{def:d-separation}) may be confusing.
-The authors plan to address this claim by constructing a \textit{dialogue} with the user and thus to continue in the long tradition of dialogical approaches to explaining BNs.
+The authors plan to address this claim by constructing a \textit{dialogue} with the user and thus to continue in the long tradition of dialogical approaches to explaining BNs, many of which are presented in \citep{lacave2002review}.
 
 The defining characteristic of their approach is that the domain expert is able to \enquote{argue} with the MPE and investigate alternative explanations.
-The complete methodology, that is executed over three steps, is shown in Figure \ref{fig:butz-methodology}.
+The complete methodology, executed over three steps, is shown in Figure \ref{fig:butz-methodology}.
 The first step is the construction of the \enquote{knowledge base}, which is nothing else than a probability tree representing a \enquote{chain of deduction} constructed following the strongest probabilistic dependencies between variables in the BN.
-Such a knowledge base is convenient because the document plan for the Natural Language Generation step is directly derived from it.
+Such a \textit{knowledge base} is convenient because the document plan for the Natural Language Generation step is directly derived from it.
 One issue that is immediately apparent is that this greedy approach does not \enquote{generate the MPE solution} as the authors claim.
-This does not discredit the argumentative method as a whole, as it is not necessary for the user to be arguing the MPE to derive a good explanation; this ties into one of the main findings in the previous sections that many xAI researchers are only focusing on half of what an explanation is.
-A good explanation is not given only by its formal properties but, most importantly, by how it acts as an interface between the real \textit{user} and the model.
+This does not discredit the argumentative method as a whole, as \textit{it is not necessary for the user to be arguing the MPE to derive a good explanation}; this ties into one of the main findings in the previous sections that many xAI researchers are only focusing on one half of the explanation.
+A good explanation is not given only by its formal properties but, most importantly, by how well it acts as an interface between the real \textit{user} and the model.
 This is what \citet{abdul2018trends} mean when they lament that \enquote{despite their mathematical rigour, these works \textit{[referring to the existing explainability methods]} suffer from a lack of usability, practical interpretability and efficacy on real users}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth]{literature-review/images/butz-methodology}}
-\caption{Overview of methodology followed by \citet{Butz2018}}
+\caption{Overview of methodology followed by \citet{Butz2018}.}
 \label{fig:butz-methodology}
 \end{figure}
 
-The document plan for the argumentation follows the same chain of strongest dependencies constructed in the knowledge base until the expert disagrees; at that point, the user is presented with an alternative \enquote{MPE}.
+The document plan for the argumentation follows the same chain of strongest dependencies constructed in the \textit{knowledge base} until the expert disagrees; at that point, the user is presented with an alternative \enquote{MPE}.
 An example of how the document plan may look after interaction with the user is shown in Figure \ref{fig:butz-tree}.
 All the natural language phrasing is generated via boilerplates that take care of realising both the micro-planning phase and the generation of the text.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth]{literature-review/images/butz-tree}}
-\caption{\textit{Document plan} generated from the \textit{probability tree} \citep{Butz2018}}
+\caption{\textit{Document plan} generated from the \textit{probability tree} \citep{Butz2018}.}
 \label{fig:butz-tree}
 \end{figure}
 
 The authors recognise that such chains of deduction could become long and cognitively overloading in the case of larger BNs, as every variable in the tree is explained by all its ancestors.
 A solution they propose is that of \textit{pruning} the probability tree by excluding d-separated nodes and those under a certain threshold of significance.
-They also adapt some methods from literature to perform \textit{conflict analysis}; that is, only variables that contribute positively to the explanation are maintained in the document plan.
+They also adapt some methods from literature to perform \textit{conflict analysis} i.e., only variables that contribute positively to the explanation are maintained in the document plan.
 
-On the whole, \citet{Butz2018} offer a compelling explanation method for BNs by building on an established tradition of explainability through dialogue.
-The work, though, takes some methodological missteps and also continues the \enquote{sin} of not validating its claims on real users, one of the primary gaps in the xAI field identified in the previous sections.
+On the whole, \citet{Butz2018} offer a compelling explanation method for BNs by building on an established tradition of enabling explainability through dialogue.
+The work, though, takes some methodological missteps and also continues the \enquote{sin} of not validating its claims on real users, which is one of the primary gaps in the xAI field, as identified in the previous sections.

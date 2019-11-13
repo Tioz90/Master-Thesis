@@ -10,6 +10,7 @@
 \usepackage{natbib}
 
 \usepackage{listings}
+
 \newcommand{\Eta}{H}
 
 \usepackage{tabularx}
@@ -42,7 +43,7 @@ morecomment=[l]{//s},
 
 \usepackage{nameref}
 
-\usepackage{framed}
+\usepackage{mdframed}
 \usepackage{enumitem}
 
 \usepackage{centernot}
@@ -54,20 +55,26 @@ morecomment=[l]{//s},
 
 \usepackage[section]{placeins}
 
+\usepackage{mdframed}
+
+\usepackage{chngcntr}
+
+\usepackage[toc]{appendix}
+
 \title{Explainable AI with Probabilistic Graphical Models} %compulsory 
-\specialization{Artificial Intelligence}%optional
+%\specialization{artificial intelligence}%optional
 \subtitle{A Study with Application and Evaluation on a Medical Domain} %optional 
 \author{Thomas Francesco Tiotto} %compulsory
 \begin{committee}
-\advisor{Dr.}{Alessandro Facchini}{} %compulsory
-\coadvisor{Dr.}{Alessandro Antonucci}{}{} %optional
+\advisor{Dr.}{Alessandro}{Facchini} %compulsory
+\coadvisor{Dr.}{Alessandro}{Antonucci}{Istituto Dalle Molle di Studi sull'Intelligenza Artificiale, Switzerland} %optional
 \end{committee}
 \Day{6} %compulsory
 \Month{September} %compulsory
 \Year{2019} %compulsory, put only the year
 \place{Lugano} %compulsory
 
-\dedication{To everyone} %optional
+\dedication{To everyone who made me who I am.\\To everyone who made me who I am not.} %optional
 \openepigraph{Considerate la vostra semenza:\\
 fatti non foste a viver come bruti,\\
 ma per seguir virtute e canoscenza.}{Dante Alighieri} %optional
@@ -85,13 +92,13 @@ ma per seguir virtute e canoscenza.}{Dante Alighieri} %optional
 \end{abstract}
 
 \begin{acknowledgements}
-First and foremost, I would like to thank my supervisors Dr.\ Alessandro Facchini and Dr.\ Alessandro Antonucci for being patient and enthusiastic enough to follow me through all this process.
-There is no way I could have done all this without them and I thoroughly enjoyed all my the interactions with them.
+First and foremost, my gratitude goes to my supervisors Dr.\ Alessandro Facchini and Dr.\ Alessandro Antonucci for being patient enough to guide me through all this process and for instilling me with the passion needed to push on through while having fun doing it.
+There is no way I could have made it without them and I thoroughly enjoyed all the time passed working together.
 
 Likewise, Dr.\ Vittoria Martin from Istituto Cantonale di Patologia was invaluable in providing her honest support and often went beyond what could be expected.
-The same can be said of Dr.\ Ginevra Licandro, whose insights were essential in helping me to bridge the gap between the Computer Science and Medical domains.
+The same must be said of Dr.\ Ginevra Licandro, whose insights were essential in helping me to bridge the gap between the domains of computer science and medicine.
 
-I would naturally want to thank my family and girlfriend for all the support they have always given me and understanding they have had, especially in this final period of my studies.
+I naturally also want to thank my parents - Mary and Renato - and my girlfriend - Erin - for all the support and understanding they have overwhelmed me with, especially in this last period of my studies.
 Their fortitude and unwavering presence has helped in ferrying me across all rough waters.
 \end{acknowledgements}
 
@@ -113,45 +120,45 @@ Their fortitude and unwavering presence has helped in ferrying me across all rou
 %%%% LITERATURE REVIEW
 %%%%  
 \chapter{Literature Review}\label{chap:literature-review}
-\input{literature-review/introduction}
+\input{literature-review/introduction_lr}
 \input{literature-review/explainability}
 \input{literature-review/explaining-mpe}
-\input{literature-review/summary}
+\input{literature-review/summary_lr}
 
 %%%%
 %%%% MATHEMATICAL BACKGROUND
 %%%%
 \chapter{Mathematical Background}\label{chap:mathematical-background}
-\input{mathematical-background/introduction}
+\input{mathematical-background/introduction_mb}
 \input{mathematical-background/probability-theory}
 \input{mathematical-background/information-theory}
 \input{mathematical-background/graph-theory}
 \input{mathematical-background/bayesian-networks}
-\input{mathematical-background/summary}
+\input{mathematical-background/summary_mb}
 
 
 %%%%
 %%%% METHODOLOGY
 %%%%
 \chapter{Methodology} \label{chap:methodology}
-\input{methodology/introduction}
+\input{methodology/introduction_me}
 \input{methodology/data-set}
 \input{methodology/instruments}
 \input{methodology/novel-contributions}
 \input{methodology/validation}
-\input{methodology/summary}
+\input{methodology/summary_me}
 
 %%%%
 %%%% RESULTS
 %%%%
 \chapter{Results} \label{chap:results}
-\input{results/introduction}
+\input{results/introduction_re}
 \input{results/implemented-tool}
 \input{results/validation-results}
 \input{results/pseudo-mpe-evaluation}
 \input{results/prediction-evaluation}
 \input{results/issues}
-\input{results/summary}
+\input{results/summary_re}
 
 %%%%
 %%%% CONCLUSIONS
@@ -161,18 +168,14 @@ Their fortitude and unwavering presence has helped in ferrying me across all rou
 \input{conclusions/future-work}
 
 %%%%
-%%%% CONCLUSIONS
+%%%% APPENDIX
 %%%%
 \appendix %optional, use only if you have an appendix
+\input{acronyms}
+\input{annex1} 
+\input{annex2} 
 
 \backmatter
-
-\chapter{Acronyms} \label{chap:acronyms} %optional
-\input{acronyms}
-
-\chapter{Annex} \label{chap:annex}
-\input{annex}
-
 %\bibliographystyle{alpha}
 %\bibliographystyle{dcu}
 \bibliographystyle{plainnat}

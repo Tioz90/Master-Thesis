@@ -1,0 +1,144 @@
+\chapter{Natural Language Questions} \label{app:natural-language-questions}
+%\captionsetup[table]{list=no}
+%\newcounter{annex}
+%\newcounter{subannex}[annex]
+%\setcounter{annex}{1}
+%\setcounter{subannex}{1}
+%\renewcommand{\thetable}{\arabic{annex}.\arabic{subannex}}
+
+This annex contains the natural language questions formulated by the medical partner - Istituto Cantonale di Patologia - with the objective of clinically validating the proof of concept system developed as part of the methods of this thesis.
+These questions are referenced in the relevant Subsection \ref{subsec:clinical-validation-methodology}.
+
+\begin{sidewaystable*}[h]
+  \centering
+  %\captionsetup{name=Appendix}
+  \caption{Natural language questions answerable by conditional probability queries}
+    \begin{tabularx}{\textwidth}{lXllllX}
+	    \toprule
+	    \textbf{\#} & Natural language question & Type  & Target variable & Target value & Evidence variable & Evidence value \\
+		\midrule
+		\textbf{1} & At diagnosis, if estrogen receptors are negative, is tumor proliferative index high? & validation & ki67  & >30\% & estrogeni & 0-10\% \\
+		\addlinespace
+		\textbf{2} & At diagnosis, if estrogen receptors are negative, is the risk of metastases low? & validation & pM sub & pM=0  & estrogeni & 0-10\% \\
+		\addlinespace
+		\multirow{2}[0]{*}{\textbf{3}} & \multirow{2}[0]{4cm}{If estrogen receptors are negative and tumor proliferative index is  high at diagnosis, is the risk of metastases low?} & \multirow{2}[0]{*}{validation} & \multirow{2}[0]{*}{pM sub} & \multirow{2}[0]{*}{pM=0} & estrogeni & 0-10\% \\
+		      &       &       &       &       & ki67  & >30\% \\
+		\addlinespace[9ex]
+	      \textbf{4} & If the diagnosis of mammary carcinoma happened at a young age, is tumour proliferative index high? & validation/research & ki67  & >30\% & eta arrotondata & <40 \\
+      	\addlinespace
+		\textbf{5} & If the histologic diagnosis is of lobular carcinoma, is the expression of the c-erbB2 marker absent? & validation & cerb  & 0 \& 1 & morfologia & Lobular carcinoma, NOS \\
+		\addlinespace
+		\textbf{6} & If the tumour is large, is lymph node involvement more probable? & validation & pN sub & pN!=0 & pT sub & pT>=2  \\  
+		\addlinespace[2ex]
+		\multirow{2}[0]{*}{\textbf{7}} & \multirow{2}[0]{4cm}{If the tumour is large and lymph nodes are involved, is the risk of metastases low at diagnosis?} & \multirow{2}[0]{*}{validation} & \multirow{2}[0]{*}{pM sub} & \multirow{2}[0]{*}{pM=0} & pT sub & pT>=2  \\ 
+		&       &       &       &       & pN sub & pN!=0 \\  
+\end{tabularx}
+	%\refstepcounter{subannex}
+	\label{app:conditionalprobability1}
+\end{sidewaystable*}
+
+\begin{sidewaystable*}[h]
+  \centering
+%  %\captionsetup{name=Appendix}
+  \caption{Natural language questions answerable by conditional probability queries}
+    \begin{tabularx}{\textwidth}{lXllllX}
+	    \toprule
+	    \textbf{\#} & Natural language question & Type  & Target variable & Target value & Evidence variable & Evidence value \\
+		\midrule      
+		\textbf{8} & If the tumour is of high grade at diagnosis, is the risk of metastases low? & validation & pM sub & pM=0  & differenziazione & poco differenziato \\
+		\multirow{2}[0]{*}{\textbf{9}} & \multirow{2}[0]{4cm}{In young patients, if estrogen receptors are negative, is tumor proliferative index high?} & \multirow{2}[0]{*}{validation} & \multirow{2}[0]{*}{ki67} & \multirow{2}[0]{*}{>30\%} & estrogeni & 0-10\% \\
+		      &       &       &       &       & eta arrotondata & <40 \\	  
+	    \addlinespace[6ex]
+		\multirow{2}[0]{*}{\textbf{10}} & \multirow{2}[0]{4cm}{In young patients, if estrogen receptors are negative, is the risk of metastases low?} & \multirow{2}[0]{*}{validation} & \multirow{2}[0]{*}{pM sub} & \multirow{2}[0]{4cm}{pM=0} & estrogeni & 0-10\% \\
+		      &       &       &       &       & eta arrotondata & <40 \\
+      \addlinespace[6ex]
+		\multirow{3}[0]{*}{\textbf{11}} & \multirow{3}[0]{4cm}{In young patients, if estrogen receptors are negative and tumor proliferative index is  high at diagnosis, is the risk of metastases low?} & \multirow{3}[0]{*}{validation} & \multirow{3}[0]{*}{pM sub} & \multirow{3}[0]{*}{pM=0} & estrogeni & 0-10\% \\
+		      &       &       &       &       & ki67  & >30\% \\
+		      &       &       &       &       & eta arrotondata & <40 \\
+      \addlinespace[9ex]
+	      \multirow{3}[0]{*}{\textbf{12}} & \multirow{3}[0]{4cm}{How does the tumoural grade change if I know the oestrogen expression?} & \multirow{3}[0]{*}{research} & \multirow{3}[0]{*}{differenziazione} &  ben differenziato & \multirow{3}[0]{*}{estrogeni} & negativi (0-10\%) \\
+		      &       &       &       &  moderatamente differenziato &       & debolmente positivo (10-50\%) \\
+		      &       &       &       &  poco differenziato &       & fortemente positivo (>50\%) \\
+	      \addlinespace[1ex]
+		\multirow{4}[0]{*}{\textbf{13}} & \multirow{4}[0]{4cm}{How does the oestrogen expression change if I know the proliferation index?} & \multirow{4}[0]{*}{research} & \multirow{4}[0]{*}{estrogeni} &  negativi (0-10\%) & \multirow{4}[0]{*}{ki67} & negativo (0-14\%) \\
+		      &       &       &       &  debolmente positivi (10-50\%) &       & 14-20\% \\
+		      &       &       &       & \multirow{2}[0]{*}{fortemente positivi (>50\%)} &       & 20-30\% \\
+		      &       &       &       &       &       & positivi (>30\%) \\
+      \addlinespace[1ex]
+	      \textbf{14} & Does the negative expression of progestinic receptors influence lymph nodes' state? & validation & pN sub & pN!=0  & progestinici & 0-10\% \\
+      \end{tabularx}
+	%\refstepcounter{subannex}
+	\label{app:conditionalprobability2}
+\end{sidewaystable*}
+
+\begin{sidewaystable}[h]
+	\centering
+	%\captionsetup{name=Appendix}
+	\caption{Natural language questions answerable by d-separation queries}
+	\begin{tabularx}{\textwidth}{lXllllX}
+		\toprule
+		\textbf{\#} & Natural language question & Type  & Target variable & Target value & Evidence variable & Evidence value \\
+		\midrule
+		\textbf{14} & Which clinical-pathological variables influence the lymph nodes' state at diagnosis? & research & pN    & -     & -     & - \\
+		\textbf{15} & Which clinical-pathological variables influence tumoural proliferation index? & research & ki67  & -     & -     & - \\
+		\textbf{16} & Which clinical-pathological variables influence the expression of the c-ERBB2 marker? & research & cerb  & \multicolumn{1}{r}{} & -     & - \\
+		\textbf{17} & Which clinical-pathological variables influence the oestrogen expression? & research & recettori estrogeni & \multicolumn{1}{r}{} & -     & - \\
+		\textbf{18} & Which clinical-pathological variables influence the tumoural grade? & research & differenziazione & \multicolumn{1}{r}{} & -     & - \\
+		\textbf{19} & Which clinical-pathological variables influence the presence of metastases at diagnosis? & research & pM    & \multicolumn{1}{r}{} & -     & - \\
+		\textbf{20} & Which clinical-pathological variables influence the tumoural dimension? & research & pT    & \multicolumn{1}{r}{} & -     & - \\
+		\textbf{21} & Which clinical-pathological variables influence the age of the tumour onset? & research & eta   & -     & -     & - \\
+		\end{tabularx}
+	%\refstepcounter{subannex}
+	\label{app:dseparation}
+\end{sidewaystable}
+
+\begin{sidewaystable}[h]
+	\centering
+	%\captionsetup{name=Appendix}
+	\caption{Natural language questions answerable by conditional probability queries or, at a higher level, by d-separation queries}
+	\begin{tabularx}{\textwidth}{lXllllX}
+		\toprule
+		\textbf{\#} & Natural language question & Type  & Target variable & Target value & Evidence variable & Evidence value \\
+		\midrule
+		\multirow{2}[0]{*}{\textbf{22}} & \multirow{2}[0]{4cm}{In young patients, does a negative expression of the progestinic receptors influence the lymph nodes' state?} & \multirow{2}[0]{*}{research} & \multirow{2}[0]{*}{pN sub} & \multirow{2}[0]{*}{pN!=0} & progestinici & 0-10\% \\
+	      &       &       &       &       & eta   & <40 \\
+	      \addlinespace[9ex]
+		\multicolumn{1}{r}{\textbf{23}} & Does a negative expression of progestinic receptors influence the tumoural proliferation index? & research & ki67  & >30\% & progestinici & 0-10\% \\
+		\addlinespace
+		\multirow{2}[0]{*}{\textbf{24}} & \multirow{2}[0]{4cm}{In young patients, does a negative expression of the progestinic receptors influence the tumoural proliferation index?} & \multirow{2}[0]{*}{research} & \multirow{2}[0]{*}{ki67} & \multirow{2}[0]{*}{>30\%} & progestinici & 0-10\% \\
+		      &       &       &       &       & eta   & <40 \\
+		      \addlinespace[10ex]
+		\multirow{3}[0]{*}{\textbf{25}} & \multirow{3}[0]{4cm}{Does a negative expression of progestinic receptors influence the expression of the c-ERBB2 marker?} & \multirow{3}[0]{*}{research} & \multirow{3}[0]{*}{cerb} & 0 \& 1 & \multirow{3}[0]{*}{progestinici} & \multirow{3}[0]{*}{0-10\%} \\
+		      &       &       &       & 2     &       &  \\
+		      &       &       &       & 3     &       &  \\
+		      \addlinespace[4ex]
+		\multirow{4}[0]{*}{\textbf{26}} & \multirow{4}[0]{4cm}{In young patients, does a negative expression of the progestinic receptors influence the expression of the c-ERBB2 marker?} & \multirow{4}[0]{*}{research} & \multirow{4}[0]{*}{cerb} & 0 \& 1 & \multirow{3}[0]{*}{progestinici} & \multirow{3}[0]{*}{0-10\%} \\
+		      &       &       &       & 2     &       &  \\
+		      &       &       &       & \multirow{2}[0]{*}{3} &       &  \\
+		      &       &       &       &       & eta   & <40 \\
+		\end{tabularx}
+	%\refstepcounter{subannex}
+	\label{app:conditionalanddseparation}
+\end{sidewaystable}
+
+\begin{sidewaystable}[h]
+	\centering
+	%\captionsetup{name=Appendix}
+	\caption{Natural language questions answerable by MPE queries}
+	\begin{tabularx}{\textwidth}{lXllllX}
+		\toprule
+		\textbf{\#} & Natural language question & Type  & Target variable & Target value & Evidence variable & Evidence value \\
+		\midrule
+		\multirow{3}[0]{*}{\textbf{27}} & \multirow{3}[0]{4cm}{How are tumours characterised by a triple negative profile from the point of view of the other clinical-pathological variables?} & \multirow{3}[0]{*}{research} & \multirow{3}[0]{*}{-} & \multirow{3}[0]{*}{-} & cerb  & 0 \\
+		\addlinespace[9ex]
+	      &       &       &       &       & recettori estrogeni & negativo \\
+	      &       &       &       &       & recettori progestinici & negativo \\
+		\textbf{28} & How are tumours characterised by high ki67 from the point of view of the other clinical-pathological variables? & research & -     & -     & ki67  & >30 \\
+		\addlinespace[2ex]
+		\textbf{29} & How are tumours characterised by nodes involvement from the point of view of the other clinical-pathological variables? & research & -     & -     & pN    & !0 \\
+		\end{tabularx}
+	%\refstepcounter{subannex}
+	\label{app:mpe}
+\end{sidewaystable}
+
+

@@ -1,81 +1,79 @@
-% !TEX root = thesis-thomas-tiotto.tex
-
 \section{Methods} \label{sec:methods}
 
 \subsection{Libraries}\label{subsec:libraries}
-The system developed in this thesis was coded in Python and as such made use of an array of standard and less-know packages.
-The most significant for the development of the system are Pomegranate and Pgmpy, that are both packages implementing probabilistic graphical models.
+The system developed in this thesis was coded in Python and as such made use of an array of standard and less familiar packages.
+The most significant for the development of the system are Pomegranate and Pgmpy, both implementing probabilistic graphical models.
 
 \subsubsection{Probabilistic Graphical Models Packages}
 \textit{Pomegranate}\footnote{\url{https://Pomegranate.readthedocs.io/en/latest/}} is an open-source probabilistic models package for Python.
-Its core philosophy is that every probabilistic model, from Hidden Markov to Bayesian Network, can be seen as a probability distribution and, as such, can be flexibly composed into hierarchical mixture models \citep{Schreiber2017}.
-The package implements Bayesian Network as well as many other probabilistic models but currently only supports Discrete Bayesian Networks, so the random variable of each node must have a categorical distribution.
+Its core philosophy is that every probabilistic model, from hidden Markov to Bayesian network, can be seen as a probability distribution and, as such, can be flexibly composed into hierarchical mixture models \citep{Schreiber2017}.
+The package implements Bayesian networks as well as many other probabilistic models, but currently only supports discrete Bayesian networks, so the random variable of each node must have a categorical distribution.
 This is not an issue as the provided data set (see Section \ref{sec:data-set}) was already composed of only categorical variables.
-Also, working with discrete entities should make explainability easier as the number of possible variable values at hand can be reduced at will; this should in turn reduce the cognitive load requested from the user.
+Also, working with discrete entities should make explainability easier as the number of possible variable values at hand can be reduced at will; this should in turn reduce the cognitive load requested on the user's part.
 
-Pomegranate was chosen among others for its good implementation of Bayesian Networks and its performance.
+Pomegranate was chosen among other packages because of its satisfactory implementation of Bayesian networks and its performance.
 The package is written in Cython and natively supports multi-core parallelism and out-of-core learning.
-Network \textit{structure learning from data} is claimed to be particularly efficient, thanks to a novel c\textit{onstraint learning} (see Subsection \ref{subsec:learning-bn-structure}) method that implements prior knowledge into the graph selection process \citep{schreiber_noble_2017}.
-The claim made by the paper is that this innovative graph selection process should possess the speed of a heuristic approach, while still yielding a far better quality estimate of the correct graph structure.
+Network \textit{structure learning from data} is claimed to be particularly efficient, thanks to a novel \textit{constraint learning} (see Subsection \ref{subsec:learning-bn-structure}) method that implements prior knowledge into the graph selection process \citep{schreiber_noble_2017}.
+The claim made by the authors is that this innovative graph selection process should possess the speed of a heuristic approach, while yielding a far better quality estimate of the correct graph structure.
 
-\textit{Structure learning} from data is achieved using the \texttt{from\_samples} method of the \\ \texttt{BayesianNetwork} class, with the default algorithm being the novel one described by \citet{schreiber_noble_2017}.
+\textit{Structure learning} from data is achieved using the \texttt{from\_samples} method of the \\ \texttt{BayesianNetwork} class, with the default algorithm being the novel one proposed in \citep{schreiber_noble_2017}.
 The \textit{probability} of a sample is calculated using the \texttt{probability} function; the \texttt{predict\_proba} function is used to return the probability of each variable in the model given some evidence.
-\textit{Predictions} (described in detail in Subsection \ref{subsec:bnupdating}) are run by passing an object a matrix with \texttt{None} as placeholders for missing values to the \texttt{predict} function.
-\textit{Fitting} is done thought the \texttt{fit} function that uses MLE estimates to update each node's distribution in the model based on the input data.
+\textit{Predictions} are run by passing an object a matrix with \texttt{None} as placeholders for missing values to the \texttt{predict} function.
+\textit{Fitting} is done through the \texttt{fit} function which uses MLE estimates to update each node's distribution in the model based on the input data.
 
 A \texttt{BayesianNetwork} object can also be displayed graphically by calling its \texttt{plot} function.
 The output is a \texttt{DOT} file that is generated using the PyGraphviz package\footnote{\url{https://pygraphviz.github.io}}, a Python interface to the famous Graphviz\footnote{\url{https://www.graphviz.org}} graph visualisation software.
 An example of such an output is shown in Figure \ref{fig:Pomegranate_graph_example}.
+For flexibility and compatibility reasons, a custom function was written to display a Pomegranate BN graphically.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.8\textwidth]{methodology/images/Pomegranate_example}}
-\caption{Example output of \texttt{plot} \citep{Pomegranatetutorial}}
+\caption{Example output of \texttt{plot} [\href{https://github.com/jmschrei/Pomegranate/blob/master/tutorials/B_Model_Tutorial_4b_Bayesian_Network_Structure_Learning.ipynb}{Pomegranate tutorial}].}
 \label{fig:Pomegranate_graph_example}
 \end{figure}
 
 \textit{Pgmpy}\footnote{\url{http://pgmpy.org}} is, like Pomegranate, another recent probabilistic graphical model package for Python.
 Unlike Pomegranate, it natively implements various exact and approximate inference algorithms (see Subsection \ref{subsec:bnupdating}), like variable elimination, belief propagation and max-product linear programming.
 
-The reason that two different probabilistic graphical model libraries were used, is because there is currently no Python package that offers all the needed functionality.
+The reason that two different probabilistic graphical model libraries were used, is because there is currently no Python package offering all the necessary functionality.
 Pomegranate implements a novel structure learning algorithm but is severely lacking in functionality in many other areas.
 Pgmpy, on the other hand, has a very good API as regards inference.
 
-\subsubsection{External Solvers}
-\textit{DAOOPT}\footnote{\url{https://github.com/lotten/daoopt}} is an open-source implementation of the sequential AND/OR Branch-and-Bound algorithm proposed by \citet{Marinescu2006}.
+\subsubsection{DAOOPT}
+\textit{DAOOPT}\footnote{\url{https://github.com/lotten/daoopt}} is an open-source implementation of the sequential AND/OR branch-and-bound algorithm proposed by \citet{Marinescu2006}.
 Search-based algorithms traverse the model's space and are much more efficient in their use of memory, compared to inference-based algorithms such as variable elimination.
 
 DAOOPT builds an AND/OR search space to generate an AND/OR graph that takes advantage of information encoded in the graphical model, namely its independencies.
-The DAOOPT implementation found at \citet{daoopt}, is an exact solver for finding an MPE solution in Bayesian Networks.
-The software is written in C++ and accessible through a command-line interface; the only required parameter is a \texttt{.uai} file representing a Markov Random Field or a Bayesian Network but in most cases an optional \texttt{.uai.evid} file will also be given, containing the observed evidences.
+The DAOOPT implementation that was used is an exact solver for finding an MPE solution in Bayesian networks.
+The software is written in C++ and accessible through a command-line interface; the only required parameter is a \texttt{.uai} file representing a Markov random field or a Bayesian network but in most cases an optional \texttt{.uai.evid} file, containing the observed evidence, will also be given.
 
 The \texttt{.uai} file format is a simple text file used to represent problem instances.
 Such a file is composed of:
 \begin{itemize}
-  \item \textit{Preamble}: containing the type of the network (MARKOV or BAYES), the number and cardinality of variables and the cliques, that in the BAYES case are simply the variables appearing in each Conditional Probability Table (CPT).
-  \item \textit{Function tables}: containing the actual definition of the CPTs i.e. the values of each node give its parents or, in the case of root nodes, the marginal probabilities.
+  \item \textit{preamble}: containing the type of the network (\texttt{MARKOV} or \texttt{BAYES}), the number and cardinality of variables and the cliques, that in the \texttt{BAYES} case are simply the variables appearing in each conditional probability table;
+  \item \textit{function tables}: containing the actual definition of the CPTs i.e., the values of each node given its parents or, in the case of root nodes, the marginal probabilities.
 \end{itemize}
 
 The \texttt{.uai.evid} is a very simple file containing the number of variables in the evidence set followed by the index of each variable and its observed value.
-In both formats the variables and their values are represented only by a numerical index, starting from $0$, with the ordering being defined in the preamble of the \texttt{.uai} and maintained consistent throughout the \texttt{.uai} and \texttt{.uai.evid}.
+In both formats the variables and their values are represented only by a numerical index, starting from $0$, with the ordering being defined in the preamble of the \texttt{.uai} and maintained consistent throughout both the \texttt{.uai} and \texttt{.uai.evid}.
 
-Following, is the \texttt{.uai} representing the network shown in Figure \ref{fig:bn-example-dag}, that has been the running example throughout the last chapters.
+Following, is the \texttt{.uai} representing the network shown in Figure \ref{fig:bn-example-dag}, which has been the running example throughout the last chapters.
 Lines starting with \texttt{c} are interpreted as comments; these are misinterpreted by DAOOPT and are thus removed when running it, but are here shown for clarity and because they are part of the official \texttt{.uai} format.
-The file starts by stating that the model is a Bayesian Network composed of 5 random variables; these will then be referenced by an ordinal index starting at 0.
+The file starts by stating that the model is a Bayesian network composed of 5 random variables; these will then be referenced by an ordinal index starting at 0.
 The first variable (index 0) is of cardinality 3, the second (index 1) is of cardinality 2 and so on.
-We can then see the definition of the cliques or more precisely, as the model is BAYES  and not MARKOV, of the CPTs; there are 5 of these, each one associated to one of the five variables just stated.
+We can then see the definition of the cliques or more precisely, as the model is \texttt{BAYES}  and not \texttt{MARKOV}, of the CPTs; there are 5 of these, each one associated to one of the five variables just stated.
 The first CPT involves 2 random variables: the first (0) and the second (1); the second CPT involves only one variable (1) and this tells us that variable 1 is a root node in the BN's DAG.
 The ordering is such that the child node is the last in the definition of each CPT's nodes so, for example, in the first CPT we find that variable 1 is the child of variable 0.
 Finally, we have a complete definition of the function tables/CPTs.
 The tables are printed so that each row corresponds to the conditional probability value of the child node and increasing rows correspond to increasing enumeration of the parents' states, in the order given when defining the variables involved in the CPTs.
-The first table corresponds to \textbf{eta arrotondata}'s CPT shown in Table \ref{tab:eta-cpd}.
-It contains 6 elements as it involves variables 0 (\textbf{mut17q21}) and 1 (\textbf{eta arrotondata)} that are of cardinality 2 and 3, respectively.
+The first table corresponds to the CPT of \enquote{eta arrotondata}, shown in Table \ref{tab:eta-cpd}.
+It contains 6 elements as it involves variables 0 (\enquote{mut17q21}) and 1 (\enquote{eta arrotondata)} that are of cardinality 2 and 3, respectively.
 So, each row corresponds to the probability distribution of the three states of variable 1, given each of the two states of variable 0.
 
-\begin{minipage}{\linewidth}
-\begin{framed}
+\begin{mdframed}
 \begin{verbatim}
 c
-c Bayesian Network exported from Pomegranate - Thomas Tiotto (2019)
+c Bayesian network exported from Pomegranate - Thomas Tiotto (2019)
 c
 
 BAYES
@@ -119,48 +117,45 @@ c
 2
  0.5315001740341107 0.4684998259658893 
 \end{verbatim}
-\end{framed}
-\end{minipage}
+\end{mdframed}
 
 The following is an example of a randomly generated \texttt{.uai.evid} evidence file that simply states that the evidence set has cardinality 2 and contains variable 4 (in the ordering given in the \texttt{.uai}) in its state 1 and variable 3 in state 2.
 
-\begin{framed}
+\begin{mdframed}
 \begin{verbatim}
  2
   4 1
   3 2
 \end{verbatim}
-\end{framed}
+\end{mdframed}
 
-Both the \texttt{.uai} and the \texttt{.uai.evid} were generated by the custom functions presented in Subsection \ref{subsec:algorithms} under the \textbf{MPE} header.
+Both the \texttt{.uai} and the \texttt{.uai.evid} were generated by the custom functions presented in Subsection \ref{subsec:algorithms} under the \enquote{MPE} header.
 These are able to export a \texttt{Pomegranate} model and randomly generated evidence to the correct input format for DAOOPT.
 
 \subsubsection{Standard Packages}
-\textit{pandas}\footnote{\url{https://pandas.pydata.org/about.html}} is an extremely widely-used open-source Python library that provides data structures and methods to support data analysis.
-The package excels in the manipulation of tabular data in the form of \texttt{DataFrame}, that is the analogous of R's \texttt{data.frame}.
+\textit{Pandas}\footnote{\url{https://pandas.pydata.org/about.html}} is an extremely widely-used open-source Python library providing data structures and methods to support data analysis.
+The package excels in the manipulation of tabular data in the form of \texttt{DataFrame}, which is the analogous to R's \texttt{data.frame}.
 A \texttt{DataFrame} can be seen as a \enquote{general 2D, size-mutable structure with potentially heterogeneously-typed columns}.
-The syntax for slicing is very close to R's, as are many other functionalities; this is because one of Pandas' explicit goals was to offer all of CRAN's functionalities and to be easily approachable by anyone already knowing the other language.
+The syntax for slicing is very close to R's, as are many other functionalities; this is because one of Pandas' explicit goals is to offer all of CRAN's functionalities and to be easily approachable by anyone already knowing the other language.
 
 Pandas was the default choice for this thesis' implementation because it is the \textit{de facto} standard in data analysis applications when using Python.
-Its flexibility in reading Excel spreadsheets (the format of the provided data set, see Section \ref{sec:data-set}) and in then manipulating the data confirmed that this was a good choice.
+Its flexibility in reading Excel spreadsheets (the format of the provided data set presented in Section \ref{sec:data-set}) and in then manipulating the data confirmed that this was a good choice.
 Note that the additional \texttt{xlrd} package is needed to read files in the Excel format.
 
-\textit{Scikit-learn}\footnote{\url{http://scikit-learn.github.io/stable}} aims at providing a unified API for basic machine learning; it does not include advanced paradigms such as Reinforcement Learning or graphical models for structured learning.
-The latter omission was the reason that lead to select Pomegranate as the basis for the implementation of the system.
-
+\textit{Scikit-learn}\footnote{\url{http://scikit-learn.github.io/stable}} aims at providing a unified API for basic machine learning; it does not include advanced paradigms such as reinforcement learning or graphical models for structured learning.
+The latter omission was the reason that lead to select Pomegranate as the basis for the implementation of the prototype system.
 What is included are a stack supervised and unsupervised ML tools to prepare data sets, define machine learning models ranging from spectral analysis-based to ensemble methods to clustering and multiple evaluation and model selection utilities.
 
-\textit{NumPy}\footnote{\url{http://numpy.org}} is another \textit{de facto} standard package when doing scientific computing with Python.
+\textit{NumPy}\footnote{\url{http://numpy.org}} is another \textit{de facto} standard package when performing scientific computing with Python.
 Most scientific packages (including Pandas, Scikit-learn and TensorFlow) depend on NumPy for low-level operations; this is because NumPy provides a fast implementation of n-dimensional array objects together with powerful manipulation functions.
-In addition to this, NumPy implements linear algebra operations, Fourier Transform and random number generation.
-
+In addition to this, NumPy implements linear algebra operations, Fourier transform and random number generation.
 The closest parallel to NumPy - as R was for Pandas, is MATLAB.
 
 \textit{NetworkX}\footnote{\url{https://networkx.github.io}} is another widely-used package; it is specialised in the creation and manipulation of graph-structured data.
-The main use for this package was in building the \enquote{knowledge base} structure that  the dialogue with the expert is based on.
+The main use for this package was in building the \enquote{knowledge base} structure that the dialogue with the expert is based on.
 
 \subsection{Algorithms} \label{subsec:algorithms}
-This subsection is concerned with presenting algorithms and methods that were adapted and used for this thesis, but that were not part of the original work.
+This section is concerned with presenting algorithms and methods that were adapted and used for this thesis, but that were not original work.
 
 \subsubsection{Model Construction}
 The data was given in \texttt{.xlsx} format and was imported using Panda's \texttt{read\_excel} function that returned a \texttt{DataFrame} object.
@@ -172,8 +167,8 @@ Thus the network's state names are in natural language but the internal represen
 A dictionary object is used to translate one representation into the other when interacting with the user.
 
 \subsubsection{D-separation}
-A na{\"i}ve implementation to check for d-separation between nodes $X$ and $Y$, according to Definition \ref{def:d-separation}, would have a complexity in the order of the number of trails between $X$ and $Y$; this would lead to an exponential, in the size of the graph's vertices set, running time.
-Luckily, \citet{koller2007} present a linear time algorithm to solve the problem, whose pseudocode is shown in Algorithm \ref{alg:koller-d-separation}.
+A na{\"i}ve implementation to check for d-separation between nodes $X$ and $Y$, according to Definition \ref{def:d-separation}, would have a complexity in the order of the number of trails between $X$ and $Y$; this would lead to an exponential running time in the size of the graph's vertices set.
+Luckily, \citet{koller2007} present a linear time algorithm to solve the problem, whose complete pseudocode is shown in Algorithm \ref{alg:koller-d-separation}.
 
 \begin{algorithm}[htp!]
 	\caption{reachable procedure by \citet{koller2007}}
@@ -230,18 +225,18 @@ Luckily, \citet{koller2007} present a linear time algorithm to solve the problem
 	\end{algorithmic}
 \end{algorithm}
 
-The \texttt{reachable} procedure, as defined in the book, takes as input the DAG representing the Bayesian Network $\mathcal{G}$, a source variable $X$ and a set of observed variables $\boldsymbol{Z}$; on exit it returns the set of variables $R$ that are reachable from $X$.
+The \texttt{reachable} procedure, as defined in the book, takes as input the DAG representing the Bayesian network $\mathcal{G}$, a source variable $X$ and a set of observed variables $\boldsymbol{Z}$; on exit it returns the set of variables $R$ that are reachable from $X$.
 The procedure runs in two phases, traversing the graph twice: first bottom-up from leaves to roots, then vice-versa.
 During the first stage, the algorithm finds all nodes $\boldsymbol{A}$ that are ancestors of the evidence set $\boldsymbol{Z}$.
 During the second phase, the procedure distinguishes the direction it visits each node in order to determine if it is traversable or not.
-Any node $Y$ that is not in the evidence set is marked as reachable; if it is being visited in direction \enquote{up} ($(Y,\uparrow)$) it can be traversed as the v-structure (see Subsection \ref{subsec:d-separation} for a primer) is a \textit{chain}.
-All the parents of $Y$ are marked to be visited in the \enquote{up} direction (i.e. from below) and the converse is done for $Y$'s children.
-If $Y$ is being visited in the \enquote{down} ($(Y,\downarrow)$) direction its children are again added to be visited in the \enquote{down} direction, because $Y$ is traversable.
+Any node $Y$ that is not in the evidence set is marked as reachable; if it is being visited in direction \enquote{up} ($(Y,\uparrow)$) it can be traversed as the v-structure (see Subsection \ref{subsec:d-separation}) is a \textit{chain}.
+All the parents of $Y$ are marked to be visited in the \enquote{up} direction (i.e., \enquote{from below}) and the converse is done for $Y$'s children.
+If $Y$ is being visited \enquote{from above} ($(Y,\downarrow)$) its children are again added to be visited in the \enquote{down} direction, because $Y$ is traversable.
 Additionally, if $Y$ happened to be in the set $\boldsymbol{A}$, found in the first step, then $Y$'s parents are marked to be visited in the \enquote{up} direction because the \textit{collider} is active and $Y$ can be traversed (a collider is open if and only if the central node or any of its descendants are observed).
 
 The implementation in this thesis follows the pseudocode of the book very closely but the procedure \texttt{d-separated}, instead of finding all nodes $R$ that are d-connected to the input $X$, only tests if a given target $Y$ is d-separated from $X$ or not, as is shown in Algorithm \ref{alg:d-separation}.
 This gives some extra flexibility in how the function can be used.
-To find the set $S$ of all nodes d-separated from $X$, the \texttt{d-separated} is iterated to test over all nodes $V$ in the BN.
+To find the set $S$ of all nodes d-separated from $X$, \texttt{d-separated} is iterated in order to test all nodes $V$ in the BN.
 
 \begin{algorithm}[htp!]
 	\caption{d-separation algorithm}
@@ -255,8 +250,8 @@ To find the set $S$ of all nodes d-separated from $X$, the \texttt{d-separated} 
 \end{algorithm}
 
 \subsubsection{MPE}
-The solution to the Most Probable Explanation problem (MPE) (Definition \ref{def:mpe}) is planned to be found by using DAOOPT (described in Subsection \ref{subsec:libraries} under the \textbf{DAOOPT} header) as an external solver.
-The latest version of DAOOPT was downloaded from the official repository \citep{daoopt} and compiled into an executable.
+The solution to the most probable explanation problem (Definition \ref{def:mpe}) can be found by using DAOOPT (described in Subsection \ref{subsec:libraries} under the \enquote{DAOOPT} header) as an external solver.
+The latest version of DAOOPT was downloaded from the official repository\footnote{\url{https://github.com/lotten/daoopt}} and compiled into an executable.
 DAOOPT only offers a command line interface so some extra work is needed in order to integrate it with the Python-based application under development.
 The connection is provided by first writing to stable storage a \texttt{Pomegranate.uai} containing the model definition and a \texttt{Pomegranate.uai.uai.evid} with the chosen evidence.
 These files are then fed to DAOOPT by using Python's \texttt{subprocess} module, by running the following command in a background shell:
@@ -265,20 +260,18 @@ These files are then fed to DAOOPT by using Python's \texttt{subprocess} module,
 \end{verbatim}
 The shell output is captured and also written to stable storage, in order for the solution to be parsed from it.
 
-To exemplify the process, we return to the example used while presenting DAOOPT in its Subsection in \ref{subsec:libraries}.
+To exemplify the process, we return to the example used while presenting DAOOPT in the relevant Subsection in \ref{subsec:libraries}.
 Given the \texttt{.uai} representing the BN and the \texttt{.uai.evid} random evidence:
-\begin{framed}
+\begin{mdframed}
 \begin{verbatim}
  2
   4 1
   3 2
 \end{verbatim}
-\end{framed}
+\end{mdframed}
 
 DAOOPT would give the following output:
-
-\begin{minipage}{\textwidth}
-	\begin{framed}
+\begin{mdframed}
 \begin{verbatim}
 	--- Starting search ---
 [0] u 3 4 -1.3581 5 2 1 2 2 1
@@ -302,29 +295,29 @@ p 2 1 2
 l 2 1 6
 s -1.3581 5 2 1 2 2 1
 \end{verbatim}	
-\end{framed}
-\end{minipage}
+\end{mdframed}
+
 The end of the final line is the one of interest, as it is the assignment of values to the variables that solves the MPE problem.
 The \texttt{5 2 1 2 2 1} string is to be interpreted as meaning:
 \begin{itemize}
   \item there are 5 variables in the solution
-  \item the variable indexed by 0 (in the ordering given in the preable of the \texttt{.uai}) is assigned its second value (the ordering is inferred by the CPTs defined in the \texttt{.uai}) in the MPE solution
+  \item the variable indexed by 0 (in the ordering given in the preable of the \texttt{.uai}) is assigned its third value (the ordering is inferred by the CPTs defined in the \texttt{.uai}) in the MPE solution
   \item variable 1 is assigned its second value
   \item variable 2 is assigned its third value
   \item variable 3 is assigned its third value
   \item variable 4 is assigned its second value
 \end{itemize}
-Variables 3 and 4 are constrained to assume the value specified in the input \texttt{.uai.evid}; in this case 1 and 2, respectively.
+Variables 3 and 4 are constrained to assume the value they were specified with in the evidence \texttt{.uai.evid}; in this case the second (1) and third (2), respectively.
 
-All the functionality relating to solving the MPE with DAOOPT is encapsulated in the \texttt{daoopt\_solver} function that given the input \texttt{.uai} files, returns the MPE solution.
+All the functionality relating to solving the MPE with DAOOPT is encapsulated by \texttt{daoopt\_solver}, a function that given the input \texttt{.uai} files returns the MPE solution.
 
-%\subsubsection{Other Machine Learning Methods}
-%In order to have a benchmark for the classification performance of the Bayesian Network, a series of tests were implemented with the aim of finding the best performing algorithm on the data set.
-%Given that the performance of Machine Learning algorithms is heavily dependent on the input classes, a process of \textit{exhaustive variable elimination} was used, in order to identify the most relevant features for the predictions.
+%\subsubsection{Other machine learning Methods}
+%In order to have a benchmark for the classification performance of the Bayesian network, a series of tests were implemented with the aim of finding the best performing algorithm on the data set.
+%Given that the performance of machine learning algorithms is heavily dependent on the input classes, a process of \textit{exhaustive variable elimination} was used, in order to identify the most relevant features for the predictions.
 %Each input subset was scored using the following ML algorithms, in order to find the best performing one:
 %\begin{itemize}
 %  \item \textit{linear regression}: this method assumes that the relationship between the dependent variable $y$ and the regressors $x$ is linear i.e., that $y$ can be written as a linear combination of $x$'s components: $y = \beta_0 + \beta_1 x_1 + \ldots \beta_n x_n$.
-%  \item \textit{logistic regression}: is used in lieu of Linear Regression when the values of the variables are categorical; it assumes that the relationship between the regressors $x$ and the log-odds of $y$ are linear i.e. $\log _{b} \frac{p}{1-p}=\beta_{0}+\beta_{1} x_{1}+ \ldots + \beta_{n} x_{n}$ with $p$ the probability of the event of interest.
+%  \item \textit{logistic regression}: is used in lieu of Linear Regression when the values of the variables are categorical; it assumes that the relationship between the regressors $x$ and the log-odds of $y$ are linear i.e.,$\log _{b} \frac{p}{1-p}=\beta_{0}+\beta_{1} x_{1}+ \ldots + \beta_{n} x_{n}$ with $p$ the probability of the event of interest.
 %  \item \textit{linear discriminant analysis}: LDA is related to Principal Component Analysis (PCA) in that it attempts to find a linear equation modelling the data but LDA explicitly tries to express the difference between the data classes.
 %  \item \textit{decision tree}: a decision tree is built using a recursive, greedy algorithm that continually splits the dataset into two.  The variable along which to bisect is the one that yields the lowest accuracy loss in the resulting split.
 %  \item \textit{na{\"i}ve Bayes}: a na{\"i}ve bayes classifier is a conditional probability model that given features $x_1 \ldots x_n$, attempts to assign a probability to each of the possible outcomes $O_{k}$ of interest by using Bayes' Theorem (Definition \ref{th:bayes-theorem}): $\mathbb{P}\left(O_{k} | x \right)=\frac{\mathbb{P}\left(O_{k}\right) \mathbb{P}\left(x| O_{k}\right)}{\mathbb{P}(x)}$.  The method is called \enquote{na{\"i}ve} because of the strong (ofter unrealistic) assumption that all the features $x_1 \ldots x_n$ are independent.

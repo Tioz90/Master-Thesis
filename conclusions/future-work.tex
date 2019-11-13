@@ -1,52 +1,54 @@
 \section{Future Work} \label{sec:future-work}
-When considering possible future work, we need to distinguish between tasks whose scope is to \textit{address limitations of the current methods} and those related to \textit{expansion of the current work} or \textit{novel applications for it}.
+When considering possible future work, one needs to distinguish between tasks whose scope is to \textit{address limitations of the current methods} and those related to \textit{expansion of the current work} and \textit{novel applications for it}.
 
 \subsection{Addressing Limitations of Current Work}
-\subsubsection{System}
-Regarding the first class of future work, the system developed in this thesis suffers from the limitations inherent to any proof of concept software, namely a general lack of polish and of usability.
-The methods themselves are studied to be able to surface explanations in the clearest way possible, but substituting the console-based frontend for a GUI, local or on a web-server, would certainly lead to a marked improvement in the user experience.
-Also related to the experimental nature of the software is the fact that it was not built from the start with a coherent end-goal but was extended in a non-organic manner as more and novel methods were selected for exploration.
-This has necessarily lead to the implementation being somewhat fragmented and rich in \enquote{workarounds}.
-The choice of Python as the implementation language, while definitively advantageous for rapid development thanks to the comprehensive set of data science and machine learning libraries available, brought with it severe limitations.
-A Python application, while portable, does not provide a \textit{native} experience on any platform; the current project also leaned heavily on the \textit{Anaconda} package manager\footnote{\url{https://www.anaconda.com}} so any user wishing to use it on their machine would need to deal with a potentially complex setup process.
-A better alternative to a full rewrite in a compiled language would be a web GUI to a Python backend\footnote{For example \url{https://github.com/epeios-q37/atlas-python}} that would enable portability without requiring to completely change the implementation.
-In any case, a rewrite of the application that dropped many redundancies, unused code and non-user-focused features, would be desirable.
-
 \subsubsection{Methodology}
-Based on the \enquote{formal} (see Subsection \ref{subsec:explainability-validation-results}) and \enquote{informal} (see Section \ref{sec:implemented-tool}) feedback received by the Istituto Cantonale di Patologia (ICP), it appears that the \enquote{dialogue} interaction modes (see Subsection \ref{subsec:dialogue-results}) should be modified, as the experts were not able to \enquote{instinctively} understand their workings, even after having perceived their potential.
-The experts believed that with extra time they would have been able to use this interaction mode fruitfully, but this is a symptom of a failure on the part of the software as a system designed to be explainable should definitively require as little effort from the user as possible.
+Based on the \enquote{formal} (see Subsection \ref{subsec:explainability-validation-results}) and \enquote{informal} (see Section \ref{sec:implemented-tool}) feedback received by the medical partner, it appears that the \enquote{dialogue} interaction modes (see Subsection \ref{subsec:dialogue-results}) should be modified, as the experts were not easily able to understand their workings, even after having perceived their potential.
+The experts believed that with extra time they would have been able to use this interaction mode productively, but this is a symptom of a failure on the part of the software as a system designed to be explainable should definitively require as little effort from the user as possible.
 The ICP has nonetheless confirmed its intention to continue using the software, focusing in particular on the dialogue modes of interaction, as they feel they have potential as research tools.
-
-The evaluation methodology borrowed methods from the Social Sciences but could certainly be improved by experts in this domain, who will undoubtedly be better versed in the methodological details compared to the author of this thesis, whose academic background is firmly in Computer Science.
+The evaluation methodology borrowed techniques from the social sciences but could undoubtedly be improved by experts in this domain, who will certainly be better versed in the methodological details compared to the author of this thesis, whose academic background is firmly in computer science.
 
 \subsubsection{Additional Evaluations}
-A more extended evaluation period would certainly be a good thing as it would also enable the assessment of the effect of \textit{novelty} of certain interaction modes and help in factoring out the \textit{experts' preconceptions} regarding what an explanation should look like (see Subsection \ref{subsec:domain-experts-initial-expectations}).
+A more extended evaluation period could certainly be recommended as it would also enable the assessment of the effect of \textit{novelty} of certain interaction modes and help in factoring out the \textit{experts' preconceptions} regarding what an explanation should look like (see Subsection \ref{subsec:domain-experts-initial-expectations}).
 
-The \enquote{Pseudo-MPE} query also presented elements of unclearness for the experts, as they were confused on the non-monotonicity of the probability of the elements in the deduction chain (see Subsection \ref{subsec:results-pseudo-mpe-query}).
-This is certainly a point to investigate further by implementing and evaluating alternative \textit{output modalities}, maybe even \textit{verbal} ones as these were seen to be preferred by the clinicians over all others.
-The objective would be to identify the \textit{point of attrition} and discriminate if this were the actual method or only the way its outputs were displayed.
+The \enquote{pseudo-MPE} query also presented elements of ambiguity for the experts, as they were confused on the non-monotonicity of the probability of the elements in the deduction chain (see Subsection \ref{subsec:results-pseudo-mpe-query}).
+This is unquestionably a point to investigate further by implementing and evaluating alternative \textit{output modalities}, as well as potentially \textit{linguistic} ones as these were proved to be preferred by the clinicians over all others.
+The objective would be to identify the \textit{point of attrition} and discriminate if it were to be found in the actual underlying method or only in the way its outputs were displayed.
 In the same vein, the reasons for the experts' misunderstanding in how to implement questions 23, 25, 27 on the system (see Section \ref{sec:results-validation-results}) should also be investigated more thoroughly.
 
+\subsubsection{System}
+The system developed in this thesis is bound by the limitations inherent to any proof of concept software, namely a general lack of polish and of somewhat lacking usability.
+The methods themselves are studied to be able to surface explanations in the clearest way possible, but substituting the console-based frontend for a GUI - local or web-based - would beyond doubt lead to a marked improvement in the user experience.
+Also related to the experimental nature of the software is the fact that it was not built from the start with a coherent end-goal but was extended in a non-organic manner as new methods were selected for exploration or novel ones were developed.
+As a result the implementation presents some fragmentation and is rich in \enquote{workarounds}.
+The choice of Python as the implementation language, while definitively advantageous for rapid development thanks to the comprehensive set of data science and machine learning libraries available, brought with it some clear limitations.
+A Python application, while portable across different systems, does not provide a \textit{native} experience on any platform; the current project also relied heavily on the \textit{Anaconda} package manager\footnote{\url{https://www.anaconda.com}} so any user wishing to use the tool on their machine would need to deal with a potentially intricate setup process.
+A better alternative to a full rewrite in a compiled language would be a web GUI to a Python backend\footnote{For example by using \url{https://github.com/epeios-q37/atlas-python}.} that would enable portability without requiring to completely change the implementation.
+Nevertheless, a rewrite of the application that dropped many redundancies, unused code, and non-user-focused features, is a necessary part of future work.
+
 \subsection{Extensions and Novel Applications}
-The second class of future work is that concerning the expansion of the currently developed techniques.
-DAOOPT was unfortunately not used as a benchmark for the \enquote{pseudo-MPE} algorithm because of questions regarding the reliability of the MPE solutions obtained by using it (see Subsection \ref{subsec:results-mpe-calculation-issues}).
+The second class of future work concerns the expansion of the current techniques.
+During this research it was not possible to utilise the software tool DAOOPT (see Subsection \ref{subsec:libraries} under the \enquote{DAOOPT} header) for exact MPE inferences and it was consequently not used as a benchmark for the \enquote{pseudo-MPE} algorithm (see Subsection \ref{subsec:results-mpe-calculation-issues}).
 There is, however, a roadmap to follow up in more detail on the evaluation of the \enquote{pseudo-MPE} algorithm in a separate paper co-authored with IDSIA researchers.
 
-One of the issues encountered in this thesis was the late removal of three variables because of their lack of clinical significance, as described in Subsection \ref{subsec:removal-clinical-variables}.
+One of the issues encountered in this thesis was the late removal of three variables due to their lack of clinical significance, as described in Subsection \ref{subsec:removal-clinical-variables}.
 The ICP is in possession of a newer data set, homogeneous to the \textit{benchmark data set} used throughout this thesis (see Section \ref{sec:data-set}), where the values of two of the three variables (\enquote{FISH} and \enquote{loss17}) are defined and thus have clinical noteworthiness.
-The third variable (\enquote{mut17q21}) is still missing too high a number of values to be relevant but these could be predicted using the BN or other discriminative ML techniques, as there is a real \textit{causal} dependency between it and the other two - as \enquote{mut17q21}, the mutation on chromosome 17, is identified through the technique of fluorescent in situ hybridization (FISH).
-These are all novel clinical variables and they are thus open to being the subject of many research questions; the ICP has confirmed its interest in using the tool developed in this thesis to pursue such investigations that could, potentially, lead to scientific publications.
+The third variable (\enquote{mut17q21}) is still missing too high a number of values to be relevant but these could be predicted using the BN or other discriminative ML techniques.
+The estimation of the values of this last variable is bound to be accurate, as there is a real \textit{causal} dependency between it and the other two; this is because \enquote{mut17q21}, the mutation on chromosome 17, is identified through the technique of \textit{fluorescent in situ hybridisation} and is thus also tightly coupled with the results of \enquote{loss17}.
+These are all novel clinical variables and they are thus open to being the subject of many research questions; the medical partner has confirmed its interest in using the tool developed in this thesis to pursue such investigations and this could, potentially, lead to scientific publications.
 
-Connected to the previous point, the ICP suggested to develop a \enquote{workflow} for the importing of new data sets, distinct from the one used throughout this thesis.
-The experts also felt that functionalities to save the textual and visual outputs of previous queries, to save the state of a \enquote{dialogue} in order to resume it from a certain point onwards and ready-made query masks could undoubtedly be useful.
+Connected to the previous point, the expert users suggested developing a \enquote{workflow} for the importing of new data sets, thus extending the clinical capabilities of the tool.
+The experts also felt that the ability to save the textual and visual outputs of previous queries could undoubtedly be useful, together with the capacity to \enquote{snapshot} the state of a \enquote{dialogue} in order to resume it from a certain point onwards.
+Ready-made query masks that could reduce the time needed to execute similar questions were also a request.
 
-The ICP has also confirmed that it will be investigating the clinical relevance, through literature review and experiments, of some of the results obtained while using the tool; in particular, these would be those related to:
+The ICP has also confirmed that it will be investigating the clinical relevance, through literature reviews and experiments, of some of the results obtained while using the tool; in particular, these would be those related to:
 \begin{itemize}
   \item the lack of correlation between common clinical pathological features (i.e., morphology, TNM, grade, hormonal status) with age at diagnosis;
   \item the correlation between positive progesterone expression and low tumour proliferation index (ki67);
   \item the correlation between negative oestrogen receptor expression and high tumour proliferation index (ki67).
 \end{itemize}
 
-Finally, some interesting research avenues were not explored, for example a work by \citet{Kyrimi2016} who introduced a method that can be seen as the \enquote{inverse} of that proposed in \citep{Butz2018}; instead of looking for the outcome best explained by the given evidence, the authors propose techniques to find the evidence that best explains target variables.
+Finally, some interesting research avenues were not explored, for example a work by \citet{Kyrimi2016} who introduced a method that can be seen as the \enquote{inverse} of that proposed by \citet{Butz2018}.
+Instead of looking for the outcome best explained by the given evidence, this other paper proposes techniques to find the evidence that best explains the chosen target variables.
 Adapting this \enquote{inverse} method could potentially extend the \textit{explanatory powers} of the system, for example by enabling clinicians to understand which variables best justify a series of observed features in a patient.
-It should not be too difficult as an undertaking, as the current Python implementation is highly modular, by virtue of being based on open-source data structure implementations.
+It should not be too difficult an undertaking, as the current Python implementation is highly modular, by virtue of being based on standard open-source data structure libraries.

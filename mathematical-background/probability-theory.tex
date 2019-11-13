@@ -1,6 +1,6 @@
 \section{Probability Theory} \label{sec:probability-theory}
 We will be dealing with \textit{standard probability} so random variables and probability measures will always be real-valued.
-We will also, in the work carried out in this thesis, only be considering the case of random variables who can assume a finite number of possible values.
+We will also, in the work carried out in this thesis, only be considering the case of random variables that can assume a finite number of possible values/states.
 We will refer to these variables as \textit{categorical} to indicate that there is no natural ordering among their states.
 
 \subsection{Random Variables} \label{subsec:random-variables}
@@ -17,7 +17,7 @@ We will refer to these variables as \textit{categorical} to indicate that there 
 \end{definition}
 
 \textit{Random variables} are a way of bringing to the fore the attributes of interest of events while dealing with them in a clean, mathematical way.
-The values that a random variable can take are a function of the events in sample space $\mathcal{S}$, each of these is assigned a value by the random variable function.
+The values that a random variable can take are a function of the events in sample space $\mathcal{S}$, with each of these having a value assigned by the random variable function.
 
 \begin{definition}[Probability Measure] \label{def:probability-measure}
 	Given a sample space $\mathcal{S}$ and events $\mathcal{F}$, a discrete probability measure $\mathbb{P}$ is a function $\mathbb{P}: \mathcal{F} \rightarrow [0,1]$ that assigns a probability value to every event. 
@@ -29,21 +29,19 @@ To be a valid probability measure, $\mathbb{P}$ must satisfy:
 \end{itemize}
 \end{definition}
 Each event $\sigma \in \mathcal{F}$ must have a probability $\mathbb{P}(\sigma) \in [0,1]$ and the sum of all these must equal $1$. 
-An event with $P(\sigma) = 0$ is deemed \textit{impossible} while one with $\mathbb{P}(\sigma) = 1$ is \textit{certain}.
+An event with $\mathbb{P}(\sigma) = 0$ is deemed \textit{impossible} while one with $\mathbb{P}(\sigma) = 1$ is \textit{certain}.
 
-\begin{definition}[Probability Mass Function]
+\begin{definition}[Probability Mass Function]\label{def:mass-function}
 	A probability mass function of a discrete random variable $X$ is a function $f_X: \mathcal{X} \rightarrow [0,1]$ defined, using a probability measure $\mathbb{P}$, as:
 \begin{equation*}
 	f_X(x) = \mathbb{P}(\{s \in \mathcal{S} : X(s)=x\}) \,,
 \end{equation*}
-and thus assigns a probability to every value of $X$.
+and thus assigns a probability to every value $x \in \mathcal{X}$ in the domain of $X$.
 \end{definition}
-The probability mass gives the probability that a random variable $X$ takes on exactly its value $x$.
-This probability is the size of the subset of the event space $\mathcal{S}$ whose events $s$ are mapped to $x$ by the random variable $X$.
+The probability mass function returns the probability of a random variable $X$ taking on exactly its value $x$.
+This probability is the size of the subset of the event space $\mathcal{S}$ whose events $s$ are mapped to $x$ by the random variable function $X$.
 
 Every random variable has a probability distribution induced by the cardinality of the subsets of its values; in the case of discrete one, such a distribution is \textit{multinomial}.
-
-In what follows, we will refer to $f_X(x)$ as $\mathbb{P}(X=x)$, as the only random variables we will be dealing with will be discrete.
 
 Often, in the context of random variables the probability distribution $f_X$ is called the \textit{marginal of $X$} and is usually contrasted with the notion of \textit{joint probability distribution}.
 \begin{definition}[Joint Probability Mass Function]
@@ -54,21 +52,21 @@ Often, in the context of random variables the probability distribution $f_X$ is 
 	and thus assigns a probability to every tuple $(x,y)$ with $x \in \mathcal{X}$, $y \in \mathcal{Y}$.
 \end{definition}
 
-In what follows, we will sometimes refer to the marginal probability $f_X$ of $X$ as $\mathbb{P}(X)$, and to $f_X(x)$ as $\mathbb{P}(X = x)$, and to joint probability $f_{XY}$ of $X$ and $Y$ as $\mathbb{P}(X,Y)$, and to $f_{XY}(x,y)$ as $\mathbb{P}(X=x,Y=y)$ as the only random variables we will be dealing with will be discrete.
+In what follows, we will sometimes refer to the marginal probability $f_X$ of $X$ as $\mathbb{P}(X)$, to $f_X(x)$ as $\mathbb{P}(X = x)$, to joint probability $f_{XY}$ of $X$ and $Y$ as $\mathbb{P}(X,Y)$, and to $f_{XY}(x,y)$ as $\mathbb{P}(X=x,Y=y)$ as the only random variables we will be dealing with will be discrete.
 Notice that the notation $(E = e)$ is also often overloaded to signify an assignment of values to a set of random variables $E$; in this case what is meant is that every variable in the set $E = {X_1,...,X_k}$ assumes a certain value from its own domain. 
-We will denote sets of random variables in bold so $\boldsymbol{E} = \boldsymbol{e}$ stands to mean that every variable $E$ in the set of random variables $\boldsymbol{E}$ assumes a value $e$ from its own domain. 
+We will denote sets in bold so $\boldsymbol{E} = \boldsymbol{e}$ stands to mean that every variable $E$ in the set of random variables $\boldsymbol{E}$ assumes a value $e$ from its own domain. 
 Finally, recall that the set of values that $X$ can take is denoted by the cursive $\mathcal{X}$.
 
 \subsection{Probability interpretations} \label{subsec:probability-interpretations}
-There are two main ways of interpreting the probability of an event: the \textit{frequentist} and the \textit{subjectivist/Bayesian} one.
+There are two main views through which to interpret the probability of an event: the \textit{frequentist} and the \textit{subjectivist/Bayesian} one.
 
 The former views the probability of an event as the expected ratio of times it would occur over a great number of trials.
 That is, the probability of an event is seen as the \textit{limiting frequency} of a repeatable event.
-So, for example, the probability of observing heads when tossing a coin is set at $0.5$ because over repeated throws heads was observed half the time.
+So, for example, the probability of observing heads when tossing a coin is said to be $0.5$ because over repeated throws heads was observed half the time.
 
 The other view is the subjectivist or \textit{Bayesian} one (from the 18th century mathematician Thomas Bayes) in which probabilities are instead viewed as the \textit{subjective} degree of belief attributable to the manifestation of an event.
 In this interpretation, stating that a coin has probability of heads of $0.5$ simply means that the person making the claim personally believes that the chances of seeing heads or tails are the same.
-This is useful in that it enables the characterisation of certain events that haven't yet come about or that are liable to happen only once or a small number of times (are not repeatable).
+This is useful in that it enables the characterisation of certain events that haven't yet come about or that are liable to happen only once or a small number of times (that is, they are not repeatable).
 
 Philosophically, Bayesian inference assigns a probability to a hypothesis (a \textit{prior}) while the frequentist method tests a raw hypothesis empirically before assigning it any probability.
 As Bayesian inference naturally embraces and deals with uncertainty, it is an enormously useful tool to model and reason about the real, stochastic world we live in.
@@ -84,17 +82,22 @@ From the Bayesian point of view, we would consider the probability of a state of
 To be defined, it must be that $\mathbb{P}(X=x) > 0$.
 \end{definition}
 
-Definition \ref{def:conditional-probability} can be easily manipulated to obtain another basic result, called the \textit{chain rule of conditional probabilities}:
+Definition \ref{def:conditional-probability} can easily be manipulated in order to obtain another basic result, called the \textit{chain rule of conditional probabilities}:
 \begin{equation} \label{eq:chainrule}
-	\mathbb{P}(Y=y,X=x) = \mathbb{P}(Y=y \mid X=x) \mathbb{P}(X=x)
+	\mathbb{P}(Y=y,X=x) = \mathbb{P}(Y=y \mid X=x) \mathbb{P}(X=x) \,.
 \end{equation}
-This can be generalised to any number of variables:
-\begin{equation} \label{eq:chainrule}
-	\mathbb{P}(X_1=x_1, \ldots , X_n=x_n ) = \mathbb{P}(X_n=x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}) \ldots \mathbb{P}(X_1=x_1 \mid X_2=x_2 ) \mathbb{P}(X_1=x_1) 
-\end{equation}
+Equation \ref{eq:chainrule} can be generalised to any number of variables:
+\begin{align} \label{eq:chainrule-multiple}
+\begin{split}
+	\mathbb{P}(X_1=x_1, \ldots , X_n=x_n ) = & \mathbb{P}(X_n=x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}) \times \\
+	&  \ldots   \\
+	 &\times \mathbb{P}(X_1=x_1 \mid X_2=x_2 ) \; \times \\
+	 &\times \mathbb{P}(X_1=x_1) \,.
+\end{split}
+\end{align}
 Intuitively, it means that we can decompose joint probabilities as products of conditional probabilities.  
 
-Another immediate, and crucial, consequence of Definition \ref{def:conditional-probability} is known as \textit{Bayes' Theorem}, that lets us calculate the probability of event given our new knowledge of another event.
+Another immediate, and crucial, consequence of Definition \ref{def:conditional-probability} is known as \textit{Bayes' Theorem}, which lets us calculate the revised probability of an event given new knowledge regarding another event.
 \begin{theorem}[Bayes' Theorem] \label{th:bayes-theorem}
 	Given random variables $X$, $Y$ and the events $X=x$, $Y=y$, $\mathbb{P}(Y=y) > 0$, it holds that:
 	\begin{equation*}
@@ -107,17 +110,17 @@ Intuitively, this is a process of \textit{belief revision} as the belief in even
 \begin{definition}[Random Variables Independence]
 	Two random variables $X$ and $Y$ with domains $\mathcal{X}$ and $\mathcal{Y}$ are independent when their joint probability mass $\mathbb{P}(X,Y)$ is equal to the product of their probability densities:
 	\begin{equation*}
-		\mathbb{P}(X=x,Y=y) =  \mathbb{P}(X=x) \mathbb{P}(Y=y) \quad \forall x \in \mathcal{X}, \forall y \in \mathcal{Y} \,.
+		\mathbb{P}(X=x,Y=y) =  \mathbb{P}(X=x) \times \mathbb{P}(Y=y) \quad \forall x \in \mathcal{X}, \forall y \in \mathcal{Y} \,.
 	\end{equation*}
 \end{definition}
-In the real world it is hard, or actually impossible - if we consider Existence at a fine-enough level to involve Chaos Theory - to find two such perfectly non-interacting events.
-Thus, a more useful concept is that of \textit{conditional independence} where two previously dependent event become independent when also conditioned on a third one
+In the real world it is hard or even impossible - if we consider Nature being based on chaos theory when viewed at a fine-enough level - to find two such perfectly non-interacting events.
+Thus, a more useful concept is that of \textit{conditional independence} where two previously dependent events become independent when conditioned on a third one
 
 \begin{definition}[Random Variables Conditional Independence]
-	Two random variables $X$ and $Y$ with domains $\mathcal{X}$ and $\mathcal{Y}$ are conditionally independent on a third random variable $Z$ when their probability densities conditioned on $Z$ $f_{X \mid Z}$ and $f_{Y \mid Z}$ are independent.
-	That is, when the joint probability mass conditioned on $Z$ $f_{X, Y \mid Z}$ is equal to the product of the conditional probability densities:
+	Two random variables $X$ and $Y$ with domains $\mathcal{X}$ and $\mathcal{Y}$ are conditionally independent on a third random variable $Z$ with domain $\mathcal{Z}$ when their probability densities conditioned on $Z$ are independent.
+	That is, when the joint probability mass function conditioned on $Z$ is equal to the product of the conditional probability mass functions:
 	\begin{equation*}
-		\mathbb{P}(X=x,Y=y \mid Z=z) = \mathbb{P}(X=x \mid Z=z) \cdot \mathbb{P}(Y=y \mid Z=z) \quad \forall x \in \mathcal{X}, \forall y \in \mathcal{Y}, \forall z \in \mathcal{Z} \,.
+		\mathbb{P}(X=x,Y=y \mid Z=z) = \mathbb{P}(X=x \mid Z=z) \times \mathbb{P}(Y=y \mid Z=z) \quad \forall x \in \mathcal{X}, \forall y \in \mathcal{Y}, \forall z \in \mathcal{Z} \,.
 	\end{equation*}
 \end{definition}
 Intuitively, this means that knowing any value of $Z$ makes the probability distributions of $X$ and $Y$ independent.
