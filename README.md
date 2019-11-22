@@ -1,1 +1,7 @@
-# thesis
+# Explainable AI with Probabilistic Graphical Models
+## A Study with Application and Evaluation on a Medical Domain
+*Our societies are delegating an ever increasing number of decisions to artiﬁcially intelligent systems and the need to understand the rationale for these is becoming progressively more apparent. Especially in mission-critical domains as is the medical one, the demand for users to understand the why of an automated decision is crucial.*
+
+*One of the main gaps in the current literature is the scarcity of explainability methods validated by real humans, in concrete settings. This thesis aims to address this omission by focusing on assessing the explanatory powers of Bayesian networks. Such an evaluation takes place in the medical domain and is done in collaboration with expert clinicians, employees of an institutional medical partner. To this end, a proof of concept Bayesian network-based system is developed, applied to a real medical data set and evaluated in its clinical relevance and explanatory powers by the expert users. The former is tested by executing a series of clinical questions on the system and comparing the outcome with that expected by the experts while the latter is evaluated by a think-aloud study and by a questionnaire.*
+
+*The developed tool has proved its clinical relevance and ability to meaningfully interact with expert medical users. It is thus a step in the direction of validating the supposed explanatory powers of Bayesian networks, even if not all the characteristics that were expected to be important in making these models more explainable than other machine learning techniques, have been conﬁrmed as such.*
